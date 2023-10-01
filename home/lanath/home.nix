@@ -1,4 +1,11 @@
 { config, lib, pkgs, modulesPath, ... }:
+
+let
+  unstable = import
+    (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
+    # reuse the current configuration
+    { config = config.nixpkgs.config; };
+in
 {
   imports =
     [
@@ -8,6 +15,13 @@
 
  home-manager.users.lanath = { pkgs, ... }: {
     home.stateVersion = "23.05";
+
+    nixpkgs = {
+      config = {
+        allowUnfree = true;
+        allowUnfreePredicate = (_: true);
+      };
+    };
 
     home.packages = with pkgs; [ ];
 
@@ -22,6 +36,11 @@
 
     programs.neovim = {
       enable = true;
+    };
+
+    programs.vscode = {
+    	enable = true;
+      package = unstable.vscode;
     };
 
     programs.git = {
@@ -44,6 +63,15 @@
       };
     };
 
+    programs.btop = {
+      enable = true;
+      settings = {
+        color_theme = "TTY";
+        theme_background = false;
+        truecolor = true;
+      };
+    };
+
     programs.wofi = {
       enable = true;
     };
@@ -54,6 +82,8 @@
       plugins = with pkgs; [
         rofi-power-menu
         rofi-calc
+        rofi-emoji
+        rofi-bluetooth
       ];
     };
 

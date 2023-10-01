@@ -1,6 +1,8 @@
 ''
+
 monitor=eDP-1,1920x1080@144,0x0,1
 env = XCURSOR_SIZE,24
+exec=swww init && swww img ${./nord1.png}
 
 input {
     kb_layout = us
@@ -104,12 +106,14 @@ bind = $mainMod, Return, exec, kitty
 bind = $mainMod, A, killactive,
 bind = $mainMod, F, fullscreen,
 bind = $mainMod, M, exit,
-bind = $mainMod, E, exec, dolphin
+bind = $mainMod, E, exec, rofi -show filebrowser
 bind = $mainMod, V, togglefloating,
 bind = $mainMod, Space, exec, wofi --show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, e, togglegroup
+bind = $mainMod, l, exec, swaylock -eFk -c 2e3440 --bs-hl-color b48eadff --caps-lock-bs-hl-color d08770ff --caps-lock-key-hl-color ebcb8bff --indicator-radius 100 --indicator-thickness 10 --inside-color 2e3440ff --inside-clear-color 81a1c1ff --inside-ver-color 5e81acff --inside-wrong-color bf616aff --key-hl-color a3be8cff --layout-bg-color 2e3440ff -r --ring-color 3b4252ff --ring-clear-color 88c0d0ff --ring-ver-color 81a1c1ff --ring-wrong-color d08770ff --separator-color 3b4252ff --text-color eceff4ff --text-clear-color 3b4252ff --text-ver-color 3b4252ff --text-wrong-color 3b4252ff
+
 
 # Move focus with mainMod + arrow keys
 bind = $mainMod, left, movefocus, l
@@ -153,5 +157,4 @@ bindm = $mainMod, mouse:272, movewindow
 bindm = $mainMod, mouse:273, resizewindow
 
 exec-once = waybar
-exec=swww init && swww img dotfiles/nord1.png
 ''

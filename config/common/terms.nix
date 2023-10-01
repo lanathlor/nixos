@@ -1,9 +1,10 @@
 { pkgs, ... }:
 {
   users.defaultUserShell = pkgs.fish;
-  environment.shells = with pkgs; [ zsh ];
+  environment.shells = [ pkgs.fish ];
 
   programs.fish.enable = true;
+
   programs.starship.enable = true;
   programs.starship.settings = {
     add_newline = false;
@@ -16,8 +17,13 @@
       zsh_indicator = "[ZSH](bright-white) ";
     };
     username = {
+      disabled = false;
       style_user = "bright-white bold";
       style_root = "bright-red bold";
+    };
+    hostname = {
+      disabled = false;
+      style = "bright-white bold";
     };
   };
 

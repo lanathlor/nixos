@@ -10,20 +10,22 @@ let
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
+  nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {};
 in
 {
   imports =
     [ # Include the results of the hardware scan.
+      ../common/configuration.nix
       ./hardware-configuration.nix
-      ./nvidia.nix
-      ./terms.nix
-      ./home/lanath/home.nix
+      ../common/nvidia.nix
+      ../common/terms.nix
+      ../../home/lanath/home.nix
       (import "${home-manager}/nixos")
+      nur-no-pkgs.repos.LuisChDev.modules.nordvpn
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+
   boot.plymouth = {
     enable = true;
     theme = "hexagon_hud";
@@ -31,43 +33,12 @@ in
   };
 
 
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
-
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
+  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  security.polkit.enable = true;
 
-  networking.hostName = "laptop"; # Define your hostname.
-  networking.networkmanager.enable = true;
+  networking.hostName = "laptop";
 
-  time.timeZone = "Europe/Paris";
-
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_GB.UTF-8";
-    LC_IDENTIFICATION = "en_GB.UTF-8";
-    LC_MEASUREMENT = "en_GB.UTF-8";
-    LC_MONETARY = "en_GB.UTF-8";
-    LC_NAME = "en_GB.UTF-8";
-    LC_NUMERIC = "en_GB.UTF-8";
-    LC_PAPER = "en_GB.UTF-8";
-    LC_TELEPHONE = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
-  };
-
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-
-  services.xserver.enable = true;
   services.xserver.displayManager.sddm = {
     enable = true;
     theme = "Nordic/Nordic";
@@ -81,62 +52,34 @@ in
   users.users.lanath = {
     isNormalUser = true;
     description = "lanath";
-    extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "audio" "nordvpn" ];
     packages = with pkgs; [
     ];
   };
-
-  nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
 
     nordic
 
-    # ide
-    vim
-    unstable.vscode
+    wgnord
 
     # browsers
     firefox-wayland
     google-chrome
     chromium
 
-    # terms
-    fishPlugins.done
-    fishPlugins.fzf-fish
-    fishPlugins.forgit
-    fishPlugins.hydro
-    fishPlugins.autopair
-    fishPlugins.bass
-    fzf
-    fishPlugins.grc
-    grc
-    fishPlugins.z
-
-    # dev
-    git
-
     # utils
     dmenu
     swaylock
-    htop
-    btop
     swww
+    bluez
+
+    docker-compose
 
     # sddm modules
     libsForQt5.plasma-framework
     libsForQt5.plasma-workspace
     libsForQt5.qt5.qtgraphicaleffects
-
-    # maintenance
-    lshw
-    xorg.xhost
-    libva-utils
-    networkmanagerapplet
-    acpi
-    fd
-    sptk
-    bat
 
     # gui
     keepassxc
@@ -145,20 +88,16 @@ in
     gparted
     thunderbird
     pavucontrol
+    qbittorrent
   ];
 
   fonts.fonts = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    liberation_ttf
-    fira-code
-    fira-code-symbols
-    mplus-outline-fonts.githubRelease
-    dina-font
-    proggyfonts
     nerdfonts
   ];
+
+
+  programs.sway.enable = true;
+  security.pam.services.swaylock = {};
 
 
   programs.hyprland.enable = true;
@@ -181,17 +120,6 @@ in
 
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
-
-  sound.enable = true;
-  security.rtkit.enable = true;
-  services = {
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-  };
 
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";
@@ -219,11 +147,11 @@ in
       enable = true;
       setSocketVariable = true;
     };
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+    };
   };
-
-  fonts.fontDir.enable = true;
-
-  system.stateVersion = "23.05";
 }
 
 
