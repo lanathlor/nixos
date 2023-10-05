@@ -59,46 +59,56 @@
 /* Reset all styles */
 * {
 	border: none;
-	border-radius: 3px;
 	min-height: 0;
-	margin: 0.2em 0.3em 0.2em 0.3em;
 }
 
 /* The whole bar */
 #waybar {
-	background: @bg;
+	background: transparent;
 	color: @light;
-	font-family: 'Cantarell', 'Font Awesome 5', 'JetBrains Mono', 'Font Awesome 5 Free Regular',
-		'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular', 'Material Design Icons',
-		'JetBrains Mono';
+	font-family: 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid',
+		'Font Awesome 5 Brands Regular';
 	font-size: 12px;
 	font-weight: bold;
 }
 
 /* Each module */
+#idle_inhibitor,
 #battery,
 #clock,
 #cpu,
 #memory,
-#custom-layout,
-#memory,
 #disk,
-#mode,
 #network,
 #pulseaudio,
 #temperature,
-#custom-alsa,
-#custom-pacman,
-#custom-weather,
-#custom-gpu,
 #tray,
 #backlight,
-#language,
-#custom-cpugovernor,
-#custom-powermenu,
-#custom-media {
-	padding-left: 0.6em;
-	padding-right: 0.6em;
+#custom-weather,
+#custom-powermenu {
+	margin: 0.5em 0.1em 0.5em 0.1em;
+	padding: 0.3rem 0.5em 0.3em 0.5em;
+}
+
+#idle_inhibitor,
+#cpu,
+#memory,
+#temperature,
+#battery,
+#custom-weather {
+	background: @nord_bg;
+	color: #d8dee9;
+}
+
+#network,
+#disk,
+#backlight,
+#clock,
+#pulseaudio,
+#custom-powermenu {
+	/* Unsused but kept for those who needs it */
+	background: @nord_bg_blue;
+	color: #d8dee9;
 }
 
 /* Each module that should blink */
@@ -159,24 +169,21 @@
 /* Workspaces stuff */
 
 #workspaces {
-	/*   color: #D8DEE9;
-    margin-right: 10px;*/
+	margin: 0.5em 0.1em 0.5em 0.1em;
+	padding: 0rem 0em 0em 0em;
 }
 
 #workspaces button {
-	font-weight: bold; /* Somewhy the bar-wide setting is ignored*/
-	padding: 0.1rem 0;
-	/*color: #999;*/
-	opacity: 0.3;
 	background: none;
-	font-size: 1.2em;
+	font-weight: bold; /* Somewhy the bar-wide setting is ignored*/
+	opacity: 0.3;
+	padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
 #workspaces button.active {
 	background: @workspacesfocused;
 	color: #d8dee9;
 	opacity: 1;
-	padding: 0 0.4em;
 }
 
 #workspaces button.urgent {
@@ -190,111 +197,20 @@
 	margin-left: 40px;
 	font-weight: normal;
 }
-#bluetooth {
-	background: @nord_bg_blue;
-	font-size: 1.2em;
-	font-weight: bold;
-	padding: 0 0.6em;
-}
-#custom-gpu {
-	background: @nord_bg;
-	font-weight: bold;
-	padding: 0 0.6em;
-}
-#custom-weather {
-	background: @mode;
-	font-weight: bold;
-	padding: 0 0.6em;
-}
-#custom-pacman {
-	background: @nord_light;
-	color: @nord_dark_font;
-	font-weight: bold;
-	padding: 0 0.6em;
-}
-#custom-scratchpad-indicator {
-	background: @nord_light;
-	color: @nord_dark_font;
-	font-weight: bold;
-	padding: 0 0.6em;
-}
+
 #idle_inhibitor {
 	background: @mode;
 	/*font-size: 1.6em;*/
 	font-weight: bold;
 	padding: 0 0.6em;
 }
-#custom-alsa {
-	background: @sound;
-}
 
-#network {
-	background: @nord_bg_blue;
-}
-
-#backlight {
-	background: @nord_bg_blue;
-	color: #d8dee9;
-}
-
-#disk {
-	background: @nord_bg;
-	color: #d8dee9;
-}
-
-#cpu {
-	background: @nord_bg;
-	color: #d8dee9;
-}
 #cpu.critical {
 	color: @nord_dark_font;
 }
-#memory {
-	background: @nord_bg;
-	color: #d8dee9;
-}
-#language {
-	background: @nord_bg_blue;
-	color: #d8dee9;
-	padding: 0 0.4em;
-}
-#custom-cpugovernor {
-	background-color: @nord_light;
-	color: @nord_dark_font;
-}
-#custom-cpugovernor.perf {
-}
-#temperature {
-	background-color: @nord_bg;
-	color: #d8dee9;
-}
+
 #temperature.critical {
 	background: @critical;
-}
-#custom-layout {
-	background: @layout;
-}
-
-#battery {
-	background: @battery;
-}
-
-#clock {
-	background: @nord_bg_blue;
-	color: #d8dee9;
-}
-#clock.date {
-	background: @date;
-}
-
-#clock.time {
-	background: @mode;
-}
-
-#pulseaudio {
-	/* Unsused but kept for those who needs it */
-	background: @nord_bg_blue;
-	color: #d8dee9;
 }
 
 #pulseaudio.muted {
@@ -307,16 +223,4 @@
 
 #tray {
 	background: #434c5e;
-}
-
-#custom-powermenu {
-	background-color: #5e81ac;
-}
-
-#custom-media {
-	background: @nord_bg;
-}
-
-#custom-media.paused {
-	color: #2e3440;
 }
