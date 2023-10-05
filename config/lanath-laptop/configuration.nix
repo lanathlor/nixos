@@ -53,6 +53,8 @@ in
     isNormalUser = true;
     description = "lanath";
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" "nordvpn" ];
+    initialHashedPassword = "$y$j9T$TFdhvKQ4clM.JxX1ScPkq1$tOxZv2DOIBWF/uhoyfCbzIkCYZuwa9BfEPNI4wmzqN3";
+    openssh.authorizedKeys.keyFiles = [ ./id_rsa.pub ];
     packages = with pkgs; [
     ];
   };
@@ -69,10 +71,8 @@ in
     chromium
 
     # utils
-    dmenu
-    swaylock
-    swww
     bluez
+    light
 
     docker-compose
 
@@ -120,6 +120,15 @@ in
 
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
+
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+  };
+
+  services.blueman.enable = true;
+
+  hardware.bluetooth.enable = true;
 
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";

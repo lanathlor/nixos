@@ -28,100 +28,194 @@
 	nord14: #a3be8c;
 	nord15: #b48ead;
 
-    foreground:  @nord9;
-    backlight:   #ccffeedd;
-    background-color:  transparent;
+    foreground:         @nord4;
+    backlight:          #ccffeedd;
+    background-color:   transparent;
+    background:         #3b4252a0;
+    urgent:             @nord11;
+    selected:           @nord3;
+    active:             @nord3;
 
     highlight:     underline bold #eceff4;
 
     transparent: rgba(46,52,64,0);
 }
 
+/*****----- Main Window -----*****/
 window {
-    location: center;
-    anchor:   center;
-    transparency: "screenshot";
-    padding: 10px;
-    border:  0px;
-    border-radius: 6px;
+    /* properties for window widget */
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       900px;
+    x-offset:                    0px;
+    y-offset:                    0px;
 
-    background-color: @transparent;
-    spacing: 0;
-    children:  [mainbox];
-    orientation: horizontal;
+    /* properties for all widgets */
+    enabled:                     true;
+    border-radius:               24px;
+    cursor:                      "default";
+    background-color:            @background;
 }
 
+/*****----- Main Box -----*****/
 mainbox {
-    spacing: 0;
-    children: [ inputbar, message, listview ];
+    enabled:                     true;
+    spacing:                     0px;
+    background-color:            transparent;
+    orientation:                 horizontal;
+    children:                    [ "imagebox", "listbox" ];
 }
 
-message {
-    color: @nord0;
-    padding: 5;
-    border-color: @foreground;
-    border:  0px 2px 2px 2px;
-    background-color: @nord7;
+imagebox {
+    padding:                     30px;
+    background-color:            transparent;
+    background-image:            url("~/.wallpapers/wallpaper.png", height);
+    orientation:                 vertical;
+    children:                    [ "inputbar", "dummy", "mode-switcher" ];
 }
 
+listbox {
+    spacing:                     20px;
+    padding:                     20px;
+    background-color:            transparent;
+    orientation:                 vertical;
+    children:                    [ "message", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
 inputbar {
-    color: @nord6;
-    padding: 11px;
-    background-color: #3b4252;
-
-    border: 1px;
-    border-radius:  6px 6px 0px 0px;
-    border-color: @nord10;
+    enabled:                     true;
+    spacing:                     10px;
+    padding:                     15px;
+    border-radius:               24px;
+    background-color:            @nord0;
+    text-color:                  @foreground;
+    children:                    [ "textbox-prompt-colon", "entry" ];
 }
 
-entry, prompt, case-indicator {
-    text-font: inherit;
-    text-color:inherit;
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         " ";
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+entry {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 "Search";
+    placeholder-color:           inherit;
 }
 
-prompt {
-    margin: 0px 1em 0em 0em ;
-}
 
+/*****----- Listview -----*****/
 listview {
-    padding: 8px;
-    border-radius: 0px 0px 6px 6px;
-    border-color: @nord10;
-    border: 0px 1px 1px 1px;
-    background-color: rgba(46,52,64,0.9);
-    dynamic: false;
+    enabled:                     true;
+    columns:                     2;
+    lines:                       8;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+
+    spacing:                     10px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      "default";
 }
 
-element {
-    padding: 3px;
-    vertical-align: 0.5;
-    border-radius: 4px;
-    background-color: transparent;
-    color: @foreground;
-    text-color: rgb(216, 222, 233);
-}
 
-element selected.normal {
-	background-color: @nord7;
-	text-color: #2e3440;
-}
-
-element-text, element-icon {
-    background-color: inherit;
-    text-color:       inherit;
+/*****----- Mode Switcher -----*****/
+mode-switcher {
+    enabled:                     true;
+    spacing:                     20px;
+    background-color:            transparent;
+    text-color:                  @foreground;
 }
 
 button {
-    padding: 6px;
-    color: @foreground;
-    horizontal-align: 0.5;
-
-    border: 2px 0px 2px 2px;
-    border-radius: 4px 0px 0px 4px;
-    border-color: @foreground;
+    padding:                     15px;
+    border-radius:               24px;
+    background-color:            @background;
+    text-color:                  inherit;
+    cursor:                      pointer;
+}
+button selected {
+    background-color:            @nord2;
+    text-color:                  @foreground;
 }
 
-button selected normal {
-    border: 2px 0px 2px 2px;
-    border-color: @foreground;
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    spacing:                     15px;
+    padding:                     8px;
+    border-radius:               24px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      pointer;
+}
+element normal.normal {
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+element normal.urgent {
+    background-color:            @urgent;
+    text-color:                  @foreground;
+}
+element normal.active {
+    background-color:            @active;
+    text-color:                  @foreground;
+}
+element selected.normal {
+    background-color:            @selected;
+    text-color:                  @foreground;
+}
+element selected.urgent {
+    background-color:            @urgent;
+    text-color:                  @foreground;
+}
+element selected.active {
+    background-color:            @urgent;
+    text-color:                  @foreground;
+}
+element-icon {
+    background-color:            transparent;
+    text-color:                  inherit;
+    size:                        32px;
+    cursor:                      inherit;
+}
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+
+/*****----- Message -----*****/
+message {
+    background-color:            transparent;
+}
+textbox {
+    padding:                     15px;
+    border-radius:               24px;
+    background-color:            @nord0;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+error-message {
+    padding:                     16px;
+    border-radius:               24px;
+    background-color:            @background;
+    text-color:                  @foreground;
 }

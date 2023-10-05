@@ -2,7 +2,7 @@
 
 monitor=eDP-1,1920x1080@144,0x0,1
 env = XCURSOR_SIZE,24
-exec=swww init && swww img ${./nord1.png}
+exec=swww init && swww img ${./nord-city.jpeg}
 
 input {
     kb_layout = us
@@ -21,8 +21,6 @@ input {
 }
 
 general {
-    # See https://wiki.hyprland.org/Configuring/Variables/ for more
-
     gaps_in = 5
     gaps_out = 20
     border_size = 2
@@ -36,65 +34,107 @@ general {
 }
 
 decoration {
-    # See https://wiki.hyprland.org/Configuring/Variables/ for more
-
     rounding = 10
-
-    inactive_opacity = 0.9
-
+    blurls = lockscreen
+    drop_shadow = no
+    shadow_range = 125
+    shadow_render_power = 4
+    col.shadow = 0x44000000
+    col.shadow_inactive=0x33000000
     blur = yes
-    blur_size = 3
-    blur_passes = 1
+    blur_size = 4
+    blur_passes = 4
     blur_new_optimizations = on
-
-    drop_shadow = yes
-    shadow_range = 4
-    col.shadow = rgba(4c566aee)
-    col.shadow_inactive = rgba(81a1c1ee)
+    blur_ignore_opacity = true
+    # blur_brightness = 1.1
 }
 
 animations {
     enabled = yes
+    bezier = myBezier,0.05,0.9,0.1,1.0
+    bezier = newBezier, 0.68, -0.6, 0.34, 1.4
+    bezier = secondBezier, 0.0, -1, 0.1, 2.0
+    bezier = overshot, 0.05, 0.9, 0.1, 1.05
+    bezier = md3_standard, 0.2, 0, 0, 1
+    bezier = md3_decel, 0.05, 0.7, 0.1, 1
+    bezier = md3_accel, 0.3, 0, 0.8, 0.15
+    bezier = overshot, 0.05, 0.9, 0.1, 1.1
+    bezier = crazyshot, 0.1, 1.6, 0.76, 0.92
+    bezier = hyprnostretch, 0.05, 0.9, 0.1, 1.0
+    bezier = fluent_decel, 0.1, 1, 0, 1
+    bezier = borderCurve,  0.51, 0.54, 0.38, 0.41
 
-    # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
-
-    bezier = myBezier, 0.05, 0.9, 0.1, 1.05
-
-    animation = windows, 1, 7, myBezier
-    animation = windowsOut, 1, 7, default, popin 80%
-    animation = border, 1, 10, default
-    animation = borderangle, 1, 8, default
-    animation = fade, 1, 7, default
-    animation = workspaces, 1, 6, default
+    animation = windows, 1, 8, crazyshot, slide
+    # animation = borderangle, 1, 40, borderCurve, loop
+    animation = workspaces, 1, 8, crazyshot
 }
 
 dwindle {
-    # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
     pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
     preserve_split = yes # you probably want this
 }
 
 master {
-    # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
     new_is_master = true
 }
 
 gestures {
-    # See https://wiki.hyprland.org/Configuring/Variables/ for more
-    workspace_swipe = off
+    workspace_swipe = on
+    workspace_swipe_fingers = 3;
+    workspace_swipe_min_speed_to_force = 30;
 }
 
-# Example per-device config
-# See https://wiki.hyprland.org/Configuring/Keywords/#executing for more
 device:epic-mouse-v1 {
     sensitivity = -0.5
 }
 
-# Example windowrule v1
-# windowrule = float, ^(kitty)$
-# Example windowrule v2
-# windowrulev2 = float,class:^(kitty)$,title:^(kitty)$
-# See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
+
+
+windowrule = float,^(pavucontrol)$
+windowrule = dimaround,^(pavucontrol)$
+windowrule = float,^(spotify)$
+windowrule = float,^(nm-connection-editor)$
+windowrule = dimaround,^(pavucontrol)$
+windowrule = float,^(eog)$
+windowrule = float,^(org.gnome.Calculator)$
+windowrule = float,^(org.gnome.Nautilus)$
+windowrule = float,^(org.gnome.clocks)$
+windowrule = float,^(discord)$
+windowrule = float,^(virtualbox)$
+
+# I dont know whether these are supposed to help or not
+windowrule=float,title:^(Open File)(.*)$
+windowrule=float,title:^(Select a File)(.*)$
+windowrule=float,title:^(Choose wallpaper)(.*)$
+windowrule=float,title:^(Open Folder)(.*)$
+windowrule=float,title:^(Save As)(.*)$
+windowrule=float,title:^(Library)(.*)$
+windowrule=float,title:^(Home)(.*)$
+
+# Opacity Rules
+windowrulev2 = float,class:^(.*blueman-manager.*)$
+windowrulev2 = dimaround,class:^(.*blueman-manager.*)$
+windowrulev2 = opacity 0.7 0.7,class:^(Wofi|Rofi)$
+windowrulev2 = float, class:^(.*[W|R|w|r]ofi.*)$
+windowrulev2 = dimaround, class:^(.*[W|R|w|r]ofi.*)$
+windowrulev2 = opacity 0.8 0.8, class:^(kitty)$
+windowrulev2 = center,class:^(discord)$
+windowrulev2 = center,class:^(org.gnome.Nautilus)$
+windowrulev2 = center,class:^(org.gnome.Calculator)$
+
+# layerrules for better blurs
+layerrule = blur, gtk-layer-shell
+layerrule = blur, swaync-control-center
+# layerrule = ignorealpha 0.4, swaync-control-center
+layerrule = blur, waybar
+# layerrule = ignorealpha 0.4, waybar
+layerrule = blur, rofi
+# layerrule = ignorealpha 0.4, rofi
+layerrule = blur, swaync-notification-window
+# layerrule = ignorealpha 0.4, swaync-notification-window
+
+
+
 
 
 # See https://wiki.hyprland.org/Configuring/Keywords/ for more
@@ -106,13 +146,16 @@ bind = $mainMod, Return, exec, kitty
 bind = $mainMod, A, killactive,
 bind = $mainMod, F, fullscreen,
 bind = $mainMod, M, exit,
-bind = $mainMod, E, exec, rofi -show filebrowser
+bind = $mainMod, Space, exec, rofi -show drun -modi ssh,calc,filebrowser -show-icons
+bind = $mainMod, E, exec, rofi -show filebrowser -modi ssh,calc,filebrowser
+bind = $mainMod, C, exec, rofi -show calc -modi ssh,calc,filebrowser,
+bind = $mainMod, S, exec, rofi -show ssh -modi ssh,calc,filebrowser,
+bind = $mainMod, B, exec, rofi-bluetooth,
 bind = $mainMod, V, togglefloating,
-bind = $mainMod, Space, exec, wofi --show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
-bind = $mainMod, e, togglegroup
-bind = $mainMod, l, exec, swaylock -eFk -c 2e3440 --bs-hl-color b48eadff --caps-lock-bs-hl-color d08770ff --caps-lock-key-hl-color ebcb8bff --indicator-radius 100 --indicator-thickness 10 --inside-color 2e3440ff --inside-clear-color 81a1c1ff --inside-ver-color 5e81acff --inside-wrong-color bf616aff --key-hl-color a3be8cff --layout-bg-color 2e3440ff -r --ring-color 3b4252ff --ring-clear-color 88c0d0ff --ring-ver-color 81a1c1ff --ring-wrong-color d08770ff --separator-color 3b4252ff --text-color eceff4ff --text-clear-color 3b4252ff --text-ver-color 3b4252ff --text-wrong-color 3b4252ff
+bind = $mainMod, g, togglegroup
+bind = $mainMod, l, exec, swaylock
 
 
 # Move focus with mainMod + arrow keys
@@ -152,9 +195,13 @@ ${builtins.concatStringsSep "\n" (builtins.genList (
 bind = $mainMod, mouse_down, workspace, e+1
 bind = $mainMod, mouse_up, workspace, e-1
 
+bind = ALT, Tab, cyclenext
+bind = ALT, Tab, bringactivetotop,
+
 # Move/resize windows with mainMod + LMB/RMB and dragging
 bindm = $mainMod, mouse:272, movewindow
 bindm = $mainMod, mouse:273, resizewindow
 
 exec-once = waybar
+exec-once = nm-applet --indicator
 ''

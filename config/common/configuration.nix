@@ -106,7 +106,6 @@ in
     lshw
     xorg.xhost
     libva-utils
-    networkmanagerapplet
     acpi
     fd
     sptk
@@ -114,6 +113,10 @@ in
     jq
     ripgrep
     yq
+    killall
+    pulseaudio
+    lm_sensors
+    s-tui
   ];
 
   fonts.fonts = with pkgs; [
@@ -125,6 +128,8 @@ in
     fira-code-symbols
     mplus-outline-fonts.githubRelease
     dina-font
+    font-awesome
+    font-awesome_5
     proggyfonts
   ];
 
