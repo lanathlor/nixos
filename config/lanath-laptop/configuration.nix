@@ -82,17 +82,12 @@ in
     libsForQt5.qt5.qtgraphicaleffects
 
     # gui
-    keepassxc
-    discord
-    baobab
-    gparted
     thunderbird
     pavucontrol
     qbittorrent
   ];
 
   fonts.fonts = with pkgs; [
-    nerdfonts
   ];
 
 
