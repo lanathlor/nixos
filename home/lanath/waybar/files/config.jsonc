@@ -67,7 +67,7 @@
 		"position": "bottom",
 		"modules-left": ["custom/powermenu", "custom/weather"],
 		"modules-center": ["hyprland/workspaces"],
-		"modules-right": ["battery", "pulseaudio", "backlight", "network", "tray"],
+		"modules-right": ["battery", "pulseaudio", "backlight", "bluetooth", "network", "tray"],
 		"hyprland/workspaces": {
 			"disable-scroll": true,
 			"all-outputs": false,
@@ -89,7 +89,7 @@
 			}
 		},
 		"tray": {
-			"icon-size": 9,
+			"icon-size": 10,
 			"spacing": 4
 		},
 		"pulseaudio": {
@@ -138,6 +138,17 @@
 			"family": "ipv4",
 			"tooltip-format-wifi": "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\n {bandwidthDownBits}  {bandwidthUpBits}",
 			"tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n {bandwidthDownBits}  {bandwidthUpBits}"
+		},
+		"bluetooth": {
+			"interval": 30,
+			"format": "{icon}",
+			"format-connected-battery": "{icon} {status}: {device_alias} |  {device_battery_percentage}",
+			"format-connected": "{icon} {status}: {device_alias}",
+			"format-icons": {
+				"enabled": "",
+				"disabled": ""
+			},
+			"on-click": "blueman-manager"
 		},
 		"custom/weather": {
 			"exec": "$HOME/.config/waybar/custom_modules/weather.sh",

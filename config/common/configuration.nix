@@ -117,6 +117,7 @@ in
     pulseaudio
     lm_sensors
     s-tui
+    dig
   ];
 
   fonts.fonts = with pkgs; [

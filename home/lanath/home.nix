@@ -32,6 +32,10 @@ in
       dmenu
       playerctl
       networkmanagerapplet
+      discord
+      baobab
+      keepassxc
+      gparted
     ];
 
     programs.fish = {
@@ -43,7 +47,7 @@ in
       theme = "Nord";
       keybindings = {
         "ctrl+c" = "copy_or_interrupt";
-        "ctrl+v" = "paste";
+        "ctrl+v" = "paste_from_clipboard";
         "ctrl+f>2" = "set_font_size 20";
       };
       settings = {
