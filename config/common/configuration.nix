@@ -39,6 +39,7 @@ in
     };
     firewall.checkReversePath = false;
     firewall.enable = false;
+    useDHCP = false;
     nameservers = [ "1.1.1.1" "8.8.8.8" ];
   };
 
@@ -75,6 +76,8 @@ in
       pulse.enable = true;
     };
   };
+
+  services.mullvad-vpn.enable = true;
 
   fonts.fontDir.enable = true;
 
