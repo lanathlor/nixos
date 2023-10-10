@@ -63,8 +63,6 @@ in
 
     nordic
 
-    wgnord
-
     # browsers
     firefox-wayland
     google-chrome
