@@ -1,5 +1,8 @@
 
-lanath:
+env:
+	sudo nixos-rebuild switch -I "nixos-config=config/$(NIX_CONFIG_USER)/configuration.nix"
+
+lanath-laptop:
 	sudo nixos-rebuild switch -I nixos-config=config/lanath-laptop/configuration.nix
 
 garbage:

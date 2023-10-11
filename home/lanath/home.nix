@@ -5,6 +5,12 @@ let
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
+
+  flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
+  hyprland = (import flake-compat {
+    src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
+  }).defaultNix;
+
 in
 {
   imports =
@@ -14,6 +20,10 @@ in
     ];
 
  home-manager.users.lanath = { pkgs, ... }: {
+    imports = [
+      hyprland.homeManagerModules.default
+    ];
+
     home.stateVersion = "23.05";
 
     nixpkgs = {
@@ -36,7 +46,15 @@ in
       baobab
       keepassxc
       gparted
+      grim
+      slurp
+      wl-clipboard
     ];
+
+    wayland.windowManager.hyprland = {
+      enable = true;
+      extraConfig = import ./hypr.nix;
+    };
 
     programs.fish = {
       enable = true;
@@ -165,12 +183,43 @@ in
       enable = true;
     };
 
+    services.swayidle = {
+      enable = true;
+      systemdTarget = "graphical-session.target";
+      events = [
+        { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock"; }
+        { event = "lock"; command = "${pkgs.swaylock}/bin/swaylock -f"; }
+      ];
+      timeouts = [
+        {
+          timeout = 300;
+          command = "${pkgs.swaylock}/bin/swaylock -f";
+          resumeCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+        }
+        {
+          timeout = 330;
+          command = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
+          resumeCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+        }
+        {
+          timeout = 600;
+          command = "${pkgs.systemd}/bin/systemctl suspend";
+        }
+      ];
+    };
+
     services.playerctld = {
       enable = true;
     };
 
     services.mpd = {
       enable = true;
+    };
+
+    services.gpg-agent = {
+      enable = true;
+      defaultCacheTtl = 1800;
+      enableSshSupport = true;
     };
 
     xdg.userDirs.enable = true;
@@ -185,12 +234,6 @@ in
         name = "Papirus-Dark";
         package = pkgs.papirus-icon-theme;
       };
-    };
-
-    services.gpg-agent = {
-      enable = true;
-      defaultCacheTtl = 1800;
-      enableSshSupport = true;
     };
 
     xdg.mimeApps = {
@@ -223,10 +266,6 @@ in
         "x-scheme-handler/spotify" = ["spotify.desktop"];
         "x-scheme-handler/steam" = ["steam.desktop"];
       };
-    };
-
-    home.file.".config/hypr/hyprland.conf" = {
-      text = import ./hypr.nix;
     };
 
     home.file.".wallpapers/wallpaper.png" = {
