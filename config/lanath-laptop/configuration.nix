@@ -33,6 +33,7 @@ in
   };
 
 
+  environment.sessionVariables.NIX_CONFIG_USER = "lanath-laptop";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
   # environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
@@ -45,9 +46,30 @@ in
     autoNumlock = true;
   };
 
+  programs.hyprland.enable = true;
+
   services.gnome.gnome-keyring.enable = true;
   programs.ssh.startAgent = true;
+  security.pam.services.sddm.enableKwallet = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
+  security.pam.services.login.enableKwallet = true;
+  security.polkit.enable = true;
+
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+    };
+  };
 
   users.users.lanath = {
     isNormalUser = true;
@@ -59,48 +81,15 @@ in
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-
-    nordic
-
-    # browsers
-    firefox-wayland
-    google-chrome
-    chromium
-
-    # utils
-    bluez
-    light
-
-    docker-compose
-
-    # sddm modules
-    libsForQt5.plasma-framework
-    libsForQt5.plasma-workspace
-    libsForQt5.qt5.qtgraphicaleffects
-
-    # gui
-    thunderbird
-    pavucontrol
-    qbittorrent
-  ];
-
-  fonts.fonts = with pkgs; [
-  ];
 
 
-  programs.sway.enable = true;
+
   security.pam.services.swaylock = {};
-
-
-  programs.hyprland.enable = true;
 
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
-      xdg-desktop-portal-kde
     ];
   };
 
@@ -123,19 +112,34 @@ in
 
   hardware.bluetooth.enable = true;
 
-  systemd.user.services.polkit-gnome-authentication-agent-1 = {
-    description = "polkit-gnome-authentication-agent-1";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      Restart = "on-failure";
-      RestartSec = 1;
-      TimeoutStopSec = 10;
-    };
-  };
+  environment.systemPackages = with pkgs; [
+
+    nordic
+
+    # browsers
+    firefox-wayland
+    google-chrome
+    chromium
+
+    # utils
+    bluez
+    brightnessctl
+
+    docker-compose
+
+    # sddm modules
+    libsForQt5.plasma-framework
+    libsForQt5.plasma-workspace
+    libsForQt5.qt5.qtgraphicaleffects
+
+    # gui
+    thunderbird
+    pavucontrol
+    qbittorrent
+  ];
+
+  fonts.fonts = with pkgs; [
+  ];
 
   virtualisation.docker = {
     enable = true;
@@ -153,6 +157,11 @@ in
       enable = true;
       dates = "weekly";
     };
+  };
+
+  services.pixiecore = {
+    enable = true;
+    mode = "boot";
   };
 }
 

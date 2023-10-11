@@ -12,6 +12,7 @@ in
       package = unstable.waybar;
       systemd = {
         enable = true;
+        target = "basic.target";
       };
     };
 

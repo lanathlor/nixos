@@ -26,27 +26,37 @@ general {
     border_size = 2
     col.active_border = rgba(81a1c1ee) rgba(8fbcbbee) 45deg
     col.inactive_border = rgba(4c566aee)
-    col.group_border = rgba(4c566aee)
-    col.group_border_active = rgba(81a1c1ee)
 
     layout = dwindle
     resize_on_border = yes
+}
+
+group {
+    col.border_active = rgba(81a1c1ee)
+    col.border_inactive = rgba(4c566aee)
 }
 
 decoration {
     rounding = 10
     blurls = lockscreen
     drop_shadow = no
-    shadow_range = 125
-    shadow_render_power = 4
+    shadow_range = 0
+    shadow_render_power = 0
     col.shadow = 0x44000000
     col.shadow_inactive=0x33000000
-    blur = yes
-    blur_size = 4
-    blur_passes = 4
-    blur_new_optimizations = on
-    blur_ignore_opacity = true
-    # blur_brightness = 1.1
+    blur {
+      enabled = true
+      size = 4
+      passes = 4
+      new_optimizations = on
+      ignore_opacity = true
+      brightness = 1
+    }
+}
+
+misc {
+    mouse_move_enables_dpms = true
+    key_press_enables_dpms = true
 }
 
 animations {
@@ -150,6 +160,7 @@ bind = $mainMod, Space, exec, rofi -show drun -modi ssh,calc,filebrowser -show-i
 bind = $mainMod, E, exec, rofi -show filebrowser -modi ssh,calc,filebrowser
 bind = $mainMod, C, exec, rofi -show calc -modi ssh,calc,filebrowser,
 bind = $mainMod, S, exec, rofi -show ssh -modi ssh,calc,filebrowser,
+bind = $secMod, S, exec, grim -g "$(slurp)" - | wl-copy,
 bind = $mainMod, b, exec, blueman-manager,
 bind = $mainMod, V, togglefloating,
 bind = $mainMod, P, pseudo, # dwindle
@@ -202,6 +213,5 @@ bind = ALT, Tab, bringactivetotop,
 bindm = $mainMod, mouse:272, movewindow
 bindm = $mainMod, mouse:273, resizewindow
 
-exec-once = waybar
 exec-once = nm-applet --indicator
 ''

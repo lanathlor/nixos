@@ -1,11 +1,9 @@
 { config, pkgs, lib, ... }:
 let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz";
   unstable = import
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
-  nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {};
 in
 {
   boot.loader.systemd-boot.enable = true;
@@ -77,6 +75,8 @@ in
     };
   };
 
+  systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
+
   services.mullvad-vpn.enable = true;
 
   fonts.fontDir.enable = true;
@@ -117,7 +117,6 @@ in
     ripgrep
     yq
     killall
-    pulseaudio
     lm_sensors
     s-tui
     dig
