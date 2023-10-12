@@ -19,7 +19,7 @@ in
       ./hardware-configuration.nix
       ../common/nvidia.nix
       ../common/terms.nix
-      ../../home/lanath/home.nix
+      ../../home/lanath-laptop/home.nix
       (import "${home-manager}/nixos")
       nur-no-pkgs.repos.LuisChDev.modules.nordvpn
     ];
@@ -139,6 +139,7 @@ in
   ];
 
   fonts.fonts = with pkgs; [
+    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
 
   virtualisation.docker = {
