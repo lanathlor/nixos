@@ -131,6 +131,10 @@ in
       enable = true;
       userName  = "lanath";
       userEmail = "valentin.vivier@bhc-it.com";
+      signing = {
+        signByDefault = true;
+        key = "5089810F35CD9FEBB76E1FEF6B8C16D2CDC8CA93";
+      };
     };
 
     programs.kitty = {

@@ -77,14 +77,17 @@ in
 
   programs.hyprland.enable = true;
 
-  services.xserver.enable = true;
+  programs.gnupg.agent.enable = true;
 
+  services.gnome.gnome-keyring.enable = true;
   security.rtkit.enable = true;
   security.pam.services.swaylock = {};
   security.pam.services.sddm.enableKwallet = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
   security.pam.services.login.enableKwallet = true;
   security.polkit.enable = true;
+
+  services.xserver.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -95,7 +98,6 @@ in
 
   sound.enable = true;
 
-  services.gnome.gnome-keyring.enable = true;
 
   services = {
     pipewire = {
@@ -107,8 +109,6 @@ in
   };
 
   services.mullvad-vpn.enable = true;
-
-  services.devmon.enable = true;
 
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
