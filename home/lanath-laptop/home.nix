@@ -120,8 +120,10 @@ in
         "redhat.telemetry.enabled" = false;
         "editor.fontLigatures" = true;
       };
-      extensions = [
-        pkgs.vscode-extensions.bbenoist.nix
+      extensions = with pkgs; [
+        vscode-extensions.bbenoist.nix
+        vscode-extensions.arcticicestudio.nord-visual-studio-code
+        vscode-extensions.dbaeumer.vscode-eslint
       ];
     };
 
