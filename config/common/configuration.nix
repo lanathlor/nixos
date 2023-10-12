@@ -193,9 +193,9 @@ in
 
     fontconfig = {
       defaultFonts = {
-        serif = [ "Fira-code" ];
-        sansSerif = [ "Fira-code" ];
-        monospace = [ "Fira-code" ];
+        serif = [ "FiraCode Nerd Font Mono" ];
+        sansSerif = [ "FiraCode Nerd Font Mono" ];
+        monospace = [ "FiraCode Nerd Font Mono" ];
       };
     };
   };
