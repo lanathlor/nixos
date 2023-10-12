@@ -193,7 +193,7 @@ in
   xdg.mimeApps.enable = true;
 
   home.file."Document/.keep".source = builtins.toFile "keep" "";
-  home.file."Download/.keep".source = builtins.toFile "keep" "";
+  home.file."Downloads/.keep".source = builtins.toFile "keep" "";
   home.file."Music/.keep".source = builtins.toFile "keep" "";
   home.file."Work/.keep".source = builtins.toFile "keep" "";
   home.file."Dotfiles".source = builtins.fetchGit {
