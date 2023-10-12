@@ -79,6 +79,11 @@ in
       "ctrl+v" = "paste_from_clipboard";
       "ctrl+f>2" = "set_font_size 20";
     };
+    font = {
+      package = pkgs.fira-code;
+      name = "Fira-code";
+      size = 11;
+    };
     settings = lib.mkDefault {
       enable_audio_bell = false;
       update_check_interval = 0;

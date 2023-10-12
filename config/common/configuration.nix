@@ -188,6 +188,19 @@ in
 
   fonts.fontDir.enable = true;
 
+  fonts = {
+    enableDefaultFonts = true;
+
+    fontconfig = {
+      defaultFonts = {
+        serif = [ "Fira-code" ];
+        sansSerif = [ "Fira-code" ];
+        monospace = [ "Fira-code" ];
+      };
+    };
+  };
+
+
   systemd = {
     user.services.polkit-gnome-authentication-agent-1 = {
       description = "polkit-gnome-authentication-agent-1";
