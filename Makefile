@@ -6,7 +6,7 @@ lanath-laptop:
 	sudo nixos-rebuild switch -I nixos-config=config/lanath-laptop/configuration.nix
 
 build-lanath-iso:
-	nixos-generate -f iso -c build/lanath.nix
+	nixos-generate -f iso -c config/lanath-laptop/configuration.nix
 
 update:
 	sudo nix-channel --update

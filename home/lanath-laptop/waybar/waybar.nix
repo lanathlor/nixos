@@ -162,7 +162,6 @@ in
           on-click-right = "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
         };
         backlight = {
-          device = "intel_backlight";
           format = "{icon} {percent}%";
           format-icons = ["" ""];
           on-scroll-up = "light -A 3";
@@ -189,7 +188,7 @@ in
           format-disconnected = "";
           format-alt = "{ifname}: {ipaddr}/{cidr}  {bandwidthDownBits}  {bandwidthUpBits}";
           family = "ipv4";
-          tooltip-format-wifi = "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\n {bandwidthDownBits}  {bandwidthUpBits}";
+          tooltip-format-wifi = " {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\n {bandwidthDownBits}  {bandwidthUpBits}";
           tooltip-format-ethernet = " {ifname}\nIP: {ipaddr}\n {bandwidthDownBits}  {bandwidthUpBits}";
         };
         bluetooth = {
