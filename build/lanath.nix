@@ -17,9 +17,10 @@
 
   isoImage.squashfsCompression = "gzip -Xcompression-level 1";
 
-  networking.networkmanager.enable = false;
+  # networking.networkmanager.enable = false;
+  networking.wireless.enable = false;
 
-  services.xserver.displayManager.sddm = {
+  services.xserver.displayManager = {
     autoLogin.enable = true;
     autoLogin.user = "lanath";
   };
@@ -29,7 +30,6 @@
     description = "lanath";
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
     initialPassword = "";
-    openssh.authorizedKeys.keyFiles = [ ./id_rsa.pub ];
     packages = with pkgs; [
     ];
   };
