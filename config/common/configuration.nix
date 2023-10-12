@@ -132,7 +132,6 @@ in
 
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 
-  fonts.fontDir.enable = true;
 
   environment.systemPackages = with pkgs; [
     # ide
@@ -186,6 +185,8 @@ in
     font-awesome_5
     proggyfonts
   ];
+
+  fonts.fontDir.enable = true;
 
   systemd = {
     user.services.polkit-gnome-authentication-agent-1 = {

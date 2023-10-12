@@ -40,6 +40,17 @@ in
     grim
     slurp
     wl-clipboard
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    font-awesome
+    font-awesome_5
+    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
 
   wayland.windowManager.hyprland = {
