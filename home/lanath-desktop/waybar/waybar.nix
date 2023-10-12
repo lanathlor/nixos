@@ -120,7 +120,7 @@ in
         position = "bottom";
         modules-left = ["custom/powermenu" "custom/weather"];
         modules-center = ["hyprland/workspaces"];
-        modules-right = ["battery" "pulseaudio" "backlight" "bluetooth" "network" "tray"];
+        modules-right = ["pulseaudio" "network" "tray"];
         "hyprland/workspaces" = {
           disable-scroll = true;
           all-outputs = false;
