@@ -79,7 +79,6 @@ in
   ];
 
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
 
   nixpkgs.config.permittedInsecurePackages = [

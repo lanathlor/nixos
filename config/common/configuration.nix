@@ -184,6 +184,7 @@ in
     font-awesome
     font-awesome_5
     proggyfonts
+    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
 
   fonts.fontDir.enable = true;

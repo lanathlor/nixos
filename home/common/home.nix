@@ -135,6 +135,7 @@ in
       drun-display-format = "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
       drun-show-actions = false;
     };
+    font = "FiraCode Nerd Font Mono";
     pass = {
       enable = true;
     };
