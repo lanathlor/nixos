@@ -5,7 +5,6 @@
 { config, pkgs, lib, ... }:
 
 let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz";
   unstable = import
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
@@ -20,7 +19,6 @@ in
       ../common/nvidia.nix
       ../common/terms.nix
       ../../home/lanath-laptop/home.nix
-      (import "${home-manager}/nixos")
       nur-no-pkgs.repos.LuisChDev.modules.nordvpn
     ];
 
