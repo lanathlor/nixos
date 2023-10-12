@@ -81,7 +81,7 @@ in
     };
     font = {
       package = pkgs.fira-code;
-      name = "Fira-code";
+      name = "FiraCode Nerd Font Mono";
       size = 11;
     };
     settings = lib.mkDefault {
