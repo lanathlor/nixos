@@ -1,8 +1,7 @@
 ''
-
 monitor=eDP-1,1920x1080@144,0x0,1
 env = XCURSOR_SIZE,24
-exec=swww init && swww img ${./nord-city.jpeg}
+exec-once = swww init && swww img ${./nord-city.jpeg}
 
 input {
     kb_layout = us

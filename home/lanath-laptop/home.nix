@@ -13,95 +13,30 @@ let
 
 in
 {
-  imports =
-    [
-      ./waybar/waybar.nix
-      ./dunst.nix
-    ];
 
- home-manager.users.lanath = { pkgs, ... }: {
+  home-manager.users.lanath = { pkgs, ... }: {
     imports = [
-      hyprland.homeManagerModules.default
+      ./dunst.nix
+      ./waybar/waybar.nix
+      ../common/home.nix
     ];
-
-    home.stateVersion = "23.05";
-
-    nixpkgs = {
-      config = {
-        allowUnfree = true;
-        allowUnfreePredicate = (_: true);
-      };
-    };
 
     home.packages = with pkgs; [
-      rofi-mpd
-      rofi-bluetooth
-      rofi-power-menu
-      rofi-systemd
-      swww
-      dmenu
-      playerctl
-      networkmanagerapplet
-      discord
-      baobab
-      keepassxc
-      gparted
-      grim
-      slurp
-      wl-clipboard
+        rofi-mpd
+        rofi-bluetooth
+        rofi-power-menu
+        rofi-systemd
+        discord
     ];
 
+
     wayland.windowManager.hyprland = {
-      enable = true;
       extraConfig = import ./hypr.nix;
     };
 
-    programs.fish = {
-      enable = true;
-    };
-
-    programs.kitty = {
-      enable = true;
-      theme = "Nord";
-      keybindings = {
-        "ctrl+c" = "copy_or_interrupt";
-        "ctrl+v" = "paste_from_clipboard";
-        "ctrl+f>2" = "set_font_size 20";
-      };
-      settings = {
-        enable_audio_bell = false;
-        update_check_interval = 0;
-      };
-    };
-
-    programs.starship = {
-      enable = true;
-    };
-
-    programs.neovim = {
-      enable = true;
-    };
-
-    programs.direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
-
-    programs.vscode = {
-    	enable = true;
-      package = unstable.vscode;
-    };
-
-    programs.git = {
-      enable = true;
-      userName  = "lanath";
-      userEmail = "valentin.vivier@bhc-it.com";
-    };
-
-
     programs.swaylock = {
       enable = true;
-      settings = {
+      settings = lib.mkDefault {
         ignore-empty-password = true;
         show-failed-attempt = true;
         show-keyboard-layout = true;
@@ -130,99 +65,25 @@ in
       };
     };
 
-    programs.btop = {
+    programs.vscode = {
       enable = true;
-      settings = {
-        color_theme = "TTY";
-        theme_background = false;
-        truecolor = true;
-      };
+      package = unstable.vscode;
     };
 
-    programs.wofi = {
+    programs.git = {
       enable = true;
+      userName  = "lanath";
+      userEmail = "valentin.vivier@bhc-it.com";
     };
 
     programs.rofi = {
-      enable = true;
       theme = ./nord.rasi;
       package = pkgs.rofi-wayland.override { plugins = with pkgs; [ rofi-power-menu rofi-mpd rofi-bluetooth ]; };
-      terminal = "${pkgs.kitty}/bin/kitty";
-      plugins = with pkgs; [
-
+      plugins = with pkgs; lib.mkDefault [
         rofi-calc
         rofi-emoji
-
-
-      ];
-      extraConfig = {
-        modi = "drun,emoji,ssh,filebrowser,calc";
-        case-sensitive = false;
-        drun-categories = "";
-        drun-match-fields = "name,generic,exec,categories,keywords";
-        drun-display-format = "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
-        drun-show-actions = false;
-      };
-      pass = {
-        enable = true;
-      };
-    };
-
-    programs.mpv = {
-      enable = true;
-      config = {
-        profile = "gpu-hq";
-        force-window = true;
-        ytdl-format = "bestvideo+bestaudio";
-        cache-default = 4000000;
-      };
-      scripts = with unstable.mpvScripts; [ mpris sponsorblock mpv-playlistmanager quality-menu thumbfast ];
-    };
-
-    programs.yt-dlp = {
-      enable = true;
-    };
-
-    services.swayidle = {
-      enable = true;
-      systemdTarget = "graphical-session.target";
-      events = [
-        { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock"; }
-        { event = "lock"; command = "${pkgs.swaylock}/bin/swaylock -f"; }
-      ];
-      timeouts = [
-        {
-          timeout = 300;
-          command = "${pkgs.swaylock}/bin/swaylock -f";
-          resumeCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
-        }
-        {
-          timeout = 330;
-          command = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
-          resumeCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
-        }
-        {
-          timeout = 600;
-          command = "${pkgs.systemd}/bin/systemctl suspend";
-        }
       ];
     };
-
-    services.playerctld = {
-      enable = true;
-    };
-
-    services.mpd = {
-      enable = true;
-    };
-
-    services.gpg-agent = {
-      enable = true;
-      defaultCacheTtl = 1800;
-      enableSshSupport = true;
-    };
-
-    xdg.userDirs.enable = true;
 
     gtk = {
       enable = true;
@@ -237,7 +98,6 @@ in
     };
 
     xdg.mimeApps = {
-      enable = true;
       associations.added = {
         "text/plain" = ["code.desktop"];
       };
@@ -271,6 +131,5 @@ in
     home.file.".wallpapers/wallpaper.png" = {
       source = ./nord-city.jpeg;
     };
-
   };
 }
