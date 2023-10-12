@@ -66,8 +66,8 @@
 #waybar {
 	background: transparent;
 	color: @light;
-	font-family: 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid',
-		'Font Awesome 5 Brands Regular';
+	font-family: 'FiraCode Nerd Font Mono', 'Font Awesome 5', 'Font Awesome 5 Free Regular',
+		'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular';
 	font-size: 12px;
 	font-weight: bold;
 }
