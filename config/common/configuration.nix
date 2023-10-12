@@ -1,11 +1,16 @@
 { config, pkgs, lib, ... }:
 let
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz";
   unstable = import
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
 in
 {
+  imports = [
+    (import "${home-manager}/nixos")
+  ];
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.plymouth = {
@@ -19,6 +24,9 @@ in
       experimental-features = nix-command flakes
     '';
   };
+
+  system.autoUpgrade.enable = true;
+  system.stateVersion = "23.05";
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.packageOverrides = pkgs: rec {
@@ -98,8 +106,6 @@ in
     };
   };
 
-  systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
-
   services.mullvad-vpn.enable = true;
 
   services.devmon.enable = true;
@@ -124,9 +130,9 @@ in
     autoNumlock = true;
   };
 
-  fonts.fontDir.enable = true;
+  systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 
-  system.stateVersion = "23.05";
+  fonts.fontDir.enable = true;
 
   environment.systemPackages = with pkgs; [
     # ide

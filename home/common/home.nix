@@ -10,10 +10,12 @@ let
   hyprland = (import flake-compat {
     src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
   }).defaultNix;
+  impermanence = builtins.fetchTarball "https://github.com/nix-community/impermanence/archive/master.tar.gz";
 in
 {
   imports = [
     hyprland.homeManagerModules.default
+    "${impermanence}/home-manager.nix"
   ];
 
   home.stateVersion = "23.05";
@@ -24,6 +26,8 @@ in
       allowUnfreePredicate = (_: true);
     };
   };
+
+  programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
     swww
@@ -42,6 +46,7 @@ in
     enable = true;
     xwayland.enable = true;
   };
+
 
   programs.waybar = {
     enable = true;
@@ -188,5 +193,11 @@ in
   xdg.mimeApps.enable = true;
 
   home.file."Document/.keep".source = builtins.toFile "keep" "";
+  home.file."Download/.keep".source = builtins.toFile "keep" "";
+  home.file."Music/.keep".source = builtins.toFile "keep" "";
+  home.file."Work/.keep".source = builtins.toFile "keep" "";
+  home.file."Dotfiles".source = builtins.fetchGit {
+    url = "https://github.com/lanathlor/nixos";
+  };
 
 }
