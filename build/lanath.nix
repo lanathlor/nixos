@@ -15,6 +15,23 @@
 
   boot.supportedFilesystems = lib.mkForce [ "btrfs" "cifs" "f2fs" "jfs" "ntfs" "reiserfs" "vfat" "xfs" ];
 
+  isoImage.squashfsCompression = "gzip -Xcompression-level 1";
+
   networking.networkmanager.enable = false;
+
+  services.xserver.displayManager.sddm = {
+    autoLogin.enable = true;
+    autoLogin.user = "lanath";
+  };
+
+  users.users.lanath = lib.mkForce {
+    isNormalUser = true;
+    description = "lanath";
+    extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
+    initialPassword = "";
+    openssh.authorizedKeys.keyFiles = [ ./id_rsa.pub ];
+    packages = with pkgs; [
+    ];
+  };
 
 }
