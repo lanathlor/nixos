@@ -12,7 +12,12 @@ in
     (import "${home-manager}/nixos")
   ];
 
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub = {
+    enable = true;
+    useOSProber = true;
+    efiSupport = true;
+    devices = [ "nodev" ];
+  };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.plymouth = {
     enable = true;
