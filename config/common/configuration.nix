@@ -8,6 +8,10 @@ in
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.plymouth = {
+    enable = true;
+    themePackages = [(pkgs.adi1090x-plymouth-themes.override {selected_themes = ["hexagon_hud"];})];
+  };
 
   nix = {
     package = pkgs.nixFlakes;
@@ -23,49 +27,68 @@ in
     };
   };
 
-  security.polkit.enable = true;
-
-
   networking = {
     hostName = lib.mkDefault "nixos";
-    networkmanager = {
+    networkmanager = lib.mkDefault {
       enable = true;
       plugins = with pkgs; [
         networkmanager-openvpn
         networkmanager-openconnect
       ];
     };
-    firewall.checkReversePath = false;
-    firewall.enable = false;
-    useDHCP = false;
-    nameservers = [ "1.1.1.1" "8.8.8.8" ];
+    firewall.checkReversePath = lib.mkDefault false;
+    firewall.enable = lib.mkDefault false;
+    useDHCP = lib.mkDefault false;
+    nameservers = lib.mkDefault [ "1.1.1.1" "8.8.8.8" ];
   };
 
-    time.timeZone = "Europe/Paris";
+  time.timeZone = lib.mkDefault "Europe/Paris";
 
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_GB.UTF-8";
-    LC_IDENTIFICATION = "en_GB.UTF-8";
-    LC_MEASUREMENT = "en_GB.UTF-8";
-    LC_MONETARY = "en_GB.UTF-8";
-    LC_NAME = "en_GB.UTF-8";
-    LC_NUMERIC = "en_GB.UTF-8";
-    LC_PAPER = "en_GB.UTF-8";
-    LC_TELEPHONE = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
+    LC_ADDRESS = lib.mkDefault "en_GB.UTF-8";
+    LC_IDENTIFICATION = lib.mkDefault "en_GB.UTF-8";
+    LC_MEASUREMENT = lib.mkDefault "en_GB.UTF-8";
+    LC_MONETARY = lib.mkDefault "en_GB.UTF-8";
+    LC_NAME = lib.mkDefault "en_GB.UTF-8";
+    LC_NUMERIC = lib.mkDefault "en_GB.UTF-8";
+    LC_PAPER = lib.mkDefault "en_GB.UTF-8";
+    LC_TELEPHONE = lib.mkDefault "en_GB.UTF-8";
+    LC_TIME = lib.mkDefault "en_GB.UTF-8";
   };
 
-  services.xserver = {
-    layout = lib.mkDefault "us";
-    xkbVariant = "";
-  };
+  programs.thunar.enable = true;
+
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-volman
+  ];
+
+  programs.ssh.startAgent = true;
+
+  programs.hyprland.enable = true;
 
   services.xserver.enable = true;
 
-  sound.enable = true;
   security.rtkit.enable = true;
+  security.pam.services.swaylock = {};
+  security.pam.services.sddm.enableKwallet = true;
+  security.pam.services.sddm.enableGnomeKeyring = true;
+  security.pam.services.login.enableKwallet = true;
+  security.polkit.enable = true;
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+    ];
+  };
+
+  sound.enable = true;
+
+  services.gnome.gnome-keyring.enable = true;
+
   services = {
     pipewire = {
       enable = true;
@@ -78,6 +101,28 @@ in
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 
   services.mullvad-vpn.enable = true;
+
+  services.devmon.enable = true;
+
+  services.gvfs.enable = true; # Mount, trash, and other functionalities
+  services.tumbler.enable = true; # Thumbnail support for images
+
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+  };
+
+  services.blueman.enable = true;
+
+  services.xserver = {
+    layout = lib.mkDefault "us";
+    xkbVariant = "";
+  };
+
+  services.xserver.displayManager.sddm = {
+    enable = true;
+    autoNumlock = true;
+  };
 
   fonts.fontDir.enable = true;
 
@@ -135,5 +180,39 @@ in
     font-awesome_5
     proggyfonts
   ];
+
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+    };
+  };
+
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      dns = [
+        "8.8.8.8"
+        "8.8.4.4"
+      ];
+    };
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+    };
+  };
 
 }

@@ -5,6 +5,12 @@ env:
 lanath-laptop:
 	sudo nixos-rebuild switch -I nixos-config=config/lanath-laptop/configuration.nix
 
+build-lanath-iso:
+	NIXPKGS_ALLOW_BROKEN=1 nix-build '<nixpkgs/nixos>' -A config.system.build.isoImage -I nixos-config=build/lanath.nix
+
+update:
+	sudo nix-channel --update
+
 garbage:
 	sudo nix-collect-garbage
 

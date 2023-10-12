@@ -76,6 +76,10 @@ in
       userEmail = "valentin.vivier@bhc-it.com";
     };
 
+    programs.kitty = {
+      theme = lib.mkDefault "Nord";
+    };
+
     programs.rofi = {
       theme = ./nord.rasi;
       package = pkgs.rofi-wayland.override { plugins = with pkgs; [ rofi-power-menu rofi-mpd rofi-bluetooth ]; };
