@@ -113,7 +113,7 @@ in
         };
         "settingsSync.ignoredExtensions" = [];
         "workbench.colorTheme" = "Nord";
-        "editor.fontFamily" = "'FiraCode Nerd Font Mono', CaskaydiaCoveNerdFont, 'Droid Sans Mono', 'monospace', monospace";
+        "editor.fontFamily" = "'FiraCode Nerd Font Mono', 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular', 'FiraCode Nerd Font Mono', CaskaydiaCoveNerdFont, 'Droid Sans Mono', 'monospace', monospace";
         "[helm]" = {
           "editor.formatOnSave" = false;
         };

@@ -80,8 +80,8 @@ in
       "ctrl+f>2" = "set_font_size 20";
     };
     font = {
-      package = pkgs.fira-code;
-      name = "FiraCode Nerd Font Mono";
+      package = pkgs.noto-fonts;
+      name = "Noto Sans Mono";
       size = 11;
     };
     settings = lib.mkDefault {
@@ -135,7 +135,7 @@ in
       drun-display-format = "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
       drun-show-actions = false;
     };
-    font = "FiraCode Nerd Font Mono";
+    font = "Noto Sans Mono";
     pass = {
       enable = true;
     };
