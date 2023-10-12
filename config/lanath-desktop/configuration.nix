@@ -16,7 +16,6 @@ in
     [ # Include the results of the hardware scan.
       ../common/configuration.nix
       ./hardware-configuration.nix
-
       ../common/terms.nix
       ../../home/lanath-desktop/home.nix
       nur-no-pkgs.repos.LuisChDev.modules.nordvpn
