@@ -10,7 +10,6 @@ let
   hyprland = (import flake-compat {
     src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
   }).defaultNix;
-
 in
 {
   imports = [
@@ -59,7 +58,6 @@ in
 
   programs.kitty = {
     enable = true;
-    theme = lib.mkDefault "Nord";
     keybindings = lib.mkDefault {
       "ctrl+c" = "copy_or_interrupt";
       "ctrl+v" = "paste_from_clipboard";
@@ -188,5 +186,7 @@ in
   fonts.fontconfig.enable = true;
 
   xdg.mimeApps.enable = true;
+
+  home.file."Document/.keep".source = builtins.toFile "keep" "";
 
 }
