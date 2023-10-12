@@ -47,7 +47,7 @@ decoration {
     col.shadow_inactive=0x33000000
     blur {
       enabled = true
-      size = 4
+      size = 2
       passes = 4
       new_optimizations = on
       ignore_opacity = true
@@ -101,6 +101,13 @@ device:epic-mouse-v1 {
 
 
 
+workspace=1, monitor:HDMI-A-2
+workspace=2, monitor:DP-1
+workspace=3, monitor:DP-2
+
+
+
+
 windowrule = float,^(pavucontrol)$
 windowrule = dimaround,^(pavucontrol)$
 windowrule = float,^(spotify)$
@@ -137,8 +144,6 @@ windowrulev2 = center,class:^(org.gnome.Calculator)$
 layerrule = blur, gtk-layer-shell
 layerrule = blur, swaync-control-center
 # layerrule = ignorealpha 0.4, swaync-control-center
-layerrule = blur, waybar
-# layerrule = ignorealpha 0.4, waybar
 layerrule = blur, rofi
 # layerrule = ignorealpha 0.4, rofi
 layerrule = blur, swaync-notification-window

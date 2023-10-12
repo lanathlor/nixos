@@ -171,7 +171,7 @@
 /* Workspaces stuff */
 
 #workspaces {
-	margin: 0.5em 0.1em 0.5em 0.1em;
+	margin: 0.3em 0.3em 0.3em 0.3em;
 	padding: 0rem 0em 0em 0em;
 }
 
@@ -179,7 +179,7 @@
 	background: none;
 	font-weight: bold; /* Somewhy the bar-wide setting is ignored*/
 	opacity: 0.3;
-	padding: 0.5em 0.5em 0.5em 0.5em;
+	padding: 0.3em 0.3em 0.3em 0.3em;
 }
 
 #workspaces button.active {
