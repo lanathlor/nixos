@@ -87,7 +87,7 @@ in
         };
         cpu = {
           interval = "1";
-          format = "󰍛 {max_frequency}GHz <span color=\"darkgray\">| {usage}%</span>";
+          format = " {max_frequency}GHz <span color=\"darkgray\">| {usage}%</span>";
           max-length = 13;
           min-length = 13;
           on-click = "kitty -e btop";
@@ -186,7 +186,7 @@ in
           format-wifi = " {essid}";
           format-ethernet = "{ifname}: {ipaddr}/{cidr} ";
           format-linked = "{ifname} (No IP) ";
-          format-disconnected = "";
+          format-disconnected = "";
           format-alt = "{ifname}: {ipaddr}/{cidr}  {bandwidthDownBits}  {bandwidthUpBits}";
           family = "ipv4";
           tooltip-format-wifi = "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\n {bandwidthDownBits}  {bandwidthUpBits}";
@@ -199,7 +199,7 @@ in
           format-connected = "{icon} {status}: {device_alias}";
           format-icons = {
             enabled = "";
-            disabled = "";
+            disabled = "";
           };
           on-click = "${pkgs.blueman}/bin/blueman-manager";
         };
