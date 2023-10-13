@@ -110,6 +110,14 @@ in
 
   programs.git = {
     enable = true;
+    extraConfig = {
+      core = {
+        askPass = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
+      };
+      init = {
+        defaultBranch = "main";
+      };
+    };
   };
 
   programs.swaylock = {
