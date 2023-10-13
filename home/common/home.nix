@@ -34,12 +34,14 @@ in
     dmenu
     playerctl
     networkmanagerapplet
+    xfce.orage
     baobab
     keepassxc
     gparted
     grim
     slurp
     wl-clipboard
+    cliphist
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
@@ -158,6 +160,11 @@ in
 
   services.dunst = {
     enable = true;
+  };
+
+  programs.ssh = {
+    enable = true;
+    forwardAgent = true;
   };
 
   services.swayidle = {

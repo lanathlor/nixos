@@ -18,6 +18,11 @@
     fsType = "ext4";
   };
 
+  fileSystems."/home/lanath/data" = {
+    device = "/dev/disk/by-label/data";
+    fsType = "ext4";
+  };
+
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/1C57-16D4";
     fsType = "vfat";
