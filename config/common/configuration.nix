@@ -163,6 +163,7 @@ in
     # utils
     htop
     lxqt.lxqt-openssh-askpass
+    ssh-askpass-fullscreen
 
     # maintenance
     lshw
