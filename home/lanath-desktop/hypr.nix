@@ -141,6 +141,13 @@ windowrulev2 = opacity 0.8 0.8,floating:1
 windowrulev2 = float,class:^(.*orage.*)$
 windowrulev2 = dimaround,class:^(.*orage.*)$
 windowrulev2 = opacity 0.8 0.8, class:^(.*orage.*)$
+windowrulev2 = float,class:^(.*lxqt-openssh-askpass.*)$
+windowrulev2 = dimaround,class:^(.*lxqt-openssh-askpass.*)$
+windowrulev2 = opacity 0.8 0.8, class:^(.*lxqt-openssh-askpass.*)$
+windowrulev2 = float,class:^(.*ssh-askpass-fullscreen.*)$
+windowrulev2 = dimaround,class:^(.*ssh-askpass-fullscreen.*)$
+windowrulev2 = opacity 0.8 0.8, class:^(.*ssh-askpass-fullscreen.*)$
+
 
 # layerrules for better blurs
 layerrule = blur, gtk-layer-shell
