@@ -79,7 +79,11 @@ in
     thunar-volman
   ];
 
-  programs.ssh.startAgent = true;
+  programs.ssh = {
+    startAgent = true;
+    enableAskPassword = true;
+    askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
+  };
 
   programs.hyprland.enable = true;
 
@@ -92,8 +96,6 @@ in
   security.pam.services.sddm.enableGnomeKeyring = true;
   security.pam.services.login.enableKwallet = true;
   security.polkit.enable = true;
-
-  services.xserver.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -127,13 +129,13 @@ in
   services.blueman.enable = true;
 
   services.xserver = {
+    enable = true;
     layout = lib.mkDefault "us";
     xkbVariant = "";
-  };
-
-  services.xserver.displayManager.sddm = {
-    enable = true;
-    autoNumlock = true;
+    displayManager.sddm = {
+      enable = true;
+      autoNumlock = true;
+    };
   };
 
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
@@ -160,6 +162,7 @@ in
 
     # utils
     htop
+    lxqt.lxqt-openssh-askpass
 
     # maintenance
     lshw

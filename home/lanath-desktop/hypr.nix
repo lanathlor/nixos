@@ -4,6 +4,7 @@ monitor=DP-2,1920x1080@144,1920x0,1
 monitor=DP-1,1920x1080@144,3840x0,1
 env = XCURSOR_SIZE,24
 exec-once = swww init && swww img ${./nord-city.jpeg}
+exec-once = wl-paste --watch cliphist store
 
 input {
     kb_layout = us
@@ -17,6 +18,8 @@ input {
     touchpad {
         natural_scroll = no
     }
+
+    numlock_by_default = true
 
     sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
 }
@@ -58,6 +61,8 @@ decoration {
 misc {
     mouse_move_enables_dpms = true
     key_press_enables_dpms = true
+    disable_hyprland_logo = true
+    disable_splash_rendering = true
 }
 
 animations {
@@ -71,13 +76,15 @@ animations {
     bezier = md3_accel, 0.3, 0, 0.8, 0.15
     bezier = overshot, 0.05, 0.9, 0.1, 1.1
     bezier = crazyshot, 0.1, 1.6, 0.76, 0.92
+    bezier = easeInOutQuint, 0.85, 0, 0.15, 1
+    bezier = back, 0.68, -0.6, 0.32, 1.6
     bezier = hyprnostretch, 0.05, 0.9, 0.1, 1.0
     bezier = fluent_decel, 0.1, 1, 0, 1
     bezier = borderCurve,  0.51, 0.54, 0.38, 0.41
 
-    animation = windows, 1, 8, crazyshot, slide
+    animation = windows, 1, 5, crazyshot, slide
     # animation = borderangle, 1, 40, borderCurve, loop
-    animation = workspaces, 1, 8, crazyshot
+    animation = workspaces, 1, 5, back
 }
 
 dwindle {
@@ -108,19 +115,13 @@ workspace=3, monitor:DP-2
 
 
 
-windowrule = float,^(pavucontrol)$
-windowrule = dimaround,^(pavucontrol)$
 windowrule = float,^(spotify)$
 windowrule = float,^(nm-connection-editor)$
+windowrule = float,^(pavucontrol)$
 windowrule = dimaround,^(pavucontrol)$
-windowrule = float,^(eog)$
-windowrule = float,^(org.gnome.Calculator)$
-windowrule = float,^(org.gnome.Nautilus)$
-windowrule = float,^(org.gnome.clocks)$
-windowrule = float,^(discord)$
-windowrule = float,^(virtualbox)$
+windowrule = opacity 0.7 0.7,^(pavucontrol)$
+windowrule = opacity 0.9 0.9,^(discord)$
 
-# I dont know whether these are supposed to help or not
 windowrule=float,title:^(Open File)(.*)$
 windowrule=float,title:^(Select a File)(.*)$
 windowrule=float,title:^(Choose wallpaper)(.*)$
@@ -129,25 +130,24 @@ windowrule=float,title:^(Save As)(.*)$
 windowrule=float,title:^(Library)(.*)$
 windowrule=float,title:^(Home)(.*)$
 
-# Opacity Rules
 windowrulev2 = float,class:^(.*blueman-manager.*)$
 windowrulev2 = dimaround,class:^(.*blueman-manager.*)$
-windowrulev2 = opacity 0.7 0.7,class:^(Wofi|Rofi)$
+windowrulev2 = opacity 0.7 0.7,class:^(Wofi|Rofi|rofi)$
 windowrulev2 = float, class:^(.*[W|R|w|r]ofi.*)$
 windowrulev2 = dimaround, class:^(.*[W|R|w|r]ofi.*)$
 windowrulev2 = opacity 0.8 0.8, class:^(kitty)$
 windowrulev2 = center,class:^(discord)$
-windowrulev2 = center,class:^(org.gnome.Nautilus)$
-windowrulev2 = center,class:^(org.gnome.Calculator)$
+windowrulev2 = opacity 0.8 0.8,floating:1
+windowrulev2 = float,class:^(.*orage.*)$
+windowrulev2 = dimaround,class:^(.*orage.*)$
+windowrulev2 = opacity 0.8 0.8, class:^(.*orage.*)$
 
 # layerrules for better blurs
 layerrule = blur, gtk-layer-shell
 layerrule = blur, swaync-control-center
 # layerrule = ignorealpha 0.4, swaync-control-center
 layerrule = blur, rofi
-# layerrule = ignorealpha 0.4, rofi
-layerrule = blur, swaync-notification-window
-# layerrule = ignorealpha 0.4, swaync-notification-window
+layerrule = ignorealpha 0.4, rofi
 
 
 
@@ -158,20 +158,30 @@ $mainMod = SUPER
 $secMod = SUPER_SHIFT
 
 # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-bind = $mainMod, Return, exec, kitty
+
+# Windows
 bind = $mainMod, A, killactive,
 bind = $mainMod, F, fullscreen,
-bind = $mainMod, M, exit,
-bind = $mainMod, Space, exec, rofi -show drun -modi ssh,calc,filebrowser -show-icons
-bind = $mainMod, E, exec, rofi -show filebrowser -modi ssh,calc,filebrowser
-bind = $mainMod, C, exec, rofi -show calc -modi ssh,calc,filebrowser,
-bind = $mainMod, S, exec, rofi -show ssh -modi ssh,calc,filebrowser,
-bind = $secMod, S, exec, grim -g "$(slurp)" - | wl-copy,
-bind = $mainMod, b, exec, blueman-manager,
+bind = $mainMod, delete, exit,
 bind = $mainMod, V, togglefloating,
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, g, togglegroup
+
+# rofi
+bind = $mainMod, Space, exec, rofi -show drun -modi ssh,calc,filebrowser -show-icons
+bind = $mainMod, C, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy,
+bind = $secMod, C, exec, rofi -show calc -modi ssh,calc,filebrowser,
+bind = $mainMod, S, exec, rofi -show ssh -modi ssh,calc,filebrowser,
+bind = $mainMod, backspace, exec, rofi -show p -modi p:"rofi-power-menu",
+
+# launch app
+bind = $mainMod, Return, exec, kitty
+bind = $mainMod, b, exec, blueman-manager,
+bind = $mainMod, E, exec, thunar ~
+
+# misc
+bind = $secMod, S, exec, grim -g "$(slurp)" - | wl-copy,
 bind = $mainMod, l, exec, swaylock
 
 
