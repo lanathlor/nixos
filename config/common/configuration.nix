@@ -7,6 +7,7 @@ let
     { config = config.nixpkgs.config; };
 in
 {
+
   imports = [
     (import "${home-manager}/nixos")
   ];
