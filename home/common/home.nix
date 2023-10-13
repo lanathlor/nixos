@@ -72,9 +72,9 @@ in
 
   programs.fish = {
     enable = true;
-    # shellAliases = {
-    #   ssh = "setsid ssh";
-    # };
+    shellAliases = {
+      ssh = "setsid ssh";
+    };
   };
 
   programs.kitty = {
