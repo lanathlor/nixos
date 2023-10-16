@@ -31,7 +31,6 @@ in
     '';
   };
 
-  system.autoUpgrade.enable = true;
   system.stateVersion = "23.05";
 
   nixpkgs.config.allowUnfree = true;
@@ -138,8 +137,9 @@ in
     };
   };
 
-  systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
-
+  services.resolved = {
+    enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
     # ide
@@ -181,6 +181,7 @@ in
     lm_sensors
     s-tui
     dig
+    ldm
   ];
 
   fonts.fonts = with pkgs; [
@@ -228,6 +229,9 @@ in
         };
     };
   };
+
+  systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
+
 
   virtualisation.docker = {
     enable = true;
