@@ -1,4 +1,4 @@
 { pkgs ? import <nixpkgs> {} }:
   pkgs.mkShell {
-    nativeBuildInputs = with pkgs.buildPackages; [ gnumake nixos-generators ];
+    nativeBuildInputs = with pkgs.buildPackages; [ gnumake nixos-generators git ];
 }
