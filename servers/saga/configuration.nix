@@ -3,6 +3,7 @@
 
   imports = [
     ./hardware-configuration.nix
+    ../utils/bindConfig.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -14,6 +15,10 @@
       experimental-features = nix-command flakes
     '';
   };
+
+  environment.sessionVariables.NIX_CONFIG_USER = "saga";
+  environment.sessionVariables.TERM = "xterm";
+
 
   system.stateVersion = "23.05";
 
@@ -77,9 +82,6 @@
     # maintenance
     zip
     unzip
-    lshw
-    xorg.xhost
-    libva-utils
     acpi
     fd
     sptk
@@ -94,7 +96,6 @@
     ldm
   ];
 
-  environment.sessionVariables.NIX_CONFIG_USER = "saga";
   users.users.lanath = {
     isNormalUser = true;
     description = "lanath";
@@ -103,23 +104,5 @@
     openssh.authorizedKeys.keyFiles = [ ./lanath.pub ];
     packages = with pkgs; [
     ];
-  };
-
-  virtualisation.docker = {
-    enable = true;
-    daemon.settings = {
-      dns = [
-        "8.8.8.8"
-        "8.8.4.4"
-      ];
-    };
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
-    autoPrune = {
-      enable = true;
-      dates = "weekly";
-    };
   };
 }

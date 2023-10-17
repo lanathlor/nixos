@@ -21,7 +21,6 @@ in
       nur-no-pkgs.repos.LuisChDev.modules.nordvpn
 
       # bind tests
-      ../../servers/utils/bindConfig.nix
     ];
 
   # Bootloader.
@@ -30,6 +29,7 @@ in
     theme = "hexagon_hud";
   };
 
+  nix.nixPath = [ "nixos-config=/home/lanath/my-config/config/lanath-desktop/configuration.nix" ];
   environment.sessionVariables.NIX_CONFIG_USER = "lanath-desktop";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
   # environment.sessionVariables.NIXOS_OZONE_WL = "1";
