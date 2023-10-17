@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
   ];
 
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   nix = {
@@ -20,14 +21,11 @@
 
   networking = {
     hostName = "saga";
-    networkmanager = {
-      enable = true;
-    };
-    useDHCP = true;
+    networkmanager.enable = true;
     nameservers = [ "192.168.3.1" "1.1.1.1" "8.8.8.8" ];
   };
 
-  time.timeZone = ="Europe/Paris";
+  time.timeZone = "Europe/Paris";
 
   i18n.defaultLocale = "en_US.UTF-8";
 
