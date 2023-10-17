@@ -11,6 +11,10 @@ lanath-desktop:
 build-lanath-iso:
 	nixos-generate -f iso -c config/lanath-laptop/configuration.nix
 
+
+saga:
+	nixos-rebuild --target-host lanath@192.168.3.11 --use-remote-sudo switch -I nixos-config=servers/saga/configuration.nix
+
 update:
 	sudo nix-channel --update
 
