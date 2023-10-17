@@ -15,6 +15,12 @@
       experimental-features = nix-command flakes
     '';
   };
+  nix.nixPath = [ "nixos-config=/etc/saga/servers/saga/configuration.nix" ];
+  environment.etc."saga".source = builtins.fetchGit {
+    url = "https://github.com/lanathlor/nixos";
+  };
+
+  system.autoUpgrade.enable = true;
 
   environment.sessionVariables.NIX_CONFIG_USER = "saga";
   environment.sessionVariables.TERM = "xterm";
@@ -24,10 +30,11 @@
 
   nixpkgs.config.allowUnfree = true;
 
+
   networking = {
     hostName = "saga";
     networkmanager.enable = true;
-    nameservers = [ "192.168.3.1" "1.1.1.1" "8.8.8.8" ];
+    nameservers = [ "192.168.3.11" "1.1.1.1" "8.8.8.8" ];
   };
 
   time.timeZone = "Europe/Paris";
@@ -52,10 +59,12 @@
     settings.PasswordAuthentication = false;
   };
 
+  users.mutableUsers = false;
   users.defaultUserShell = pkgs.fish;
   environment.shells = [ pkgs.fish ];
 
   programs.fish.enable = true;
+  programs.starship.enable = true;
 
   environment.systemPackages = with pkgs; [
     # ide
@@ -65,7 +74,6 @@
     fishPlugins.done
     fishPlugins.fzf-fish
     fishPlugins.forgit
-    fishPlugins.hydro
     fishPlugins.autopair
     fishPlugins.bass
     fzf
@@ -96,11 +104,20 @@
     ldm
   ];
 
+  nix.settings.trusted-users = [ "lanath" ];
   users.users.lanath = {
     isNormalUser = true;
     description = "lanath";
-    extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
+    extraGroups = [ "networkmanager" "wheel" "storage" ];
     initialHashedPassword = "$y$j9T$TFdhvKQ4clM.JxX1ScPkq1$tOxZv2DOIBWF/uhoyfCbzIkCYZuwa9BfEPNI4wmzqN3";
+    openssh.authorizedKeys.keyFiles = [ ./lanath.pub ];
+    packages = with pkgs; [
+    ];
+  };
+  users.users.saga = {
+    isNormalUser = true;
+    description = "saga";
+    extraGroups = [  ];
     openssh.authorizedKeys.keyFiles = [ ./lanath.pub ];
     packages = with pkgs; [
     ];

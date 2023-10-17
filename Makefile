@@ -1,3 +1,6 @@
+#####
+##### desk|lap top
+#####
 
 env:
 	sudo nixos-rebuild switch -I "nixos-config=config/$(NIX_CONFIG_USER)/configuration.nix"
@@ -12,8 +15,17 @@ build-lanath-iso:
 	nixos-generate -f iso -c config/lanath-laptop/configuration.nix
 
 
+#####
+##### servers
+#####
+
+# saga is dns, vpn
 saga:
-	nixos-rebuild --target-host lanath@192.168.3.11 --use-remote-sudo switch -I nixos-config=servers/saga/configuration.nix
+	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@192.168.3.11 --use-remote-sudo switch -I nixos-config=servers/saga/configuration.nix
+
+#####
+##### misc
+#####
 
 update:
 	sudo nix-channel --update
