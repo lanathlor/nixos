@@ -8,6 +8,9 @@ lanath-laptop:
 lanath-desktop:
 	sudo nixos-rebuild switch -I nixos-config=config/lanath-desktop/configuration.nix 
 
+imsike-desktop:
+	sudo nixos-rebuild switch -I nixos-config=config/imsike-desktop/configuration.nix
+
 build-lanath-iso:
 	nixos-generate -f iso -c config/lanath-laptop/configuration.nix
 
