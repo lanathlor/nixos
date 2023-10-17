@@ -1,0 +1,13 @@
+$TTL    60
+@       IN      SOA     ns.bhc-it.internal. root.bhc-it.internal. (
+                 2023012110         ; Serial
+                     60         ; Refresh
+                      86400         ; Retry
+                    2419200         ; Expire
+                     60 )       ; Negative Cache TTL
+;
+@       IN      NS      ns.bhc-it.internal.
+ns      IN      A       192.168.1.22
+server  IN      A       192.168.1.22
+www     IN      A       192.168.1.22
+@       IN      A       192.168.1.22

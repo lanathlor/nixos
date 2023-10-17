@@ -27,6 +27,7 @@ in
         rofi-power-menu
         rofi-systemd
         discord
+        unstable.dorion
     ];
 
 

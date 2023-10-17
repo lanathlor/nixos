@@ -19,6 +19,9 @@ in
       ../common/terms.nix
       ../../home/lanath-desktop/home.nix
       nur-no-pkgs.repos.LuisChDev.modules.nordvpn
+
+      # bind tests
+      ../../servers/utils/bindConfig.nix
     ];
 
   # Bootloader.
