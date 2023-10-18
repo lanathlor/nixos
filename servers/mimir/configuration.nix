@@ -15,15 +15,15 @@
     '';
   };
   # nix.nixPath = [
-  #   "nixos-config=/etc/saga/servers/saga/configuration.nix"
+  #   "nixos-config=/etc/mimir/servers/mimir/configuration.nix"
   # ];
-  environment.etc."saga".source = builtins.fetchGit {
+  environment.etc."mimir".source = builtins.fetchGit {
     url = "https://github.com/lanathlor/nixos";
   };
 
   system.autoUpgrade.enable = true;
 
-  environment.sessionVariables.NIX_CONFIG_USER = "saga";
+  environment.sessionVariables.NIX_CONFIG_USER = "mimir";
   environment.sessionVariables.TERM = "xterm";
 
 
@@ -33,7 +33,7 @@
 
 
   networking = {
-    hostName = "saga";
+    hostName = "mimir";
     networkmanager.enable = true;
     nameservers = [ "10.0.0.2" "1.1.1.1" "8.8.8.8" ];
   };
@@ -117,9 +117,9 @@
     packages = with pkgs; [
     ];
   };
-  users.users.saga = {
+  users.users.mimir = {
     isNormalUser = true;
-    description = "saga";
+    description = "mimir";
     extraGroups = [  ];
     openssh.authorizedKeys.keyFiles = [ ./lanath.pub ];
     packages = with pkgs; [
