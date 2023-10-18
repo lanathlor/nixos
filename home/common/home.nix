@@ -73,7 +73,6 @@ in
   programs.fish = {
     enable = true;
     shellAliases = {
-      ssh = "setsid ssh";
     };
   };
 

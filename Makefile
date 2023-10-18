@@ -21,7 +21,7 @@ build-lanath-iso:
 
 # saga is dns, vpn
 saga:
-	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@192.168.3.11 --use-remote-sudo switch -I nixos-config=servers/saga/configuration.nix
+	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.0.0.2 --use-remote-sudo switch -I nixos-config=servers/saga/configuration.nix
 
 #####
 ##### misc
