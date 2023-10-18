@@ -159,6 +159,15 @@ in
       };
     };
 
+    services.udiskie = {
+      enable = true;
+      automount = true;
+      notify = true;
+      tray = "auto";
+      settings = {
+        program_options = {
+          tray = true;
+        };
       };
     };
 
