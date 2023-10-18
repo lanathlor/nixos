@@ -23,6 +23,11 @@ build-lanath-iso:
 saga:
 	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.0.0.2 --use-remote-sudo switch -I nixos-config=servers/saga/configuration.nix
 
+# mimir is kube master, prom master
+mimir:
+	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.0.0.2 --use-remote-sudo switch -I nixos-config=servers/mimir/configuration.nix
+
+
 #####
 ##### misc
 #####
