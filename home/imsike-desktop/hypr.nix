@@ -181,8 +181,15 @@ bind = $mainMod, Return, exec, kitty
 bind = $mainMod, b, exec, blueman-manager,
 bind = $mainMod, E, exec, thunar ~
 
+
+# Take screenshots
+bind =      , Print, exec, grimshot --notify copy area
+# Cassés sur NiqueSauce
+# bind = ALT  , Print, exec, grimshot --notify copy window
+# bind = CTRL , Print, exec, grimshot --notify copy active
+# bind = SHIFT, Print, exec, grimshot --notify copy screen
+
 # misc
-bind = $secMod, S, exec, grim -g "$(slurp)" - | wl-copy,
 bind = $mainMod, l, exec, swaylock
 
 

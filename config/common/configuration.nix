@@ -163,6 +163,7 @@ in
     htop
     lxqt.lxqt-openssh-askpass
     ssh-askpass-fullscreen
+
     # maintenance
     zip
     unzip

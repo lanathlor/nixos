@@ -28,6 +28,7 @@ in
         rofi-systemd
         discord
         gnome.gnome-calculator
+        sway-contrib.grimshot
     ];
 
 
