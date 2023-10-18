@@ -29,6 +29,7 @@ in
         discord
         gnome.gnome-calculator
         sway-contrib.grimshot
+        react-native-debugger
         gum
     ];
 
