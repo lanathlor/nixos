@@ -3,7 +3,8 @@
 
   imports = [
     ./hardware-configuration.nix
-    ../utils/bindConfig.nix
+    ../utils/bind/bindConfig.nix
+    ../utils/wireguard/wire.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -15,7 +16,9 @@
       experimental-features = nix-command flakes
     '';
   };
-  nix.nixPath = [ "nixos-config=/etc/saga/servers/saga/configuration.nix" ];
+  # nix.nixPath = [
+  #   "nixos-config=/etc/saga/servers/saga/configuration.nix"
+  # ];
   environment.etc."saga".source = builtins.fetchGit {
     url = "https://github.com/lanathlor/nixos";
   };
@@ -34,7 +37,7 @@
   networking = {
     hostName = "saga";
     networkmanager.enable = true;
-    nameservers = [ "192.168.3.11" "1.1.1.1" "8.8.8.8" ];
+    nameservers = [ "10.0.0.2" "1.1.1.1" "8.8.8.8" ];
   };
 
   time.timeZone = "Europe/Paris";
@@ -58,6 +61,8 @@
     enable = true;
     settings.PasswordAuthentication = false;
   };
+
+  services.logind.lidSwitch = "ignore";
 
   users.mutableUsers = false;
   users.defaultUserShell = pkgs.fish;
