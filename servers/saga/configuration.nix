@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     ../utils/bind/bindConfig.nix
-    ../utils/wireguard/wire.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
