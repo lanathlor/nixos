@@ -17,7 +17,7 @@
     ];
   };
 
-  boot.initrd.kernelModules = [ "nvidia" ];
+  boot.initrd.kernelModules = [ "nvidia" "kvm-intel" "coretemp" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   boot.kernelParams = [ "loglevel=3" "quiet" "nouveau.modeset=0" "ibt=off" "vt.global_cursor_default=0" "module_blacklist=i915" "module_blacklist=amdgpu" ];
 
@@ -28,11 +28,13 @@
 
     modesetting.enable = true;
 
-    powerManagement.enable = true;
+    powerManagement.enable = false;
+
+    open = true;
 
     nvidiaSettings = true;
 
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   hardware.nvidia.prime = {
