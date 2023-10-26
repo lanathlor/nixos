@@ -30,7 +30,7 @@ in
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    swww
+    unstable.swww
     dmenu
     playerctl
     networkmanagerapplet
@@ -79,8 +79,6 @@ in
   programs.kitty = {
     enable = true;
     keybindings = lib.mkDefault {
-      "ctrl+c" = "copy_or_interrupt";
-      "ctrl+v" = "paste_from_clipboard";
       "ctrl+f>2" = "set_font_size 20";
     };
     font = {
