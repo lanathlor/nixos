@@ -24,7 +24,7 @@
 
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
-  boot.kernelParams = [ "loglevel=3" "quiet" "nouveau.modeset=0" "ibt=off" "vt.global_cursor_default=0" ];
+  boot.kernelParams = [ "loglevel=3" "quiet" "nouveau.modeset=0" "ibt=off" "vt.global_cursor_default=0" "module_blacklist=i915" ];
 
   boot.blacklistedKernelModules = [ "nouveau" "nvidiafb" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -49,5 +49,5 @@
     nvidiaBusId = "PCI:1:0:0";
   };
 
-  services.xserver.videoDrivers = [ "intel" "nvidia" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
 }
