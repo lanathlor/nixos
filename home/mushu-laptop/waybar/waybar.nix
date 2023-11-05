@@ -100,7 +100,7 @@ in
           interval = 30;
           format = " {used}<span color=\"darkgray\">/{total}Go</span>";
           path = "/";
-          on-click = "${pkgs.xfce.thunar}/bin/thunar /home/lanath";
+          on-click = "${pkgs.xfce.thunar}/bin/thunar /home/mushu";
           on-right-click = "${pkgs.baobab}/bin/baobab /";
         };
         temperature = {
