@@ -8,6 +8,9 @@ env:
 lanath-laptop:
 	sudo nixos-rebuild switch -I nixos-config=config/lanath-laptop/configuration.nix
 
+mushu-laptop:
+	sudo nixos-rebuild switch -I nixos-config=config/lanath-laptop/configuration.nix
+
 lanath-desktop:
 	sudo nixos-rebuild switch -I nixos-config=config/lanath-desktop/configuration.nix
 
