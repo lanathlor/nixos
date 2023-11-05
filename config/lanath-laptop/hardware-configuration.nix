@@ -6,10 +6,10 @@
   imports =
     [
       (modulesPath + "/installer/scan/not-detected.nix")
-      (import ../common/s3fs.nix {
-        mount = "/home/lanath/cloud/personal";
-        bucket = "testbasenfs";
-      })
+      # (import ../common/s3fs.nix {
+      #   mount = "/home/lanath/cloud/personal";
+      #   bucket = "testbasenfs";
+      # })
     ];
 
 

@@ -139,7 +139,7 @@ in
 
     programs.rofi = {
       theme = ./nord.rasi;
-      package = pkgs.rofi-wayland.override { plugins = with pkgs; [ rofi-power-menu rofi-mpd rofi-bluetooth ]; };
+      package = unstable.rofi-wayland.override { plugins = with pkgs; [ rofi-power-menu rofi-mpd rofi-bluetooth ]; };
       plugins = with pkgs; lib.mkDefault [
         rofi-calc
         rofi-emoji
