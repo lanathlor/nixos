@@ -76,6 +76,7 @@ in
   programs.thunar.plugins = with pkgs.xfce; [
     thunar-archive-plugin
     thunar-volman
+    thunar-archive-plugin
   ];
 
   programs.ssh = {

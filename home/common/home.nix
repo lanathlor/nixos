@@ -53,6 +53,7 @@ in
     font-awesome
     font-awesome_5
     (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    nomacs
   ];
 
   wayland.windowManager.hyprland = {

@@ -83,27 +83,25 @@ in
           format = " {:%H:%M   %e %b}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
           today-format = "<b>{}</b>";
-          on-click = "gnome-calendar";
+          on-click = "${pkgs.xfce.orage}/bin/orage";
         };
         cpu = {
           interval = "1";
           format = " {max_frequency}GHz <span color=\"darkgray\">| {usage}%</span>";
-          max-length = 13;
-          min-length = 13;
-          on-click = "kitty -e btop";
+          on-click = "${pkgs.kitty}/bin/kitty -e btop";
           tooltip = false;
         };
         memory = {
           format = " {used}Go<span color=\"darkgray\">/{total}Go</span>";
-          on-click = "kitty -e btop";
+          on-click = "${pkgs.kitty}/bin/kitty -e btop";
           tooltip = false;
         };
         disk = {
           interval = 30;
-          format = "{used}<span color=\"darkgray\">/{total}Go</span>";
+          format = " {used}<span color=\"darkgray\">/{total}Go</span>";
           path = "/";
-          on-click = "thunar";
-          on-right-click = "baobab";
+          on-click = "${pkgs.xfce.thunar}/bin/thunar /home/lanath";
+          on-right-click = "${pkgs.baobab}/bin/baobab /";
         };
         temperature = {
           interval = "4";
@@ -203,11 +201,12 @@ in
           on-click = "${pkgs.blueman}/bin/blueman-manager";
         };
         "custom/weather" = {
+          interval = 1800;
           exec = "${pkgs.weatherScript}/bin/weather.sh";
           format = "{}";
         };
         "custom/powermenu" = {
-          format = "";
+          format = " ";
           on-click = "${pkgs.rofi-with-power-menu}/bin/rofi-with-power-menu.sh";
         };
       };
