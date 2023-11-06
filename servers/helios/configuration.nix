@@ -3,7 +3,6 @@
 
   imports = [
     ./hardware-configuration.nix
-    ../utils/bind/bindConfig.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -16,15 +15,15 @@
     '';
   };
   # nix.nixPath = [
-  #   "nixos-config=/etc/styx/servers/styx/configuration.nix"
+  #   "nixos-config=/etc/helios/servers/helios/configuration.nix"
   # ];
-  environment.etc."styx".source = builtins.fetchGit {
+  environment.etc."helios".source = builtins.fetchGit {
     url = "https://github.com/lanathlor/nixos";
   };
 
   system.autoUpgrade.enable = true;
 
-  environment.sessionVariables.NIX_CONFIG_USER = "styx";
+  environment.sessionVariables.NIX_CONFIG_USER = "helios";
   environment.sessionVariables.TERM = "xterm";
 
 
@@ -34,7 +33,7 @@
 
 
   networking = {
-    hostName = "styx";
+    hostName = "helios";
     networkmanager.enable = true;
     nameservers = [ "10.1.0.1" "1.1.1.1" "8.8.8.8" ];
   };
@@ -118,9 +117,9 @@
     packages = with pkgs; [
     ];
   };
-  users.users.styx = {
+  users.users.helios = {
     isNormalUser = true;
-    description = "styx";
+    description = "helios";
     extraGroups = [  ];
     openssh.authorizedKeys.keyFiles = [ ./lanath.pub ];
     packages = with pkgs; [
