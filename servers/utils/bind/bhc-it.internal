@@ -7,7 +7,7 @@ $TTL    60
                      60 )       ; Negative Cache TTL
 ;
 @       IN      NS      ns.bhc-it.internal.
-ns      IN      A       192.168.1.22
-server  IN      A       192.168.1.22
-www     IN      A       192.168.1.22
-@       IN      A       192.168.1.22
+ns      IN      A       10.0.2.1
+server  IN      A       10.0.2.1
+www     IN      A       10.0.2.1
+@       IN      A       10.0.2.1
