@@ -52,8 +52,10 @@ in
     firewall.checkReversePath = lib.mkDefault false;
     firewall.enable = lib.mkDefault false;
     useDHCP = lib.mkDefault false;
-    nameservers = lib.mkDefault [ "1.1.1.1" "8.8.8.8" ];
+    # nameservers = [ "10.1.0.1" "1.1.1.1" "8.8.8.8" ];
   };
+
+  services.resolved.enable = false;
 
   time.timeZone = lib.mkDefault "Europe/Paris";
 
@@ -136,10 +138,6 @@ in
       enable = true;
       autoNumlock = true;
     };
-  };
-
-  services.resolved = {
-    enable = true;
   };
 
   environment.systemPackages = with pkgs; [
