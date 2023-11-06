@@ -31,7 +31,10 @@ mimir:
 	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.0.0.2 --use-remote-sudo switch -I nixos-config=servers/mimir/configuration.nix
 
 styx:
-	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.X.X.X --use-remote-sudo switch -I nixos-config=servers/styx/configuration.nix
+	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.1.0.1 --use-remote-sudo switch -I nixos-config=servers/styx/configuration.nix
+
+helios:
+	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.1.0.2 --use-remote-sudo switch -I nixos-config=servers/helios/configuration.nix
 
 
 #####
