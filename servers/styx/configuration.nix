@@ -6,8 +6,8 @@
     ../utils/bind/bindConfig.nix
   ];
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   nix = {
     package = pkgs.nixFlakes;
@@ -16,15 +16,15 @@
     '';
   };
   # nix.nixPath = [
-  #   "nixos-config=/etc/styx/servers/styx/configuration.nix"
+  #   "nixos-config=/etc/saga/servers/saga/configuration.nix"
   # ];
-  environment.etc."styx".source = builtins.fetchGit {
+  environment.etc."saga".source = builtins.fetchGit {
     url = "https://github.com/lanathlor/nixos";
   };
 
   system.autoUpgrade.enable = true;
 
-  environment.sessionVariables.NIX_CONFIG_USER = "styx";
+  environment.sessionVariables.NIX_CONFIG_USER = "saga";
   environment.sessionVariables.TERM = "xterm";
 
 
@@ -34,7 +34,7 @@
 
 
   networking = {
-    hostName = "styx";
+    hostName = "saga";
     networkmanager.enable = true;
     nameservers = [ "10.0.0.2" "1.1.1.1" "8.8.8.8" ];
   };
@@ -118,9 +118,9 @@
     packages = with pkgs; [
     ];
   };
-  users.users.styx = {
+  users.users.saga = {
     isNormalUser = true;
-    description = "styx";
+    description = "saga";
     extraGroups = [  ];
     openssh.authorizedKeys.keyFiles = [ ./lanath.pub ];
     packages = with pkgs; [
