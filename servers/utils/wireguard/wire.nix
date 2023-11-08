@@ -18,16 +18,16 @@
 
   networking.wireguard.interfaces = {
     wg0 = {
-      ips = [ "10.0.10.0/24" ];
+      ips = [ "10.200.0.0/24" ];
 
       listenPort = 51820;
 
       postSetup = ''
-        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o wlo1 -j MASQUERADE
+        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.200.0.0/24 -o wlo1 -j MASQUERADE
       '';
 
       postShutdown = ''
-        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.10.0/24 -o wlo1 -j MASQUERADE
+        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.200.0.0/24 -o wlo1 -j MASQUERADE
       '';
 
       privateKeyFile = "/home/saga/wireguard-keys/private";
@@ -35,7 +35,7 @@
       peers = [
         {
           publicKey = "hO+DjlTJItqM8JeUIQ6q2zwYMqLS122sKPNCK2Hom10=";
-          allowedIPs = [ "10.0.0.0/24" ];
+          allowedIPs = [ "10.0.0.0/16" ];
         }
       ];
     };
