@@ -8,6 +8,10 @@
         file = ./bhc-it.internal;
         master = true;
       };
+      "master.monkey" = {
+        file = ./master.monkey;
+        master = true;
+      };
     };
   };
   networking.firewall = {
