@@ -21,8 +21,6 @@
     url = "https://github.com/lanathlor/nixos";
   };
 
-  system.autoUpgrade.enable = true;
-
   environment.sessionVariables.NIX_CONFIG_USER = "helios";
   environment.sessionVariables.TERM = "xterm";
 
@@ -35,7 +33,6 @@
   networking = {
     hostName = "helios";
     networkmanager.enable = true;
-    nameservers = [ "10.1.0.1" "1.1.1.1" "8.8.8.8" ];
   };
 
   time.timeZone = "Europe/Paris";
