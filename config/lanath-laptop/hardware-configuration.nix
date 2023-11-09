@@ -14,6 +14,8 @@
 
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.supportedFilesystems = [ "nfs" ];
+  boot.initrd.kernelModules = [ "nfs" ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/cabcffd9-5da0-44a9-b817-bb1fbd2a5b54";
@@ -29,6 +31,12 @@
     device = "none";
     fsType = "tmpfs";
     options = [ "size=4G" "mode=777" ];
+  };
+
+  fileSystems."/mnt/lanath" = {
+      device = "styx.master.monkey:/lanath";
+      fsType = "nfs";
+    options = [ "rw" "user" "noauto" "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
   swapDevices =

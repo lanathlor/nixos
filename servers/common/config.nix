@@ -81,6 +81,7 @@
     s-tui
     dig
     ldm
+    parted
   ];
 
   nix.settings.trusted-users = [ "lanath" ];
