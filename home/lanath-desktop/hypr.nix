@@ -1,9 +1,9 @@
 ''
-monitor=HDMI-A-2,1920x1080@60,0x0,1
+monitor=HDMI-A-1,1920x1080@60,0x0,1
 monitor=DP-2,1920x1080@144,1920x0,1
 monitor=DP-1,1920x1080@144,3840x0,1
 env = XCURSOR_SIZE,24
-exec-once = swww init && swww img ${./nord-city.jpeg}
+exec-once = swww init; swww img ${./nord-city.jpeg}
 exec-once = wl-paste --watch cliphist store
 
 input {
@@ -108,7 +108,7 @@ device:epic-mouse-v1 {
 
 
 
-workspace=1, monitor:HDMI-A-2
+workspace=1, monitor:HDMI-A-1
 workspace=2, monitor:DP-1
 workspace=3, monitor:DP-2
 
