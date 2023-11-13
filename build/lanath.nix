@@ -8,7 +8,6 @@
     # # Provide an initial copy of the NixOS channel so that the user
     # # doesn't need to run "nix-channel --update" first.
     <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
-    ../config/lanath-laptop/configuration.nix
   ];
 
   boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.linux));
@@ -20,15 +19,10 @@
   # networking.networkmanager.enable = false;
   networking.wireless.enable = false;
 
-  services.xserver.displayManager = {
-    autoLogin.enable = true;
-    autoLogin.user = "lanath";
-  };
-
   users.users.lanath = lib.mkForce {
     isNormalUser = true;
     description = "lanath";
-    extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
+    extraGroups = [ "networkmanager" "wheel" "storage" ];
     initialPassword = "";
     packages = with pkgs; [
     ];

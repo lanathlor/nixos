@@ -34,6 +34,8 @@ in
   system.stateVersion = "23.05";
 
   nixpkgs.config.allowUnfree = true;
+  environment.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
+
   nixpkgs.config.packageOverrides = pkgs: rec {
     nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
       inherit pkgs;

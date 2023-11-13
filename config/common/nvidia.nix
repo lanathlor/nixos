@@ -27,7 +27,7 @@
   boot.kernelParams = [ "loglevel=3" "quiet" "nouveau.modeset=0" "ibt=off" "vt.global_cursor_default=0" /* "module_blacklist=i915" */ ];
 
   boot.blacklistedKernelModules = [ "nouveau" "nvidiafb" ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages;
 
   hardware.nvidia = {
 
