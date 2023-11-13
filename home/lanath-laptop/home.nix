@@ -32,6 +32,7 @@ in
 
     wayland.windowManager.hyprland = {
       extraConfig = import ./hypr.nix;
+      enableNvidiaPatches = true;
     };
 
     programs.swaylock = {
