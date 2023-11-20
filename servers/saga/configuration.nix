@@ -126,4 +126,8 @@
     packages = with pkgs; [
     ];
   };
+
+  users.users.root = {
+    openssh.authorizedKeys.keyFiles = [ ./lanath.pub ];
+  };
 }

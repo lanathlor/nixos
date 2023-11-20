@@ -28,6 +28,7 @@ in
   boot.plymouth = {
     theme = "hexagon_hud";
   };
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # nix.nixPath = [
   #   "nixos-config=/home/lanath/my-config/config/lanath-desktop/configuration.nix"
