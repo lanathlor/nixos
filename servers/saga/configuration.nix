@@ -22,8 +22,6 @@
     url = "https://github.com/lanathlor/nixos";
   };
 
-  system.autoUpgrade.enable = true;
-
   environment.sessionVariables.NIX_CONFIG_USER = "saga";
   environment.sessionVariables.TERM = "xterm";
 
