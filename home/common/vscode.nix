@@ -1,0 +1,81 @@
+{ config, lib, pkgs, modulesPath, ... }:
+
+let
+  unstable = import
+    (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
+    # reuse the current configuration
+    { config = config.nixpkgs.config; };
+
+  flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
+  hyprland = (import flake-compat {
+    src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
+  }).defaultNix;
+  impermanence = builtins.fetchTarball "https://github.com/nix-community/impermanence/archive/master.tar.gz";
+in
+{
+  programs.vscode = {
+    enable = true;
+    package = unstable.vscode;
+    userSettings = {
+      "editor.renderWhitespace" = "trailing";
+      "files.trimFinalNewlines" = true;
+      "files.trimTrailingWhitespace" = true;
+      "git.enableSmartCommit" = true;
+      "git.confirmSync" = false;
+      "javascript.updateImportsOnFileMove.enabled" = "always";
+      "vs-kubernetes" = {
+      };
+      "eslint.validate" = ["javascript" "typescript"];
+      "prettier.jsxSingleQuote" = true;
+      "prettier.printWidth" = 100;
+      "prettier.semi" = false;
+      "prettier.singleQuote" = true;
+      "prettier.singleAttributePerLine" = true;
+      "prettier.tabWidth" = 4;
+      "prettier.useTabs" = true;
+      "prettier.ignorePath" = "~/.prettierignore";
+      "explorer.confirmDragAndDrop" = false;
+      "git.autofetch" = true;
+      "debug.onTaskErrors" = "showErrors";
+      "github.copilot.enable" = {
+        "*" = true;
+        "plaintext" = true;
+        "markdown" = false;
+        "scminput" = false;
+        "yaml" = false;
+      };
+      "settingsSync.ignoredExtensions" = [];
+      "workbench.colorTheme" = "Nord";
+      "redhat.telemetry.enabled" = false;
+      "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      "editor.formatOnSave" = true;
+      "editor.codeActionsOnSave" = {
+        "source.fixAll.eslint" = true;
+      };
+      "editor.inlineSuggest.enabled" = true;
+      "editor.fontFamily" = "'Fira Code', 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular', 'FiraCode Nerd Font Mono', CaskaydiaCoveNerdFont, 'Droid Sans Mono', 'monospace', monospace";
+      "editor.fontLigatures" = true;
+      "[python]" = {
+        "editor.formatOnType" = true;
+      };
+      "[helm]" = {
+        "editor.formatOnSave" = false;
+      };
+      "[javascript]" = {
+        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      };
+      "[typescript]" = {
+        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      };
+      "[terraform]" = {
+        "editor.defaultFormatter" = "hashicorp.terraform";
+        "editor.formatOnSave" = true;
+      };
+    };
+    extensions = with pkgs; [
+      vscode-extensions.bbenoist.nix
+      vscode-extensions.arcticicestudio.nord-visual-studio-code
+      vscode-extensions.dbaeumer.vscode-eslint
+    ];
+  };
+}

@@ -80,8 +80,9 @@ in
   programs.thunar.plugins = with pkgs.xfce; [
     thunar-archive-plugin
     thunar-volman
-    thunar-archive-plugin
   ];
+
+  programs.file-roller.enable = true;
 
   programs.ssh = {
     startAgent = true;
@@ -183,6 +184,10 @@ in
     s-tui
     dig
     ldm
+    pixcat
+    arp-scan
+    busybox
+    nmap
   ];
 
   fonts.fonts = with pkgs; [
