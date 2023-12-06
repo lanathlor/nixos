@@ -37,6 +37,7 @@ in
     xfce.orage
     baobab
     keepassxc
+    kpcli
     gparted
     grim
     slurp

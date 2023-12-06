@@ -40,6 +40,19 @@ in
 
   networking.hostName = "desktop";
 
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "steam"
+    "steam-original"
+    "steam-run"
+  ];
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+  hardware.opengl.driSupport32Bit = true;
+
   services.xserver.displayManager.sddm = {
     theme = "Nordic/Nordic";
   };
@@ -55,6 +68,32 @@ in
     openssh.authorizedKeys.keyFiles = [ ./id_rsa.pub ];
     packages = with pkgs; [
     ];
+  };
+
+  services.prometheus.exporters = {
+    node = {
+      enable = true;
+      enabledCollectors = [
+        "conntrack"
+        "diskstats"
+        "entropy"
+        "filefd"
+        "filesystem"
+        "loadavg"
+        "mdadm"
+        "meminfo"
+        "netdev"
+        "netstat"
+        "stat"
+        "time"
+        "vmstat"
+        "systemd"
+        "logind"
+        "interrupts"
+        "ksmd"
+        "processes"
+      ];
+    };
   };
 
   hardware.bluetooth.enable = true;
@@ -84,6 +123,7 @@ in
     pavucontrol
     qbittorrent
     etcher
+    teams-for-linux
   ];
 
   fonts.fonts = with pkgs; [
@@ -91,6 +131,7 @@ in
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
+    "teams-1.5.00.23861"
   ];
 
 
