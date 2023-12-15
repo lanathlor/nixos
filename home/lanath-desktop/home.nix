@@ -7,10 +7,6 @@ let
     { config = config.nixpkgs.config; };
 
   flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
-  hyprland = (import flake-compat {
-    src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
-  }).defaultNix;
-
 in
 {
 
@@ -33,6 +29,7 @@ in
 
 
     wayland.windowManager.hyprland = {
+      enable = true;
       extraConfig = import ./hypr.nix;
     };
 

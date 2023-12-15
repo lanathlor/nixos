@@ -8,7 +8,7 @@ let
 
   flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
   hyprland = (import flake-compat {
-    src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
+    src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/v0.33.1.tar.gz";
   }).defaultNix;
   impermanence = builtins.fetchTarball "https://github.com/nix-community/impermanence/archive/master.tar.gz";
 in

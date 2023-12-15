@@ -31,7 +31,7 @@ in
     '';
   };
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 
   nixpkgs.config.allowUnfree = true;
   environment.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
@@ -242,10 +242,6 @@ in
   virtualisation.docker = {
     enable = true;
     daemon.settings = {
-      dns = [
-        "8.8.8.8"
-        "8.8.4.4"
-      ];
     };
     rootless = {
       enable = true;
