@@ -166,6 +166,9 @@ in
     htop
     lxqt.lxqt-openssh-askpass
     ssh-askpass-fullscreen
+    rnix-lsp
+    nixpkgs-fmt
+
     # maintenance
     zip
     unzip
@@ -244,7 +247,7 @@ in
     daemon.settings = {
     };
     rootless = {
-      enable = true;
+      enable = false;
       setSocketVariable = true;
     };
     autoPrune = {
