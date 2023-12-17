@@ -23,9 +23,8 @@ in
       "git.enableSmartCommit" = true;
       "git.confirmSync" = false;
       "javascript.updateImportsOnFileMove.enabled" = "always";
-      "vs-kubernetes" = {
-      };
-      "eslint.validate" = ["javascript" "typescript"];
+      "vs-kubernetes" = { };
+      "eslint.validate" = [ "javascript" "typescript" ];
       "prettier.jsxSingleQuote" = true;
       "prettier.printWidth" = 100;
       "prettier.semi" = false;
@@ -44,7 +43,7 @@ in
         "scminput" = false;
         "yaml" = false;
       };
-      "settingsSync.ignoredExtensions" = [];
+      "settingsSync.ignoredExtensions" = [ ];
       "workbench.colorTheme" = "Nord";
       "redhat.telemetry.enabled" = false;
       "editor.defaultFormatter" = "esbenp.prettier-vscode";
@@ -55,8 +54,14 @@ in
       "editor.inlineSuggest.enabled" = true;
       "editor.fontFamily" = "'Fira Code', 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular', 'FiraCode Nerd Font Mono', CaskaydiaCoveNerdFont, 'Droid Sans Mono', 'monospace', monospace";
       "editor.fontLigatures" = true;
+      "nix.enableLanguageServer" = true;
+      "nix.serverPath" = "rnix-lsp";
       "[python]" = {
         "editor.formatOnType" = true;
+      };
+      "[go]" = {
+        "editor.formatOnType" = true;
+        "editor.defaultFormatter" = "golang.go";
       };
       "[helm]" = {
         "editor.formatOnSave" = false;
@@ -71,11 +76,23 @@ in
         "editor.defaultFormatter" = "hashicorp.terraform";
         "editor.formatOnSave" = true;
       };
+      "[nix]" = {
+        "editor.defaultFormatter" = "jnoortheen.nix-ide";
+        "editor.formatOnSave" = true;
+      };
     };
-    extensions = with pkgs; [
-      vscode-extensions.bbenoist.nix
-      vscode-extensions.arcticicestudio.nord-visual-studio-code
-      vscode-extensions.dbaeumer.vscode-eslint
+
+    extensions = with pkgs; with vscode-extensions; [
+      golang.go
+      bbenoist.nix
+      jnoortheen.nix-ide
+      ms-dotnettools.csharp
+      arcticicestudio.nord-visual-studio-code
+      dbaeumer.vscode-eslint
+      ms-azuretools.vscode-docker
+      eamodio.gitlens
+      esbenp.prettier-vscode
+      # rvest.vs-code-prettier-eslint
     ];
   };
 }

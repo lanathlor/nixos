@@ -34,14 +34,13 @@
   };
 
   fileSystems."/mnt/lanath" = {
-      device = "styx.master.monkey:/lanath";
-      fsType = "nfs";
+    device = "io.master.monkey:/lanath";
+    fsType = "nfs";
     options = [ "rw" "user" "noauto" "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/df27815d-af80-4b84-895e-5aed72299ea5"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/df27815d-af80-4b84-895e-5aed72299ea5"; }];
 
   # networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;

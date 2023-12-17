@@ -9,11 +9,12 @@ let
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
-  nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {};
+  nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") { };
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ../common/configuration.nix
       ./hardware-configuration.nix
       ../common/terms.nix
@@ -29,6 +30,10 @@ in
     theme = "hexagon_hud";
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_unprivileged_port_start" = 443;
+  };
 
   # nix.nixPath = [
   #   "nixos-config=/home/lanath/my-config/config/lanath-desktop/configuration.nix"
