@@ -111,6 +111,7 @@ in
     firefox-wayland
     google-chrome
     chromium
+    tor
 
     # utils
     bluez
