@@ -34,7 +34,7 @@
   };
 
   fileSystems."/mnt/lanath" = {
-    device = "io.master.monkey:/lanath";
+    device = "nfs.master.monkey:/lanath";
     fsType = "nfs";
     options = [ "rw" "user" "noauto" "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };

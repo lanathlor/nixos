@@ -140,6 +140,8 @@ in
     "teams-1.5.00.23861"
   ];
 
+  security.pki.certificateFiles = [ "/home/lanath/.cert/self-signed/certificate.pem" ./certificate.pem ];
+
 
   # networking.wlanInterfaces = {
   #   "wlan-station0" = { device = "wlp25s0";                            };

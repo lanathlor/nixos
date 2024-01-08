@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
@@ -29,9 +30,9 @@
   };
 
   fileSystems."/mnt/lanath" = {
-      device = "io.master.monkey:/lanath";
-      fsType = "nfs";
-      options = [ "rw" "user" "noauto" "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+    device = "nfs.master.monkey:/lanath";
+    fsType = "nfs";
+    options = [ "rw" "user" "noauto" "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
   swapDevices = [ ];
