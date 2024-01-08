@@ -21,7 +21,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.plymouth = {
     enable = true;
-    themePackages = [(pkgs.adi1090x-plymouth-themes.override {selected_themes = ["hexagon_hud"];})];
+    themePackages = [ (pkgs.adi1090x-plymouth-themes.override { selected_themes = [ "hexagon_hud" ]; }) ];
   };
 
   nix = {
@@ -96,7 +96,7 @@ in
 
   services.gnome.gnome-keyring.enable = true;
   security.rtkit.enable = true;
-  security.pam.services.swaylock = {};
+  security.pam.services.swaylock = { };
   security.pam.services.sddm.enableKwallet = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
   security.pam.services.login.enableKwallet = true;
@@ -168,6 +168,9 @@ in
     ssh-askpass-fullscreen
     rnix-lsp
     nixpkgs-fmt
+    openvpn
+    wireguard-tools
+    mattermost-desktop
 
     # maintenance
     zip
@@ -230,12 +233,12 @@ in
       wants = [ "graphical-session.target" ];
       after = [ "graphical-session.target" ];
       serviceConfig = {
-          Type = "simple";
-          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
     };
   };
 
@@ -244,8 +247,7 @@ in
 
   virtualisation.docker = {
     enable = true;
-    daemon.settings = {
-    };
+    daemon.settings = { };
     rootless = {
       enable = false;
       setSocketVariable = true;
