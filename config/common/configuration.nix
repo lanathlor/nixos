@@ -196,7 +196,7 @@ in
     nmap
   ];
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
@@ -214,7 +214,7 @@ in
   fonts.fontDir.enable = true;
 
   fonts = {
-    enableDefaultFonts = true;
+    enableDefaultPackages = true;
 
     fontconfig = {
       defaultFonts = {

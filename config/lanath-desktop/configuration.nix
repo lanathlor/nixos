@@ -132,10 +132,8 @@ in
     teams-for-linux
   ];
 
-  fonts.fonts = with pkgs; [
-  ];
-
   nixpkgs.config.permittedInsecurePackages = [
+    "electron-19.1.9"
     "electron-12.2.3"
     "teams-1.5.00.23861"
   ];
