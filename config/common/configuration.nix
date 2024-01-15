@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
   unstable = import
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
