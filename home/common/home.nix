@@ -18,7 +18,7 @@ in
     "${impermanence}/home-manager.nix"
   ];
 
-  home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
 
   nixpkgs = {
     config = {
@@ -67,15 +67,14 @@ in
     enable = true;
     package = lib.mkDefault unstable.waybar;
     systemd = lib.mkDefault {
-       enable = true;
-       target = "basic.target";
+      enable = true;
+      target = "basic.target";
     };
   };
 
   programs.fish = {
     enable = true;
-    shellAliases = {
-    };
+    shellAliases = { };
   };
 
   programs.kitty = {
