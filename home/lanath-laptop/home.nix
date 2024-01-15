@@ -5,12 +5,6 @@ let
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
-
-  flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
-  hyprland = (import flake-compat {
-    src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
-  }).defaultNix;
-
 in
 {
 
@@ -22,11 +16,11 @@ in
     ];
 
     home.packages = with pkgs; [
-        rofi-mpd
-        rofi-bluetooth
-        rofi-power-menu
-        rofi-systemd
-        discord
+      rofi-mpd
+      rofi-bluetooth
+      rofi-power-menu
+      rofi-systemd
+      discord
     ];
 
 
@@ -75,8 +69,7 @@ in
         "git.enableSmartCommit" = true;
         "git.confirmSync" = false;
         "javascript.updateImportsOnFileMove.enabled" = "always";
-        "vs-kubernetes" = {
-        };
+        "vs-kubernetes" = { };
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
         "editor.formatOnSave" = true;
         "[javascript]" = {
@@ -88,7 +81,7 @@ in
         "editor.codeActionsOnSave" = {
           "source.fixAll.eslint" = true;
         };
-        "eslint.validate" = ["javascript" "typescript"];
+        "eslint.validate" = [ "javascript" "typescript" ];
         "prettier.jsxSingleQuote" = true;
         "prettier.printWidth" = 100;
         "prettier.semi" = false;
@@ -111,7 +104,7 @@ in
         "[python]" = {
           "editor.formatOnType" = true;
         };
-        "settingsSync.ignoredExtensions" = [];
+        "settingsSync.ignoredExtensions" = [ ];
         "workbench.colorTheme" = "Nord";
         "editor.fontFamily" = "'Fira Code', 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular', 'FiraCode Nerd Font Mono', CaskaydiaCoveNerdFont, 'Droid Sans Mono', 'monospace', monospace";
         "[helm]" = {
@@ -129,7 +122,7 @@ in
 
     programs.git = {
       enable = true;
-      userName  = "lanath";
+      userName = "lanath";
       userEmail = "valentin.vivier@bhc-it.com";
     };
 
@@ -160,32 +153,32 @@ in
 
     xdg.mimeApps = {
       associations.added = {
-        "text/plain" = ["code.desktop"];
+        "text/plain" = [ "code.desktop" ];
       };
       defaultApplications = {
-        "application/pdf" = ["firefox.desktop"];
-        "application/javascript" = ["code.desktop"];
-        "text/plain" = ["code.desktop"];
-        "text/*" = ["code.desktop"];
-        "text/html" = ["code.desktop"];
-        "text/xml" = ["code.desktop"];
-        "text/javascript" = ["code.desktop"];
-        "text/json" = ["code.desktop"];
-        "text/x-csrc" = ["code.desktop"]; # ts files
-        "image/gif" = ["firefox.desktop"];
-        "image/jpeg" = ["firefox.desktop"];
-        "image/png" = ["firefox.desktop"];
-        "image/webp" = ["firefox.desktop"];
-        "x-scheme-handler/http" = ["firefox.desktop"];
-        "x-scheme-handler/https" = ["firefox.desktop"];
-        "x-scheme-handler/about" = ["firefox.desktop"];
-        "x-scheme-handler/unknown" = ["firefox.desktop"];
-        "x-scheme-handler/mailto" = ["thunderbird.desktop"];
-        "x-scheme-handler/sms" = ["thunderbird.desktop"];
-        "x-scheme-handler/mms" = ["thunderbird.desktop"];
-        "x-scheme-handler/chrome" = ["thunderbird.desktop"];
-        "x-scheme-handler/spotify" = ["spotify.desktop"];
-        "x-scheme-handler/steam" = ["steam.desktop"];
+        "application/pdf" = [ "firefox.desktop" ];
+        "application/javascript" = [ "code.desktop" ];
+        "text/plain" = [ "code.desktop" ];
+        "text/*" = [ "code.desktop" ];
+        "text/html" = [ "code.desktop" ];
+        "text/xml" = [ "code.desktop" ];
+        "text/javascript" = [ "code.desktop" ];
+        "text/json" = [ "code.desktop" ];
+        "text/x-csrc" = [ "code.desktop" ]; # ts files
+        "image/gif" = [ "firefox.desktop" ];
+        "image/jpeg" = [ "firefox.desktop" ];
+        "image/png" = [ "firefox.desktop" ];
+        "image/webp" = [ "firefox.desktop" ];
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+        "x-scheme-handler/mailto" = [ "thunderbird.desktop" ];
+        "x-scheme-handler/sms" = [ "thunderbird.desktop" ];
+        "x-scheme-handler/mms" = [ "thunderbird.desktop" ];
+        "x-scheme-handler/chrome" = [ "thunderbird.desktop" ];
+        "x-scheme-handler/spotify" = [ "spotify.desktop" ];
+        "x-scheme-handler/steam" = [ "steam.desktop" ];
       };
     };
 

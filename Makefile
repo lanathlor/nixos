@@ -3,7 +3,7 @@
 #####
 
 env:
-	sudo nixos-rebuild switch -I "nixos-config=config/$(NIX_CONFIG_USER)/configuration.nix" --upgrade
+	sudo nixos-rebuild switch -I "nixos-config=config/$(NIX_CONFIG_USER)/configuration.nix"
 
 lanath-laptop:
 	sudo nixos-rebuild switch -I nixos-config=config/lanath-laptop/configuration.nix
@@ -19,32 +19,16 @@ build-lanath-iso:
 
 
 #####
-##### servers
-#####
-
-# saga is dns, vpn
-saga:
-	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.0.0.2 --use-remote-sudo switch -I nixos-config=servers/saga/configuration.nix
-
-# mimir is kube master, prom master
-mimir:
-	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.0.0.2 --use-remote-sudo switch -I nixos-config=servers/mimir/configuration.nix
-
-styx:
-	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.1.0.1 --use-remote-sudo switch -I nixos-config=servers/styx/configuration.nix
-
-helios:
-	NIX_SSHOPTS="-tt" nixos-rebuild --target-host lanath@10.1.0.2 --use-remote-sudo switch -I nixos-config=servers/helios/configuration.nix
-
-
-#####
 ##### misc
 #####
 
 update:
 	sudo nix-channel --update
 
-re: update env
+upgrade:
+	sudo nixos-rebuild boot -I "nixos-config=config/$(NIX_CONFIG_USER)/configuration.nix" --upgrade
+
+re: update upgrade
 
 garbage:
 	sudo nix-collect-garbage
