@@ -35,6 +35,8 @@ in
     "net.ipv4.ip_unprivileged_port_start" = 443;
   };
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # nix.nixPath = [
   #   "nixos-config=/home/lanath/my-config/config/lanath-desktop/configuration.nix"
   # ];
@@ -106,6 +108,7 @@ in
   environment.systemPackages = with pkgs; [
 
     nordic
+    nordic.sddm
 
     # browsers
     firefox-wayland

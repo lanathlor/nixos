@@ -9,11 +9,12 @@ let
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
-  nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {};
+  nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") { };
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ../common/configuration.nix
       ./hardware-configuration.nix
       ../common/nvidia.nix
@@ -27,6 +28,8 @@ in
   boot.plymouth = {
     theme = "hexagon_hud";
   };
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   environment.sessionVariables.NIX_CONFIG_USER = "lanath-laptop";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
@@ -54,6 +57,7 @@ in
   environment.systemPackages = with pkgs; [
 
     nordic
+    nordic.sddm
 
     # browsers
     firefox-wayland
@@ -77,9 +81,6 @@ in
     pavucontrol
     qbittorrent
     etcher
-  ];
-
-  fonts.fonts = with pkgs; [
   ];
 
   programs.steam = {

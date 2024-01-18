@@ -28,16 +28,16 @@
       gaps_in = 5
       gaps_out = 20
       border_size = 2
-      col.active_border = rgba(81a1c1ee) rgba(8fbcbbee) 45deg
-      col.inactive_border = rgba(4c566aee)
+      # col.active_border = rgba(81a1c1ee) rgba(8fbcbbee) 45deg
+      # col.inactive_border = rgba(4c566aee)
 
       layout = dwindle
       resize_on_border = yes
   }
 
   group {
-      col.border_active = rgba(81a1c1ee)
-      col.border_inactive = rgba(4c566aee)
+      # col.border_active = rgba(81a1c1ee)
+      # col.border_inactive = rgba(4c566aee)
   }
 
   decoration {
@@ -49,11 +49,11 @@
       col.shadow = 0x44000000
       col.shadow_inactive=0x33000000
       blur {
-        enabled = true
-        size = 2
-        passes = 4
-        ignore_opacity = true
-        brightness = 1
+        # enabled = true
+        # size = 2
+        # passes = 4
+        # ignore_opacity = true
+        # brightness = 1
       }
   }
 
@@ -153,7 +153,7 @@
   layerrule = blur, swaync-control-center
   # layerrule = ignorealpha 0.4, swaync-control-center
   layerrule = blur, rofi
-  layerrule = ignorealpha 0.4, rofi
+  # layerrule = ignorealpha 0.4, rofi
 
 
 

@@ -138,6 +138,8 @@ in
     layout = lib.mkDefault "us";
     xkbVariant = "";
     displayManager.sddm = {
+      wayland.enable = true;
+      settings.General.DisplayServer = "x11-user";
       enable = true;
       autoNumlock = true;
     };
