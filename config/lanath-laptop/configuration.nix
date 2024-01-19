@@ -17,7 +17,6 @@ in
       # Include the results of the hardware scan.
       ../common/configuration.nix
       ./hardware-configuration.nix
-      ../common/nvidia.nix
       ../common/terms.nix
       ../../home/lanath-laptop/home.nix
       nur-no-pkgs.repos.LuisChDev.modules.nordvpn
@@ -92,5 +91,6 @@ in
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
+    "electron-19.1.9"
   ];
 }
