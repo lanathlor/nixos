@@ -60,71 +60,10 @@ in
       };
     };
 
-    programs.vscode = {
-      enable = true;
-      package = unstable.vscode;
-      userSettings = {
-        "editor.renderWhitespace" = "trailing";
-        "files.trimFinalNewlines" = true;
-        "files.trimTrailingWhitespace" = true;
-        "git.enableSmartCommit" = true;
-        "git.confirmSync" = false;
-        "javascript.updateImportsOnFileMove.enabled" = "always";
-        "vs-kubernetes" = { };
-        "editor.defaultFormatter" = "esbenp.prettier-vscode";
-        "editor.formatOnSave" = true;
-        "[javascript]" = {
-          "editor.defaultFormatter" = "esbenp.prettier-vscode";
-        };
-        "[typescript]" = {
-          "editor.defaultFormatter" = "esbenp.prettier-vscode";
-        };
-        "editor.codeActionsOnSave" = {
-          "source.fixAll.eslint" = true;
-        };
-        "eslint.validate" = [ "javascript" "typescript" ];
-        "prettier.jsxSingleQuote" = true;
-        "prettier.printWidth" = 100;
-        "prettier.semi" = false;
-        "prettier.singleQuote" = true;
-        "prettier.singleAttributePerLine" = true;
-        "prettier.tabWidth" = 4;
-        "prettier.useTabs" = true;
-        "explorer.confirmDragAndDrop" = false;
-        "prettier.ignorePath" = "~/.prettierignore";
-        "git.autofetch" = true;
-        "debug.onTaskErrors" = "showErrors";
-        "editor.inlineSuggest.enabled" = true;
-        "github.copilot.enable" = {
-          "*" = true;
-          "plaintext" = true;
-          "markdown" = false;
-          "scminput" = false;
-          "yaml" = false;
-        };
-        "[python]" = {
-          "editor.formatOnType" = true;
-        };
-        "settingsSync.ignoredExtensions" = [ ];
-        "workbench.colorTheme" = "Nord";
-        "editor.fontFamily" = "'Fira Code', 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular', 'FiraCode Nerd Font Mono', CaskaydiaCoveNerdFont, 'Droid Sans Mono', 'monospace', monospace";
-        "[helm]" = {
-          "editor.formatOnSave" = false;
-        };
-        "redhat.telemetry.enabled" = false;
-        "editor.fontLigatures" = true;
-      };
-      extensions = with pkgs; [
-        vscode-extensions.bbenoist.nix
-        vscode-extensions.arcticicestudio.nord-visual-studio-code
-        vscode-extensions.dbaeumer.vscode-eslint
-      ];
-    };
-
     programs.git = {
       enable = true;
       userName = "lanath";
-      userEmail = "valentin.vivier@bhc-it.com";
+      userEmail = "valentin.vivier@viviersoft.com";
     };
 
     programs.kitty = {
