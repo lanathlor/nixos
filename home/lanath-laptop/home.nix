@@ -13,6 +13,7 @@ in
       ./dunst.nix
       ./waybar/waybar.nix
       ../common/home.nix
+      ../common/vscode.nix
     ];
 
     home.packages = with pkgs; [

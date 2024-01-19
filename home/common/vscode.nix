@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, pkgs, ... }:
 
 let
   unstable = import
@@ -92,7 +92,13 @@ in
       ms-azuretools.vscode-docker
       eamodio.gitlens
       esbenp.prettier-vscode
-      # rvest.vs-code-prettier-eslint
+    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        publisher = "Orta";
+        name = "vscode-twoslash-queries";
+        version = "1.2.2";
+        sha256 = "sha256-Gl2wmwZWnVE9LKdBu7JW8EbBNPRWV9yMoyI+J2NzXwY=";
+      }
     ];
   };
 }
