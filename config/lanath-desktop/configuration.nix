@@ -42,7 +42,6 @@ in
   # ];
   environment.sessionVariables.NIX_CONFIG_USER = "lanath-desktop";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
-  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
 
   networking.hostName = "desktop";
@@ -103,7 +102,7 @@ in
     };
   };
 
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth.enable = false;
 
   environment.systemPackages = with pkgs; [
 

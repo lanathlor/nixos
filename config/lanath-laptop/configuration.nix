@@ -27,12 +27,12 @@ in
   boot.plymouth = {
     theme = "hexagon_hud";
   };
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   environment.sessionVariables.NIX_CONFIG_USER = "lanath-laptop";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
-  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
 
   networking.hostName = "laptop";
@@ -40,6 +40,9 @@ in
   services.xserver.displayManager.sddm = {
     theme = "Nordic/Nordic";
   };
+
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "lanath" ];
 
   users.users.lanath = {
     isNormalUser = true;
@@ -90,7 +93,7 @@ in
   hardware.opengl.driSupport32Bit = true; # Enables support for 32bit libs that steam uses
 
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-12.2.3"
     "electron-19.1.9"
+    "electron-12.2.3"
   ];
 }
