@@ -15,17 +15,16 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.supportedFilesystems = [ "nfs" ];
-  boot.initrd.kernelModules = [ "nfs" ];
+  boot.initrd.kernelModules = [ "kvm-intel" "nfs" ];
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/a8b45e48-e5aa-4231-9725-697c869c4356";
+      fsType = "ext4";
+    };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/cabcffd9-5da0-44a9-b817-bb1fbd2a5b54";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/3B23-587B";
-    fsType = "vfat";
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/3B98-19EA";
+      fsType = "vfat";
+    };
 
   fileSystems."/home/username" = {
     device = "none";
@@ -40,10 +39,9 @@
   };
 
   swapDevices =
-    [{ device = "/dev/disk/by-uuid/df27815d-af80-4b84-895e-5aed72299ea5"; }];
+    [ { device = "/dev/disk/by-uuid/210c39d2-7ca4-4437-894f-7f674aca4106"; }
+    ];
 
-  # networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
   networking.useDHCP = lib.mkForce true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
