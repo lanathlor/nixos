@@ -3,7 +3,6 @@
 let
   unstable = import
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
-    # reuse the current configuration
     { config = config.nixpkgs.config; };
 in
 {
@@ -72,7 +71,7 @@ in
     programs.git = {
       enable = true;
       userName = "lanath";
-      userEmail = "valentin.vivier@viviersoft.com";
+      userEmail = "valentin@viviersoft.com";
       signing = {
         signByDefault = true;
         key = "5089810F35CD9FEBB76E1FEF6B8C16D2CDC8CA93";
