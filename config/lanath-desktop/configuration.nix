@@ -9,7 +9,6 @@ let
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
-  nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") { };
 in
 {
   imports =
@@ -19,9 +18,6 @@ in
       ./hardware-configuration.nix
       ../common/terms.nix
       ../../home/lanath-desktop/home.nix
-      nur-no-pkgs.repos.LuisChDev.modules.nordvpn
-
-      # bind tests
     ];
 
   # Bootloader.
@@ -30,10 +26,6 @@ in
     theme = "hexagon_hud";
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
-  boot.kernel.sysctl = {
-    "net.ipv4.ip_unprivileged_port_start" = 443;
-  };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -146,34 +138,4 @@ in
     ./certificate.pem
     ./kube-cert.pem
   ];
-
-
-  # networking.wlanInterfaces = {
-  #   "wlan-station0" = { device = "wlp25s0";                            };
-  #   "wlan-ap0"      = { device = "wlp25s0"; mac = "08:11:96:0e:08:0a"; };
-  # };
-
-  # networking.networkmanager.unmanaged = [ "interface-name:wlp*" ]
-  #   ++ lib.optional config.services.hostapd.enable "interface-name:${config.services.hostapd.interface}";
-
-  # services.hostapd = {
-  #   enable        = true;
-  #   interface     = "wlan-ap0";
-  #   hwMode        = "g";
-  #   ssid          = "nix";
-  #   wpaPassphrase = "mysekret";
-  # };
-
-  # networking.interfaces."wlan-ap0".ipv4.addresses =
-  #   lib.optionals config.services.hostapd.enable [{ address = "192.168.12.1"; prefixLength = 24; }];
-
-  # services.dnsmasq = lib.optionalAttrs config.services.hostapd.enable {
-  #   enable = true;
-  #   extraConfig = ''
-  #     interface=wlan-ap0
-  #     bind-interfaces
-  #     dhcp-range=192.168.12.10,192.168.12.254,24h
-  #   '';
-  # };
-  # services.haveged.enable = config.services.hostapd.enable;
 }

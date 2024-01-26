@@ -68,7 +68,6 @@ in
     # utils
     bluez
     brightnessctl
-    nfs-utils
 
     docker-compose
 
