@@ -19,7 +19,6 @@ in
       ./hardware-configuration.nix
       ../common/terms.nix
       ../../home/lanath-laptop/home.nix
-      nur-no-pkgs.repos.LuisChDev.modules.nordvpn
     ];
 
   # Bootloader.
@@ -96,4 +95,12 @@ in
     "electron-19.1.9"
     "electron-12.2.3"
   ];
+
+  security.pki.certificateFiles = [
+    "/home/lanath/.cert/self-signed/certificate.pem"
+    ./certificate.pem
+    ./kube-cert.pem
+  ];
+
+
 }
