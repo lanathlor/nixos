@@ -9,7 +9,6 @@ let
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
-  nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") { };
 in
 {
   imports =
@@ -18,7 +17,7 @@ in
       ../common/configuration.nix
       ./hardware-configuration.nix
       ../common/terms.nix
-      ../../home/lanath-laptop/home.nix
+      ../../home/lanath-desktop/home.nix
     ];
 
   # Bootloader.
@@ -34,7 +33,20 @@ in
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
 
 
-  networking.hostName = "laptop";
+  networking.hostName = "desktop";
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "steam"
+    "steam-original"
+    "steam-run"
+  ];
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+  hardware.opengl.driSupport32Bit = true;
 
   services.xserver.displayManager.sddm = {
     theme = "Nordic/Nordic";
@@ -53,7 +65,33 @@ in
     ];
   };
 
-  hardware.bluetooth.enable = true;
+  services.prometheus.exporters = {
+    node = {
+      enable = true;
+      enabledCollectors = [
+        "conntrack"
+        "diskstats"
+        "entropy"
+        "filefd"
+        "filesystem"
+        "loadavg"
+        "mdadm"
+        "meminfo"
+        "netdev"
+        "netstat"
+        "stat"
+        "time"
+        "vmstat"
+        "systemd"
+        "logind"
+        "interrupts"
+        "ksmd"
+        "processes"
+      ];
+    };
+  };
+
+  hardware.bluetooth.enable = false;
 
   environment.systemPackages = with pkgs; [
 
@@ -64,12 +102,14 @@ in
     firefox-wayland
     google-chrome
     chromium
+    tor
 
     # utils
     bluez
     brightnessctl
 
     docker-compose
+    kubectl
 
     # sddm modules
     libsForQt5.plasma-framework
@@ -81,11 +121,13 @@ in
     pavucontrol
     qbittorrent
     etcher
+    teams-for-linux
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-19.1.9"
     "electron-12.2.3"
+    "teams-1.5.00.23861"
   ];
 
   security.pki.certificateFiles = [
@@ -93,6 +135,4 @@ in
     ./certificate.pem
     ./kube-cert.pem
   ];
-
-
 }
