@@ -29,6 +29,9 @@ in
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # nix.nixPath = [
+  #   "nixos-config=/home/lanath/my-config/config/lanath-desktop/configuration.nix"
+  # ];
   environment.sessionVariables.NIX_CONFIG_USER = "lanath-laptop";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
 
