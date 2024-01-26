@@ -62,6 +62,13 @@ in
       };
     };
 
+    programs.fish = {
+      shellAliases = {
+        k = "kubectl";
+        kssh = "kitten ssh";
+      };
+    };
+
     programs.git = {
       enable = true;
       userName = "lanath";

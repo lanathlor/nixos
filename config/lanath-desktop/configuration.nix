@@ -120,6 +120,7 @@ in
     brightnessctl
 
     docker-compose
+    kubectl
 
     # sddm modules
     libsForQt5.plasma-framework
@@ -140,7 +141,11 @@ in
     "teams-1.5.00.23861"
   ];
 
-  security.pki.certificateFiles = [ "/home/lanath/.cert/self-signed/certificate.pem" ./certificate.pem ];
+  security.pki.certificateFiles = [
+    "/home/lanath/.cert/self-signed/certificate.pem"
+    ./certificate.pem
+    ./kube-cert.pem
+  ];
 
 
   # networking.wlanInterfaces = {

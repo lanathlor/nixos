@@ -17,51 +17,9 @@ in
     enable = true;
     package = unstable.vscode;
     userSettings = {
-      "editor.renderWhitespace" = "trailing";
-      "files.trimFinalNewlines" = true;
-      "files.trimTrailingWhitespace" = true;
-      "git.enableSmartCommit" = true;
-      "git.confirmSync" = false;
-      "javascript.updateImportsOnFileMove.enabled" = "always";
-      "vs-kubernetes" = { };
-      "eslint.validate" = [ "javascript" "typescript" ];
-      "prettier.jsxSingleQuote" = true;
-      "prettier.printWidth" = 100;
-      "prettier.semi" = false;
-      "prettier.singleQuote" = true;
-      "prettier.singleAttributePerLine" = true;
-      "prettier.tabWidth" = 4;
-      "prettier.useTabs" = true;
-      "prettier.ignorePath" = "~/.prettierignore";
-      "explorer.confirmDragAndDrop" = false;
-      "git.autofetch" = true;
-      "debug.onTaskErrors" = "showErrors";
-      "github.copilot.enable" = {
-        "*" = true;
-        "plaintext" = true;
-        "markdown" = false;
-        "scminput" = false;
-        "yaml" = false;
-      };
-      "settingsSync.ignoredExtensions" = [ ];
-      "workbench.colorTheme" = "Nord";
-      "redhat.telemetry.enabled" = false;
-      "editor.defaultFormatter" = "esbenp.prettier-vscode";
-      "editor.formatOnSave" = true;
-      "editor.codeActionsOnSave" = {
-        "source.fixAll.eslint" = true;
-      };
-      "editor.inlineSuggest.enabled" = true;
-      "editor.fontFamily" = "'Fira Code', 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular', 'FiraCode Nerd Font Mono', CaskaydiaCoveNerdFont, 'Droid Sans Mono', 'monospace', monospace";
-      "editor.fontLigatures" = true;
-      "nix.enableLanguageServer" = true;
-      "nix.serverPath" = "rnix-lsp";
-      "[python]" = {
-        "editor.formatOnType" = true;
-      };
       "[go]" = {
-        "editor.formatOnType" = true;
         "editor.defaultFormatter" = "golang.go";
+        "editor.formatOnType" = true;
       };
       "[helm]" = {
         "editor.formatOnSave" = false;
@@ -69,17 +27,62 @@ in
       "[javascript]" = {
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
       };
-      "[typescript]" = {
-        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      "[nix]" = {
+        "editor.defaultFormatter" = "jnoortheen.nix-ide";
+        "editor.formatOnSave" = true;
+      };
+      "[python]" = {
+        "editor.formatOnType" = true;
       };
       "[terraform]" = {
         "editor.defaultFormatter" = "hashicorp.terraform";
         "editor.formatOnSave" = true;
       };
-      "[nix]" = {
-        "editor.defaultFormatter" = "jnoortheen.nix-ide";
-        "editor.formatOnSave" = true;
+      "[typescript]" = {
+        "editor.defaultFormatter" = "esbenp.prettier-vscode";
       };
+      "debug.onTaskErrors" = "showErrors";
+      "editor.codeActionsOnSave" = {
+        "source.fixAll.eslint" = "explicit";
+      };
+      "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      "editor.fontFamily" = "'Fira Code', 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular', 'FiraCode Nerd Font Mono', CaskaydiaCoveNerdFont, 'Droid Sans Mono', 'monospace', monospace";
+      "editor.fontLigatures" = true;
+      "editor.formatOnSave" = true;
+      "editor.inlineSuggest.enabled" = true;
+      "editor.renderWhitespace" = "trailing";
+      "eslint.validate" = [
+        "javascript"
+        "typescript"
+      ];
+      "explorer.confirmDragAndDrop" = false;
+      "files.trimFinalNewlines" = true;
+      "files.trimTrailingWhitespace" = true;
+      "git.autofetch" = true;
+      "git.confirmSync" = false;
+      "git.enableSmartCommit" = true;
+      "github.copilot.enable" = {
+        "*" = true;
+        "markdown" = false;
+        "plaintext" = true;
+        "scminput" = false;
+        "yaml" = false;
+      };
+      "javascript.updateImportsOnFileMove.enabled" = "always";
+      "nix.enableLanguageServer" = true;
+      "nix.serverPath" = "rnix-lsp";
+      "prettier.ignorePath" = "~/.prettierignore";
+      "prettier.jsxSingleQuote" = true;
+      "prettier.printWidth" = 100;
+      "prettier.semi" = false;
+      "prettier.singleAttributePerLine" = true;
+      "prettier.singleQuote" = true;
+      "prettier.tabWidth" = 4;
+      "prettier.useTabs" = true;
+      "redhat.telemetry.enabled" = false;
+      "settingsSync.ignoredExtensions" = [ ];
+      "vs-kubernetes" = { };
+      "workbench.colorTheme" = "Nord";
     };
 
     extensions = with pkgs; with vscode-extensions; [
