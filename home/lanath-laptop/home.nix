@@ -3,7 +3,6 @@
 let
   unstable = import
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
-    # reuse the current configuration
     { config = config.nixpkgs.config; };
 in
 {
@@ -26,6 +25,7 @@ in
 
 
     wayland.windowManager.hyprland = {
+      enable = true;
       extraConfig = import ./hypr.nix;
     };
 
@@ -63,7 +63,7 @@ in
     programs.git = {
       enable = true;
       userName = "lanath";
-      userEmail = "valentin.vivier@viviersoft.com";
+      userEmail = "valentin@viviersoft.com";
     };
 
     programs.kitty = {

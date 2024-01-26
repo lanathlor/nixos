@@ -98,7 +98,6 @@ in
   security.rtkit.enable = true;
   security.pam.services.swaylock = { };
   security.pam.services.sddm.enableKwallet = true;
-  security.pam.services.sddm.enableGnomeKeyring = true;
   security.pam.services.login.enableKwallet = true;
   security.polkit.enable = true;
 
