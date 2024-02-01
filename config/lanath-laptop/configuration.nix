@@ -28,8 +28,6 @@ in
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
   # nix.nixPath = [
   #   "nixos-config=/home/lanath/my-config/config/lanath-laptop/configuration.nix"
   # ];
