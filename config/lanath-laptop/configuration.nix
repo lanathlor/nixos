@@ -17,7 +17,7 @@ in
       ../common/configuration.nix
       ./hardware-configuration.nix
       ../common/terms.nix
-      ../../home/lanath-desktop/home.nix
+      ../../home/lanath-laptop/home.nix
     ];
 
   # Bootloader.
@@ -30,7 +30,7 @@ in
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # nix.nixPath = [
-  #   "nixos-config=/home/lanath/my-config/config/lanath-desktop/configuration.nix"
+  #   "nixos-config=/home/lanath/my-config/config/lanath-laptop/configuration.nix"
   # ];
   environment.sessionVariables.NIX_CONFIG_USER = "lanath-laptop";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
@@ -122,7 +122,6 @@ in
     # gui
     thunderbird
     pavucontrol
-    qbittorrent
     etcher
     teams-for-linux
   ];
@@ -137,5 +136,6 @@ in
     "/home/lanath/.cert/self-signed/certificate.pem"
     ./certificate.pem
     ./kube-cert.pem
+    ./node.pem
   ];
 }
