@@ -36,7 +36,7 @@ in
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
 
 
-  networking.hostName = "desktop";
+  networking.hostName = "laptop";
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "steam"
