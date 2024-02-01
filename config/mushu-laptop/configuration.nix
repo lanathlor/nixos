@@ -27,8 +27,6 @@ in
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  boot.kernelPackages = pkgs.linuxPackages;
-
   # nix.nixPath = [
   #   "nixos-config=/home/mushu/my-config/config/mushu-laptop/configuration.nix"
   # ];
@@ -36,7 +34,7 @@ in
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
 
 
-  networking.hostName = "desktop";
+  networking.hostName = "mushu";
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
   ];
@@ -44,9 +42,6 @@ in
   services.xserver.displayManager.sddm = {
     theme = "Nordic/Nordic";
   };
-
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "mushu" ];
 
   users.users.mushu = {
     isNormalUser = true;
