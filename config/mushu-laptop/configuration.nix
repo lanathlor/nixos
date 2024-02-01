@@ -57,7 +57,6 @@ in
     layout = "fr";
     xkbVariant = lib.mkForce "azerty";
   };
-  i18n.consoleKeyMap = "fr";
   console.keyMap = "fr";
 
   services.prometheus.exporters = {
@@ -135,13 +134,6 @@ in
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome = {
     enable = true;
-    extraGSettingsOverrides = ''
-      [org.gnome.desktop.input-sources]
-      sources='[('xkb', 'fr')]'
-    '';
-    extraGSettingsOverridePackages = [
-      pkgs.gsettings-desktop-schemas
-    ];
   };
   services.xserver.displayManager.sddm.enable = lib.mkForce false;
   xdg.portal.enable = lib.mkForce false;
