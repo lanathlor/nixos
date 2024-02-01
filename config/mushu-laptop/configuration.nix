@@ -138,9 +138,6 @@ in
       [org.gnome.desktop.input-sources]
       sources='[('xkb', 'fr')]'
     '';
-    extraGSettingsOverridePackages = [
-      pkgs.gsettings-desktop-schemas
-    ];
   };
   services.xserver.displayManager.sddm.enable = lib.mkForce false;
   xdg.portal.enable = lib.mkForce false;
