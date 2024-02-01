@@ -130,4 +130,10 @@ in
   services.xserver.displayManager.sddm.enable = lib.mkForce true;
 
   programs.hyprland.enable = lib.mkForce false;
+
+  services = {
+    pipewire = {
+      enable = lib.mkForce false;
+    };
+  };
 }
