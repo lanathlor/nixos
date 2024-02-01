@@ -55,9 +55,10 @@ in
 
   services.xserver = {
     layout = "fr";
+    xkbVariant = "azerty";
   };
-
-  console.keyMap = "us";
+  i18n.consoleKeyMap = "fr";
+  console.keyMap = "fr";
 
   services.prometheus.exporters = {
     node = {
