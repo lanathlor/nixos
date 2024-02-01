@@ -9,16 +9,15 @@ let
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
-  nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {};
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ../common/configuration.nix
       ./hardware-configuration.nix
       ../common/terms.nix
       ../../home/mushu-laptop/home.nix
-      nur-no-pkgs.repos.LuisChDev.modules.nordvpn
     ];
 
   # Bootloader.
@@ -26,17 +25,38 @@ in
   boot.plymouth = {
     theme = "hexagon_hud";
   };
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # nix.nixPath = [
+  #   "nixos-config=/home/mushu/my-config/config/mushu-laptop/configuration.nix"
+  # ];
   environment.sessionVariables.NIX_CONFIG_USER = "mushu-laptop";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
-  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
 
-  networking.hostName = "laptop";
+  networking.hostName = "desktop";
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "steam"
+    "steam-original"
+    "steam-run"
+  ];
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+  hardware.opengl.driSupport32Bit = true;
 
   services.xserver.displayManager.sddm = {
     theme = "Nordic/Nordic";
   };
+
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "mushu" ];
 
   users.users.mushu = {
     isNormalUser = true;
@@ -48,22 +68,51 @@ in
     ];
   };
 
-  hardware.bluetooth.enable = true;
+  services.prometheus.exporters = {
+    node = {
+      enable = true;
+      enabledCollectors = [
+        "conntrack"
+        "diskstats"
+        "entropy"
+        "filefd"
+        "filesystem"
+        "loadavg"
+        "mdadm"
+        "meminfo"
+        "netdev"
+        "netstat"
+        "stat"
+        "time"
+        "vmstat"
+        "systemd"
+        "logind"
+        "interrupts"
+        "ksmd"
+        "processes"
+      ];
+    };
+  };
+
+  hardware.bluetooth.enable = false;
 
   environment.systemPackages = with pkgs; [
 
     nordic
+    nordic.sddm
 
     # browsers
     firefox-wayland
     google-chrome
     chromium
+    tor
 
     # utils
     bluez
     brightnessctl
 
     docker-compose
+    kubectl
 
     # sddm modules
     libsForQt5.plasma-framework
@@ -73,14 +122,20 @@ in
     # gui
     thunderbird
     pavucontrol
-    qbittorrent
     etcher
-  ];
-
-  fonts.fonts = with pkgs; [
+    teams-for-linux
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
+    "electron-19.1.9"
     "electron-12.2.3"
+    "teams-1.5.00.23861"
+  ];
+
+  security.pki.certificateFiles = [
+    "/home/mushu/.cert/self-signed/certificate.pem"
+    ./certificate.pem
+    ./kube-cert.pem
+    ./node.pem
   ];
 }
