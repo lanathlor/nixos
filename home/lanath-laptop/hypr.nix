@@ -1,8 +1,11 @@
 ''
-  # monitor=eDP-1,1920x1080@144,0x0,1
+  monitor=eDP-1,1920x1080@144,0x0,1
   env = XCURSOR_SIZE,24
   exec-once = swww init; swww img ${./nord-city.jpeg}
-  exec-once = wl-paste --watch cliphist store
+  exec-once = wl-paste --type text --watch cliphist store
+  exec-once = wl-paste --type image --watch cliphist store
+  # exec-once = lxqt-policykit-agent
+  # exec-once = ssh-add
 
   input {
       kb_layout = us
@@ -174,18 +177,18 @@
 
   # rofi
   bind = $mainMod, Space, exec, rofi -show drun -modi ssh,calc,filebrowser -show-icons
-  bind = $mainMod, C, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy,
-  bind = $secMod, C, exec, rofi -show calc -modi ssh,calc,filebrowser,
-  bind = $mainMod, S, exec, rofi -show ssh -modi ssh,calc,filebrowser,
-  bind = $mainMod, backspace, exec, rofi -show p -modi p:"rofi-power-menu",
+  bind = $mainMod, C, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
+  bind = $secMod, C, exec, rofi -show calc -modi ssh,calc,filebrowser
+  bind = $mainMod, S, exec, rofi -show ssh -modi ssh,calc,filebrowser
+  bind = $mainMod, backspace, exec, rofi -show p -modi p:"rofi-power-menu"
 
   # launch app
   bind = $mainMod, Return, exec, kitty
-  bind = $mainMod, b, exec, blueman-manager,
+  bind = $mainMod, b, exec, blueman-manager
   bind = $mainMod, E, exec, thunar ~
 
   # misc
-  bind = $secMod, S, exec, grim -g "$(slurp)" - | wl-copy,
+  bind = $secMod, S, exec, grim -g "$(slurp)" - | wl-copy
   bind = $mainMod, l, exec, swaylock
 
 
