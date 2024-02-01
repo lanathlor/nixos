@@ -39,10 +39,6 @@ in
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
   ];
 
-  services.xserver.displayManager.sddm = {
-    theme = "Nordic/Nordic";
-  };
-
   users.users.mushu = {
     isNormalUser = true;
     description = "mushu";
@@ -131,6 +127,8 @@ in
     displayManager = lib.mkForce {
       gdm.enable = true;
       sddm.enable = lib.mkForce false;
+      sddm.theme = "Nordic/Nordic";
+
     };
     desktopManager.gnome = {
       enable = true;
