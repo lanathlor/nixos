@@ -136,7 +136,7 @@ in
     enable = true;
     extraGSettingsOverrides = ''
       [org.gnome.desktop.input-sources]
-      sources='[('xkb', 'fr')]'
+        sources=[('xkb', 'fr')]
     '';
   };
   services.xserver.displayManager.sddm.enable = lib.mkForce false;
