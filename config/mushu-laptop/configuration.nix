@@ -39,6 +39,10 @@ in
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
   ];
 
+  services.xserver.displayManager.sddm = {
+    theme = "Nordic/Nordic";
+  };
+
   users.users.mushu = {
     isNormalUser = true;
     description = "mushu";
@@ -48,6 +52,12 @@ in
     packages = with pkgs; [
     ];
   };
+
+  services.xserver = {
+    layout = "fr";
+    xkbVariant = lib.mkForce "azerty";
+  };
+  console.keyMap = "fr";
 
   services.prometheus.exporters = {
     node = {
@@ -120,25 +130,19 @@ in
     ./node.pem
   ];
 
-  services.xserver = {
+  services.xserver.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome = {
     enable = true;
-    layout = "fr";
-    xkbVariant = lib.mkForce "azerty";
-    displayManager = lib.mkForce {
-      gdm.enable = true;
-      sddm.enable = lib.mkForce false;
-      sddm.theme = "Nordic/Nordic";
-
-    };
-    desktopManager.gnome = {
-      enable = true;
-      extraGSettingsOverrides = ''
-        [org.gnome.desktop.input-sources]
-        sources='[('xkb', 'fr')]'
-      '';
-    };
+    extraGSettingsOverrides = ''
+      [org.gnome.desktop.input-sources]
+      sources='[('xkb', 'fr')]'
+    '';
+    extraGSettingsOverridePackages = [
+      pkgs.gsettings-desktop-schemas
+    ];
   };
-  console.keyMap = "fr";
+  services.xserver.displayManager.sddm.enable = lib.mkForce false;
   xdg.portal.enable = lib.mkForce false;
 
   programs.hyprland.enable = lib.mkForce false;
