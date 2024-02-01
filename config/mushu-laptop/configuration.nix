@@ -27,7 +27,7 @@ in
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages;
 
   # nix.nixPath = [
   #   "nixos-config=/home/mushu/my-config/config/mushu-laptop/configuration.nix"
@@ -39,17 +39,7 @@ in
   networking.hostName = "desktop";
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "steam"
-    "steam-original"
-    "steam-run"
   ];
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  };
-  hardware.opengl.driSupport32Bit = true;
 
   services.xserver.displayManager.sddm = {
     theme = "Nordic/Nordic";
