@@ -17,6 +17,7 @@ in
       ../common/configuration.nix
       ./hardware-configuration.nix
       ../common/terms.nix
+      ../common/nvidia.nix
       ../../home/lanath-laptop/home.nix
     ];
 
