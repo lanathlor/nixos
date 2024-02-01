@@ -55,7 +55,7 @@ in
 
   services.xserver = {
     layout = "fr";
-    xkbVariant = "azerty";
+    xkbVariant = lib.mkForce "azerty";
   };
   i18n.consoleKeyMap = "fr";
   console.keyMap = "fr";
