@@ -57,6 +57,8 @@ in
     layout = "fr";
   };
 
+  console.keyMap = "us";
+
   services.prometheus.exporters = {
     node = {
       enable = true;
