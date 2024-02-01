@@ -53,6 +53,10 @@ in
     ];
   };
 
+  services.xserver = {
+    layout = "fr";
+  };
+
   services.prometheus.exporters = {
     node = {
       enable = true;
