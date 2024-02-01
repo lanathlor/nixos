@@ -94,12 +94,12 @@ in
 
   programs.gnupg.agent.enable = true;
 
-  services.gnome.gnome-keyring.enable = true;
+  # services.gnome.gnome-keyring.enable = true;
   security.rtkit.enable = true;
+  security.polkit.enable = true;
   security.pam.services.swaylock = { };
   security.pam.services.sddm.enableKwallet = true;
   security.pam.services.login.enableKwallet = true;
-  security.polkit.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -137,10 +137,10 @@ in
     layout = lib.mkDefault "us";
     xkbVariant = "";
     displayManager.sddm = {
-      wayland.enable = true;
-      settings.General.DisplayServer = "x11-user";
       enable = true;
       autoNumlock = true;
+      wayland.enable = true;
+      settings.General.DisplayServer = "x11-user";
     };
   };
 
@@ -227,21 +227,21 @@ in
   };
 
 
-  systemd = {
-    user.services.polkit-gnome-authentication-agent-1 = {
-      description = "polkit-gnome-authentication-agent-1";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
-  };
+  # systemd = {
+  #   user.services.polkit-gnome-authentication-agent-1 = {
+  #     description = "polkit-gnome-authentication-agent-1";
+  #     wantedBy = [ "graphical-session.target" ];
+  #     wants = [ "graphical-session.target" ];
+  #     after = [ "graphical-session.target" ];
+  #     serviceConfig = {
+  #       Type = "simple";
+  #       ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+  #       Restart = "on-failure";
+  #       RestartSec = 1;
+  #       TimeoutStopSec = 10;
+  #     };
+  #   };
+  # };
 
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 

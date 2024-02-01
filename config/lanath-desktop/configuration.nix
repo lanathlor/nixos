@@ -122,7 +122,6 @@ in
     # gui
     thunderbird
     pavucontrol
-    qbittorrent
     etcher
     teams-for-linux
   ];
@@ -137,5 +136,6 @@ in
     "/home/lanath/.cert/self-signed/certificate.pem"
     ./certificate.pem
     ./kube-cert.pem
+    ./node.pem
   ];
 }
