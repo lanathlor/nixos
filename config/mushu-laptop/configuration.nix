@@ -128,7 +128,7 @@ in
     enable = true;
     layout = "fr";
     xkbVariant = lib.mkForce "azerty";
-    displayManager = {
+    displayManager = lib.mkForce {
       gdm.enable = true;
       sddm.enable = lib.mkForce false;
     };
