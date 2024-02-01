@@ -62,7 +62,7 @@ in
     isNormalUser = true;
     description = "mushu";
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
-    initialHashedPassword = "***REMOVED-PASSWORD-HASH***";
+    initialHashedPassword = "$y$j9T$VrPz1k/jk19bM88S5gkl21$o8EsCXEltY8YmLrpfRnV078I2VM4/Nkq.zk219avNaB";
     openssh.authorizedKeys.keyFiles = [ ./id_rsa.pub ];
     packages = with pkgs; [
     ];
