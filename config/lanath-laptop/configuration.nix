@@ -93,7 +93,7 @@ in
     };
   };
 
-  hardware.bluetooth.enable = false;
+  hardware.bluetooth.enable = true;
 
   environment.systemPackages = with pkgs; [
 
