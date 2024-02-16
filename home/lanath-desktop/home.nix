@@ -90,6 +90,23 @@ in
         rofi-emoji
       ];
     };
+    programs.ssh = {
+      matchBlocks =
+        {
+          "git.node.master.monkey" = {
+            hostname = "git.node.master.monkey";
+            user = "git";
+            port = 2222;
+            identityFile = "/home/lanath/.ssh/id_ed25519";
+          };
+          "git.node.master-monkey.com" = {
+            hostname = "git.node.master-monkey.com";
+            user = "git";
+            port = 2222;
+            identityFile = "/home/lanath/.ssh/id_ed25519";
+          };
+        };
+    };
 
     gtk = {
       enable = true;
