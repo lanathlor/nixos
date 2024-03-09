@@ -56,9 +56,9 @@ in
       topBar = {
         layer = "top";
         position = "top";
-        modules-left = ["clock" "idle_inhibitor" "custom/media"];
-        modules-center = ["mpris"];
-        modules-right = ["cpu" "memory" "temperature" "disk" "disk#data" ];
+        modules-left = [ "clock" "idle_inhibitor" "custom/media" ];
+        modules-center = [ "mpris" ];
+        modules-right = [ "cpu" "memory" "temperature" "disk" "disk#data" ];
         mpris = {
           format = "{player_icon} {dynamic}";
           format-paused = "Paused: {status_icon} <i>{dynamic}</i>";
@@ -69,7 +69,7 @@ in
           status-icons = {
             paused = "⏸";
           };
-          ignored-players = ["firefox"];
+          ignored-players = [ "firefox" ];
         };
         idle_inhibitor = {
           format = "{icon}";
@@ -115,7 +115,7 @@ in
           critical-threshold = 74;
           format-critical = " {temperatureC}°C";
           format = "{icon} {temperatureC}°C";
-          format-icons = ["" "" ""];
+          format-icons = [ "" "" "" ];
           max-length = 7;
           min-length = 7;
         };
@@ -123,9 +123,9 @@ in
       bottomBar = {
         layer = "top";
         position = "bottom";
-        modules-left = ["custom/powermenu" "custom/weather"];
-        modules-center = ["hyprland/workspaces"];
-        modules-right = ["pulseaudio" "network" "tray"];
+        modules-left = [ "custom/powermenu" "custom/weather" ];
+        modules-center = [ "hyprland/workspaces" ];
+        modules-right = [ "bluetooth" "pulseaudio" "network" "tray" ];
         "hyprland/workspaces" = {
           disable-scroll = true;
           all-outputs = false;
@@ -161,14 +161,14 @@ in
             phone = "";
             portable = "";
             car = "";
-            default = ["" "" ""];
+            default = [ "" "" "" ];
           };
           on-click = "${pkgs.pavucontrol}/bin/pavucontrol";
           on-click-right = "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
         };
         backlight = {
           format = "{icon} {percent}%";
-          format-icons = ["" ""];
+          format-icons = [ "" "" ];
           on-scroll-up = "light -A 3";
           on-scroll-down = "light -U 3";
         };
@@ -184,7 +184,7 @@ in
           format-alt = "{icon} {time}";
           format-good = "{icon} {capacity}%";
           format-full = "{icon} {capacity}%";
-          format-icons = ["" "" "" "" ""];
+          format-icons = [ "" "" "" "" "" ];
         };
         network = {
           format-wifi = " {essid}";
