@@ -61,6 +61,7 @@ in
       "git.autofetch" = true;
       "git.confirmSync" = false;
       "git.enableSmartCommit" = true;
+      "git.enableCommitSigning" = true;
       "github.copilot.enable" = {
         "*" = true;
         "markdown" = false;
@@ -83,6 +84,8 @@ in
       "settingsSync.ignoredExtensions" = [ ];
       "vs-kubernetes" = { };
       "workbench.colorTheme" = "Nord";
+      "workbench.editor.enablePreview" = false;
+      "excalidraw.theme" = "light";
     };
 
     extensions = with pkgs; with vscode-extensions; [
@@ -101,6 +104,13 @@ in
         name = "vscode-twoslash-queries";
         version = "1.2.2";
         sha256 = "sha256-Gl2wmwZWnVE9LKdBu7JW8EbBNPRWV9yMoyI+J2NzXwY=";
+      }
+      # curl https://marketplace.visualstudio.com/_apis/public/gallery/publishers/pomdtr/vsextensions/excalidraw-editor/3.7.3/vspackage | sha256sum
+      {
+        publisher = "pomdtr";
+        name = "excalidraw-editor";
+        version = "3.7.3";
+        sha256 = "sha256-ORwyFwbKQgspI+uSTAcHqiM3vWQNHaRk2QD/4uRq+do=";
       }
     ];
   };
