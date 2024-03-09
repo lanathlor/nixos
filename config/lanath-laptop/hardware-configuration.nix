@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -14,12 +15,14 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/7d2639f1-d78c-41c9-b0d7-20a7706309a5";
+    {
+      device = "/dev/disk/by-uuid/7d2639f1-d78c-41c9-b0d7-20a7706309a5";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/6718-41DD";
+    {
+      device = "/dev/disk/by-uuid/6718-41DD";
       fsType = "vfat";
     };
 
@@ -35,4 +38,16 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  hardware.enableAllFirmware = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  hardware.bluetooth.settings = { General = { Experimental = true; }; };
+  hardware.bluetooth.settings.Input = {
+    ClassicBondedOnly = false;
+  };
+  hardware.bluetooth.disabledPlugins = [ "sap" ];
+  hardware.bluetooth.package = pkgs.bluez;
+
+  services.blueman.enable = true;
 }
