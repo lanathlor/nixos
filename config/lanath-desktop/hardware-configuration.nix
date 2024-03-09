@@ -38,4 +38,16 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  hardware.enableAllFirmware = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  hardware.bluetooth.settings = { General = { Experimental = true; }; };
+  hardware.bluetooth.settings.Input = {
+    ClassicBondedOnly = false;
+  };
+  hardware.bluetooth.disabledPlugins = [ "sap" ];
+  hardware.bluetooth.package = pkgs.bluez;
+
+  services.blueman.enable = true;
 }
