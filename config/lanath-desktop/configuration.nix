@@ -94,7 +94,7 @@ in
     };
   };
 
-  hardware.bluetooth.enable = false;
+  hardware.bluetooth.enable = true;
 
   environment.systemPackages = with pkgs; [
 
@@ -124,6 +124,8 @@ in
     pavucontrol
     etcher
     teams-for-linux
+
+    tcpreplay
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
