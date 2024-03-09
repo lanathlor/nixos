@@ -94,7 +94,7 @@ in
 
   programs.gnupg.agent.enable = true;
 
-  # services.gnome.gnome-keyring.enable = true;
+  services.gnome.gnome-keyring.enable = true;
   security.rtkit.enable = true;
   security.polkit.enable = true;
   security.pam.services.swaylock = { };
@@ -136,10 +136,13 @@ in
     enable = true;
     layout = lib.mkDefault "us";
     xkbVariant = "";
-    displayManager.sddm = {
+    displayManager.gdm = {
+      wayland = true;
+      #};
+      #displayManager.sddm = {
       enable = true;
-      autoNumlock = true;
-      wayland.enable = true;
+      #autoNumlock = true;
+      #wayland.enable = true;
       settings.General.DisplayServer = "x11-user";
     };
   };
