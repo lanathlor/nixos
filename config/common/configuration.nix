@@ -198,6 +198,8 @@ in
     arp-scan
     busybox
     nmap
+
+    qemu
   ];
 
   fonts.packages = with pkgs; [
