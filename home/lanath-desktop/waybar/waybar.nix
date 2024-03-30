@@ -51,7 +51,7 @@ in
 
   programs.waybar = {
     enable = true;
-    package = unstable.waybar;
+    package = pkgs.waybar;
     settings = {
       topBar = {
         layer = "top";
