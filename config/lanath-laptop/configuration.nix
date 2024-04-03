@@ -43,6 +43,13 @@ in
     "steam-run"
   ];
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-19.1.9"
+    "electron-12.2.3"
+    "teams-1.5.00.23861"
+    "nix-2.15.3"
+  ];
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
@@ -121,12 +128,6 @@ in
     pavucontrol
     etcher
     teams-for-linux
-  ];
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-19.1.9"
-    "electron-12.2.3"
-    "teams-1.5.00.23861"
   ];
 
   security.pki.certificateFiles = [

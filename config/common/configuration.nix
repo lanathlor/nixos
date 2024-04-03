@@ -51,6 +51,10 @@ in
         networkmanager-openconnect
       ];
     };
+    hosts = {
+      "2.13.105.165" = [ "master.monkey" "master-monkey.com" ];
+    };
+
     firewall.checkReversePath = lib.mkDefault false;
     firewall.enable = lib.mkDefault false;
     useDHCP = lib.mkDefault false;
@@ -113,12 +117,16 @@ in
 
   services = {
     pipewire = {
-      enable = true;
-      alsa.enable = true;
+      enable = false;
+      alsa.enable = false;
       alsa.support32Bit = true;
       pulse.enable = true;
     };
   };
+
+  nixpkgs.config.pulseaudio = true;
+  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.support32Bit = true;
 
   services.mullvad-vpn.enable = true;
 

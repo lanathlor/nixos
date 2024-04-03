@@ -176,10 +176,10 @@
   bind = $mainMod, g, togglegroup
 
   # rofi
-  bind = $mainMod, Space, exec, rofi -show drun -modi ssh,calc,filebrowser -show-icons
+  bind = $mainMod, Space, exec, rofi -show drun -modi ssh,filebrowser -show-icons
   bind = $mainMod, C, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
-  bind = $secMod, C, exec, rofi -show calc -modi ssh,calc,filebrowser
-  bind = $mainMod, S, exec, rofi -show ssh -modi ssh,calc,filebrowser
+  bind = $secMod, C, exec, rofi -show calc -modi calc
+  bind = $mainMod, S, exec, rofi -show ssh -modi ssh
   bind = $mainMod, backspace, exec, rofi -show p -modi p:"rofi-power-menu"
 
   # launch app
