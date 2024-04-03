@@ -11,11 +11,11 @@
     driSupport = true;
     driSupport32Bit = true;
     extraPackages = with pkgs; [
-        intel-media-driver
-        vaapiIntel
-        vaapiVdpau
-        libvdpau-va-gl
-        config.boot.kernelPackages.nvidia_x11.out
+      intel-media-driver
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+      config.boot.kernelPackages.nvidia_x11.out
     ];
   };
 
@@ -23,7 +23,7 @@
   ];
 
   boot.initrd.kernelModules = [ "nvidia" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 config.boot.kernelPackages.evdi ];
   boot.kernelParams = [ "loglevel=3" "quiet" "nouveau.modeset=0" "ibt=off" "vt.global_cursor_default=0" /* "module_blacklist=i915" */ ];
 
   boot.blacklistedKernelModules = [ "nouveau" "nvidiafb" ];
@@ -49,5 +49,5 @@
     nvidiaBusId = "PCI:1:0:0";
   };
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "nvidia" "displaylink" "modesetting" ];
 }
