@@ -59,6 +59,9 @@ in
     firewall.enable = lib.mkDefault false;
     useDHCP = lib.mkDefault false;
     # nameservers = [ "10.1.0.1" "1.1.1.1" "8.8.8.8" ];
+    hosts = {
+      "2.13.105.165" = [ "master.monkey" "*.master.monkey" ];
+    };
   };
 
   services.resolved.enable = false;
