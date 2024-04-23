@@ -74,7 +74,7 @@ in
       userEmail = "valentin@viviersoft.com";
       signing = {
         signByDefault = true;
-        key = "5089810F35CD9FEBB76E1FEF6B8C16D2CDC8CA93";
+        key = "B3319E23B4F37099073FD764AC81A86C4854A64B";
       };
     };
 
