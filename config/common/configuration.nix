@@ -51,9 +51,6 @@ in
         networkmanager-openconnect
       ];
     };
-    hosts = {
-      "2.13.105.165" = [ "master.monkey" "master-monkey.com" ];
-    };
 
     firewall.checkReversePath = lib.mkDefault false;
     firewall.enable = lib.mkDefault false;
