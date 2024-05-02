@@ -109,6 +109,7 @@ in
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
     ];
   };
 
@@ -117,16 +118,16 @@ in
 
   services = {
     pipewire = {
-      enable = false;
-      alsa.enable = false;
+      enable = true;
+      alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
     };
   };
 
-  nixpkgs.config.pulseaudio = true;
-  hardware.pulseaudio.enable = true;
-  hardware.pulseaudio.support32Bit = true;
+  # nixpkgs.config.pulseaudio = true;
+  # hardware.pulseaudio.enable = true;
+  # hardware.pulseaudio.support32Bit = true;
 
   services.mullvad-vpn.enable = true;
 
@@ -183,6 +184,8 @@ in
     openvpn
     wireguard-tools
     mattermost-desktop
+    tig
+    kubernetes-helm
 
     # maintenance
     zip
@@ -208,6 +211,17 @@ in
     nmap
 
     qemu
+
+    qbittorrent
+
+    # game
+    wineWowPackages.stable
+    wine
+    (wine.override { wineBuild = "wine64"; })
+    wine64
+    wineWowPackages.staging
+    winetricks
+    wineWowPackages.waylandFull
   ];
 
   fonts.packages = with pkgs; [
