@@ -114,6 +114,8 @@ in
     thunderbird
     pavucontrol
     teams-for-linux
+
+    ciscoPacketTracer8
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
@@ -142,6 +144,12 @@ in
   xdg.portal.enable = lib.mkForce false;
 
   programs.hyprland.enable = lib.mkForce false;
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
 
   services = {
     pipewire = {
