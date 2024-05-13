@@ -1,5 +1,11 @@
 { config, pkgs, lib, ... }:
 {
+  imports =
+    [
+      # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
+
   boot.loader.grub.enable = true;
   boot.loader.grub.useOSProber = true;
 
