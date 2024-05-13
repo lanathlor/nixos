@@ -71,6 +71,11 @@
     nmap
   ];
 
+  users.users.root = {
+    isNormalUser = false;
+    openssh.authorizedKeys.keyFiles = [ ../../keys/lanath.pub ../../keys/mushu.pub ];
+  };
+
   users.users.lanath = {
     isNormalUser = true;
     description = "lanath";
