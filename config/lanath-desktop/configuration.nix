@@ -63,7 +63,17 @@ in
     description = "lanath";
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
     initialHashedPassword = "***REMOVED-PASSWORD-HASH***";
-    openssh.authorizedKeys.keyFiles = [ ./id_rsa.pub ];
+    openssh.authorizedKeys.keyFiles = [ ../../keys/lanath.pub ];
+    packages = with pkgs; [
+    ];
+  };
+
+  users.users.mushu = {
+    isNormalUser = true;
+    description = "mushu";
+    extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
+    initialHashedPassword = "***REMOVED-PASSWORD-HASH***";
+    openssh.authorizedKeys.keyFiles = [ ../../keys/mushu.pub ];
     packages = with pkgs; [
     ];
   };
