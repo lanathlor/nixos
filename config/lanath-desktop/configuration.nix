@@ -63,7 +63,17 @@ in
     description = "lanath";
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
     initialHashedPassword = "$y$j9T$TFdhvKQ4clM.JxX1ScPkq1$tOxZv2DOIBWF/uhoyfCbzIkCYZuwa9BfEPNI4wmzqN3";
-    openssh.authorizedKeys.keyFiles = [ ./id_rsa.pub ];
+    openssh.authorizedKeys.keyFiles = [ ../../keys/lanath.pub ];
+    packages = with pkgs; [
+    ];
+  };
+
+  users.users.mushu = {
+    isNormalUser = true;
+    description = "mushu";
+    extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
+    initialHashedPassword = "$y$j9T$TFdhvKQ4clM.JxX1ScPkq1$tOxZv2DOIBWF/uhoyfCbzIkCYZuwa9BfEPNI4wmzqN3";
+    openssh.authorizedKeys.keyFiles = [ ../../keys/mushu.pub ];
     packages = with pkgs; [
     ];
   };

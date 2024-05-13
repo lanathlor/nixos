@@ -17,6 +17,8 @@ lanath-desktop:
 build-lanath-iso:
 	nixos-generate -f iso -c config/lanath-laptop/configuration.nix
 
+basic:
+	sudo nixos-rebuild switch -I nixos-config=config/basic/configuration.nix
 
 #####
 ##### misc
