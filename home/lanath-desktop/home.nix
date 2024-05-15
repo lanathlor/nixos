@@ -97,13 +97,13 @@ in
             hostname = "git.node.master.monkey";
             user = "git";
             port = 2222;
-            identityFile = "/home/lanath/.ssh/id_ed25519";
+            identityFile = "/home/lanath/.ssh/id_rsa";
           };
           "git.node.master-monkey.com" = {
             hostname = "git.node.master-monkey.com";
             user = "git";
             port = 2222;
-            identityFile = "/home/lanath/.ssh/id_ed25519";
+            identityFile = "/home/lanath/.ssh/id_rsa";
           };
         };
     };
