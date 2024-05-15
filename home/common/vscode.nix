@@ -64,10 +64,10 @@ in
       "git.enableCommitSigning" = true;
       "github.copilot.enable" = {
         "*" = true;
-        "markdown" = false;
+        "markdown" = true;
         "plaintext" = true;
-        "scminput" = false;
-        "yaml" = false;
+        "scminput" = true;
+        "yaml" = true;
       };
       "javascript.updateImportsOnFileMove.enabled" = "always";
       "nix.enableLanguageServer" = true;

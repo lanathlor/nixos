@@ -61,7 +61,6 @@ in
     theme = "Nordic/Nordic";
   };
 
-  virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "lanath" ];
 
   users.users.lanath = {
