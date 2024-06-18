@@ -19,7 +19,7 @@
   services.openssh.enable = true;
   services.openssh.passwordAuthentication = false;
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
 
   environment.systemPackages = with pkgs; [
     # ide

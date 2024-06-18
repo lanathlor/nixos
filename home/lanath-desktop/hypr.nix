@@ -94,17 +94,14 @@
       preserve_split = yes # you probably want this
   }
 
-  master {
-      new_is_master = true
-  }
-
   gestures {
       workspace_swipe = on
-      workspace_swipe_fingers = 3;
-      workspace_swipe_min_speed_to_force = 30;
+      workspace_swipe_fingers = 3
+      workspace_swipe_min_speed_to_force = 30
   }
 
-  device:epic-mouse-v1 {
+  device {
+      name = epic-mouse-v1
       sensitivity = -0.5
   }
 
