@@ -20,7 +20,7 @@ in
       rofi-bluetooth
       rofi-power-menu
       rofi-systemd
-      discord
+      unstable.discord
       unstable.dorion
     ];
 
@@ -72,6 +72,34 @@ in
       enable = true;
       userName = "lanath";
       userEmail = "valentin@viviersoft.com";
+      ignores = [
+        "node_modules"
+        "target"
+        "dist"
+        "build"
+        "out"
+        "vendor"
+        "public"
+        "*.log"
+        "*.lock"
+        "*.sqlite"
+        "*.envrc"
+        "*.pem"
+        "*.key"
+        "*.crt"
+        "*.csr"
+        "*.pfx"
+        "*.cer"
+        "*.jks"
+        "*.keystore"
+        "*~"
+        ".direnv"
+        "*tfstate*"
+        ".terraform"
+      ];
+      extraConfig = {
+        pull.rebase = true;
+      };
       signing = {
         signByDefault = true;
         key = "B3319E23B4F37099073FD764AC81A86C4854A64B";

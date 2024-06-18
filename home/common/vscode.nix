@@ -38,8 +38,14 @@ in
         "editor.defaultFormatter" = "hashicorp.terraform";
         "editor.formatOnSave" = true;
       };
+      "[shellscript]" = {
+        "editor.defaultFormatter" = "foxundermoon.shell-format";
+      };
       "[typescript]" = {
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      };
+      "[dockerfile]" = {
+        "editor.defaultFormatter" = "ms-azuretools.vscode-docker";
       };
       "debug.onTaskErrors" = "showErrors";
       "editor.codeActionsOnSave" = {
@@ -71,7 +77,7 @@ in
       };
       "javascript.updateImportsOnFileMove.enabled" = "always";
       "nix.enableLanguageServer" = true;
-      "nix.serverPath" = "rnix-lsp";
+      #"nix.serverPath" = "rnix-lsp";
       "prettier.ignorePath" = "~/.prettierignore";
       "prettier.jsxSingleQuote" = true;
       "prettier.printWidth" = 100;
@@ -86,6 +92,8 @@ in
       "workbench.colorTheme" = "Nord";
       "workbench.editor.enablePreview" = false;
       "excalidraw.theme" = "light";
+      "explorer.confirmDelete" = false;
+      "typescript.updateImportsOnFileMove.enabled"= "always";
     };
 
     extensions = with pkgs; with vscode-extensions; [

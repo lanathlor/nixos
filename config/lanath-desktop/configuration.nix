@@ -38,6 +38,8 @@ in
 
   networking.hostName = "desktop";
 
+  #networking.enableIPv6  = false;
+
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "steam"
     "steam-original"
@@ -51,9 +53,9 @@ in
   };
   hardware.opengl.driSupport32Bit = true;
 
-  services.xserver.displayManager.sddm = {
-    theme = "Nordic/Nordic";
-  };
+  # services.displayManager.sddm = {
+  #   theme = "Nordic/Nordic";
+  # };
 
   users.extraGroups.vboxusers.members = [ "lanath" ];
 
@@ -129,7 +131,6 @@ in
     # gui
     thunderbird
     pavucontrol
-    etcher
     teams-for-linux
 
     tcpreplay
@@ -142,10 +143,10 @@ in
     "nix-2.15.3"
   ];
 
-  security.pki.certificateFiles = [
-    "/home/lanath/.cert/self-signed/certificate.pem"
-    ./certificate.pem
-    ./kube-cert.pem
-    ./node.pem
-  ];
+  # security.pki.certificateFiles = [
+  #   "/home/lanath/.cert/self-signed/certificate.pem"
+  #   ./certificate.pem
+  #   ./kube-cert.pem
+  #   ./node.pem
+  # ];
 }
