@@ -125,7 +125,6 @@ in
     # gui
     thunderbird
     pavucontrol
-    etcher
     teams-for-linux
   ];
 

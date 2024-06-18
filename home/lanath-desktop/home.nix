@@ -20,7 +20,7 @@ in
       rofi-bluetooth
       rofi-power-menu
       rofi-systemd
-      discord
+      unstable.discord
       unstable.dorion
     ];
 

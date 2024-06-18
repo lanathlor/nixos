@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz";
   unstable = import
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     # reuse the current configuration
@@ -31,7 +31,7 @@ in
     '';
   };
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
 
   nixpkgs.config.allowUnfree = true;
   environment.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
@@ -143,8 +143,10 @@ in
 
   services.xserver = {
     enable = true;
-    layout = lib.mkDefault "us";
-    xkbVariant = "";
+    xkb = {
+      layout = lib.mkDefault "us";
+      variant = "";
+    };
     displayManager.gdm = {
       wayland = true;
       #};
@@ -179,7 +181,6 @@ in
     htop
     lxqt.lxqt-openssh-askpass
     ssh-askpass-fullscreen
-    rnix-lsp
     nixpkgs-fmt
     openvpn
     wireguard-tools

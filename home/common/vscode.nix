@@ -71,7 +71,7 @@ in
       };
       "javascript.updateImportsOnFileMove.enabled" = "always";
       "nix.enableLanguageServer" = true;
-      "nix.serverPath" = "rnix-lsp";
+      #"nix.serverPath" = "rnix-lsp";
       "prettier.ignorePath" = "~/.prettierignore";
       "prettier.jsxSingleQuote" = true;
       "prettier.printWidth" = 100;
