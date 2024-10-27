@@ -15,7 +15,7 @@ in
 {
   programs.vscode = {
     enable = true;
-    package = unstable.vscode;
+    # package = unstable.vscode;
     userSettings = {
       "[go]" = {
         "editor.defaultFormatter" = "golang.go";
@@ -33,6 +33,7 @@ in
       };
       "[python]" = {
         "editor.formatOnType" = true;
+        "editor.defaultFormatter" = "ms-python.black-formatter";
       };
       "[terraform]" = {
         "editor.defaultFormatter" = "hashicorp.terraform";
@@ -44,6 +45,9 @@ in
       "[typescript]" = {
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
       };
+      "[typescriptreact]" = {
+        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      };
       "[dockerfile]" = {
         "editor.defaultFormatter" = "ms-azuretools.vscode-docker";
       };
@@ -51,7 +55,6 @@ in
       "editor.codeActionsOnSave" = {
         "source.fixAll.eslint" = "explicit";
       };
-      "editor.defaultFormatter" = "esbenp.prettier-vscode";
       "editor.fontFamily" = "'Fira Code', 'Font Awesome 5', 'Font Awesome 5 Free Regular', 'Font Awesome 5 Free Solid', 'Font Awesome 5 Brands Regular', 'FiraCode Nerd Font Mono', CaskaydiaCoveNerdFont, 'Droid Sans Mono', 'monospace', monospace";
       "editor.fontLigatures" = true;
       "editor.formatOnSave" = true;
@@ -77,7 +80,12 @@ in
       };
       "javascript.updateImportsOnFileMove.enabled" = "always";
       "nix.enableLanguageServer" = true;
-      #"nix.serverPath" = "rnix-lsp";
+      "nix.serverPath" = "nil";
+      "nix.serverSettings" = {
+        "nil" = {
+          "formatting" = { "command" = ["nixpkgs-fmt"]; };
+        };
+      };
       "prettier.ignorePath" = "~/.prettierignore";
       "prettier.jsxSingleQuote" = true;
       "prettier.printWidth" = 100;

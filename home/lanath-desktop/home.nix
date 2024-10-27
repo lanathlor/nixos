@@ -64,6 +64,8 @@ in
     programs.fish = {
       shellAliases = {
         k = "kubectl";
+        d = "docker";
+        g = "git";
         kssh = "kitten ssh";
       };
     };
@@ -74,14 +76,8 @@ in
       userEmail = "valentin@viviersoft.com";
       ignores = [
         "node_modules"
-        "target"
-        "dist"
-        "build"
         "out"
-        "vendor"
-        "public"
         "*.log"
-        "*.lock"
         "*.sqlite"
         "*.envrc"
         "*.pem"
@@ -94,6 +90,7 @@ in
         "*.keystore"
         "*~"
         ".direnv"
+        ".envrc"
         "*tfstate*"
         ".terraform"
       ];
