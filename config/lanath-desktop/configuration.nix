@@ -141,6 +141,7 @@ in
     "electron-12.2.3"
     "teams-1.5.00.23861"
     "nix-2.15.3"
+    "qbittorrent-4.6.4"
   ];
 
   # security.pki.certificateFiles = [
