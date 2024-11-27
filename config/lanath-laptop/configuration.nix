@@ -129,7 +129,6 @@ in
   ];
 
   security.pki.certificateFiles = [
-    "/home/lanath/.cert/self-signed/certificate.pem"
     ./certificate.pem
     ./kube-cert.pem
     ./node.pem
