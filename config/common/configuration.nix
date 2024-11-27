@@ -233,8 +233,6 @@ in
 
     qemu
 
-    qbittorrent
-
     # game
     wineWowPackages.stable
     wine
@@ -243,6 +241,11 @@ in
     wineWowPackages.staging
     winetricks
     wineWowPackages.waylandFull
+    (wineWowPackages.full.override {
+      wineRelease = "staging";
+      mingwSupport = true;
+    })
+    wowup-cf
   ];
 
   fonts.packages = with pkgs; [
