@@ -15,6 +15,7 @@
       ./rofi
       ./rofi
       ./terms/fish/lanath.nix
+      ./terms/starship.nix
       ./theme/nordic/homeManager.nix
       ./xserver/lanath.nix
     ];
