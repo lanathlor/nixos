@@ -51,11 +51,13 @@
       decoration {
           rounding = 10
           blurls = lockscreen
-          drop_shadow = no
-          shadow_range = 0
-          shadow_render_power = 0
-          col.shadow = 0x44000000
-          col.shadow_inactive=0x33000000
+          shadow {
+            enabled = no
+            range = 0
+            render_power = 0
+            color = 0x44000000
+            color_inactive = 0x33000000
+          }
           blur {
             # enabled = true
             # size = 2
