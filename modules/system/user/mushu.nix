@@ -1,6 +1,6 @@
 { ... }:
 let
-  mushu = import ./mushu.nix {
+  mushu = import ./default.nix {
     username = "mushu";
     initialHashedPassword = "***REMOVED-PASSWORD-HASH***";
   };

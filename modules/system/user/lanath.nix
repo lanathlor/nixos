@@ -1,6 +1,6 @@
 { ... }:
 let
-  lanath = import ./lanath.nix {
+  lanath = import ./default.nix {
     username = "lanath";
     initialHashedPassword = "***REMOVED-PASSWORD-HASH***";
   };

@@ -1,7 +1,7 @@
 { ... }:
 {
-  import = [
-    ./de/hyperland.nix
+  imports = [
+    ./de/hyprland.nix
     ./theme/nordic
   ];
 
@@ -12,6 +12,7 @@
       ./git/lanath.nix
       ./homeManager/lanath.nix
       ./lock/swaylock.nix
+      ./rofi
       ./rofi
       ./terms/fish/lanath.nix
       ./theme/nordic/homeManager.nix
