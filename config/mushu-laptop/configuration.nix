@@ -122,6 +122,7 @@ in
     "electron-19.1.9"
     "electron-12.2.3"
     "teams-1.5.00.23861"
+    "nix-2.15.3"
   ];
 
   security.pki.certificateFiles = [
