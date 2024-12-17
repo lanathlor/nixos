@@ -3,6 +3,7 @@
   import = [
     ./bluetooth
     ./boot
+    ./hardware
     ./internetNavigator
     ./locals
     ./mails
