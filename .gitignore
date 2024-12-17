@@ -1,2 +1,3 @@
 .direnv
 result
+hosts/hardware-configurations.nix
