@@ -42,7 +42,7 @@
   };
 
   programs.kitty = {
-    theme = lib.mkDefault "Nord";
+    themeFile = lib.mkDefault "Nord";
   };
 
   programs.swaylock = {
