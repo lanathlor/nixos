@@ -39,10 +39,6 @@ in
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
   ];
 
-  services.xserver.displayManager.sddm = {
-    theme = "Nordic/Nordic";
-  };
-
   users.users.mushu = {
     isNormalUser = true;
     description = "mushu";
@@ -54,8 +50,8 @@ in
   };
 
   services.xserver = {
-    layout = "fr";
-    xkbVariant = lib.mkForce "azerty";
+    xkb.layout = "fr";
+    xkb.variant = lib.mkForce "azerty";
   };
   console.keyMap = "fr";
 
@@ -115,7 +111,7 @@ in
     pavucontrol
     teams-for-linux
 
-    ciscoPacketTracer8
+    # ciscoPacketTracer8
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
@@ -123,13 +119,6 @@ in
     "electron-12.2.3"
     "teams-1.5.00.23861"
     "nix-2.15.3"
-  ];
-
-  security.pki.certificateFiles = [
-    "/home/mushu/.cert/self-signed/certificate.pem"
-    ./certificate.pem
-    ./kube-cert.pem
-    ./node.pem
   ];
 
   services.xserver.enable = true;
@@ -141,7 +130,6 @@ in
         sources=[('xkb', 'fr')]
     '';
   };
-  services.xserver.displayManager.sddm.enable = lib.mkForce false;
   xdg.portal.enable = lib.mkForce false;
 
   programs.hyprland.enable = lib.mkForce false;
