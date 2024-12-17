@@ -1,6 +1,6 @@
 { ... }:
 {
-  import = [
+  imports = [
     ./steam.nix
     ./wow.nix
   ];

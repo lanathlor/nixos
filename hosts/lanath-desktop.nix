@@ -2,10 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ ... }:
-
+{ config, ... }:
+let
+  unstable = import
+    (builtins.fetchTarball "https://github.com/nixos/nixpkgs/tarball/nixos-unstable")
+    { config = config.nixpkgs.config; };
+in
 {
-  import = [
+  imports = [
     ./hardware-configuration.nix
 
     ../modules/system
