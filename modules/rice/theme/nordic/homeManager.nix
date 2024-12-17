@@ -1,9 +1,9 @@
 { pkgs, lib, ... }:
 {
-  import = [
+  imports = [
     ./waybar/waybar.nix
   ];
-  services.dunst = {
+  services.dunst.settings = {
     base16_low = {
       frame_color = "#5e81ac77";
       msg_urgency = "low";

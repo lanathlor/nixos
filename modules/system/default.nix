@@ -1,6 +1,6 @@
 { ... }:
 {
-  import = [
+  imports = [
     ./bluetooth
     ./boot
     ./hardware
