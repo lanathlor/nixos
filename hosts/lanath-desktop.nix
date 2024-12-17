@@ -34,7 +34,11 @@ in
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 
   home-manager.users.lanath = { pkgs, ... }: {
-    home.packages = with pkgs; [
+    imports = [
+      ../modules/devel/vscode/lanath.nix
+    ];
+
+    home.packages = [
       unstable.discord
       unstable.dorion
     ];
