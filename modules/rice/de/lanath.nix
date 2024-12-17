@@ -186,16 +186,14 @@
       bind = $mainMod, S, exec, rofi -show ssh -modi ssh,filebrowser
       bind = $mainMod, backspace, exec, rofi -show p -modi p:" rofi-power-menu "
 
-            # launch app
-            bind = $mainMod, Return, exec, kitty
-            bind = $mainMod, b, exec, blueman-manager
-            bind = $mainMod, E, exec, thunar ~
+      # launch app
+      bind = $mainMod, Return, exec, kitty
+      bind = $mainMod, b, exec, blueman-manager
+      bind = $mainMod, E, exec, thunar ~
 
-            # misc
-            bind = $secMod, S, exec, grim -g "$
-            (slurp) " - | wl-copy
+      # misc
+      bind = $secMod, S, exec, grim -g "$(slurp)" - | wl-copy
       bind = $mainMod, l, exec, swaylock
-
 
       # Move focus with mainMod + arrow keys
       bind = $mainMod, left, movefocus, l
