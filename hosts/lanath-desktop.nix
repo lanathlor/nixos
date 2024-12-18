@@ -14,6 +14,7 @@ in
 
     ../modules/system
     ../modules/system/user/lanath.nix
+    ../modules/system/user/mushu.nix
     ../modules/system/virt/docker.nix
     ../modules/system/virt/kubernetes.nix
 
