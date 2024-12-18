@@ -23,6 +23,7 @@ in
 
     ../modules/rice
     ../modules/rice/lanath.nix
+    ../modules/rice/mushu.nix
 
     ../modules/services/ssh
   ];
@@ -35,6 +36,28 @@ in
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 
   home-manager.users.lanath = { pkgs, ... }: {
+    imports = [
+      ../modules/devel/vscode/lanath.nix
+    ];
+
+    home.packages = [
+      unstable.discord
+      unstable.dorion
+    ];
+
+    programs.home-manager.enable = true;
+
+    nixpkgs = {
+      config = {
+        allowUnfree = true;
+        allowUnfreePredicate = (_: true);
+      };
+    };
+
+    home.stateVersion = "24.11";
+  };
+
+  home-manager.users.mushu = { pkgs, ... }: {
     imports = [
       ../modules/devel/vscode/lanath.nix
     ];
