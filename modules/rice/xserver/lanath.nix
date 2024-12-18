@@ -3,7 +3,7 @@
   xdg.userDirs.enable = true;
   xdg.mimeApps.enable = true;
 
-  home.file."Document/.keep".source = builtins.toFile "keep" "";
+  home.file."Documents/.keep".source = builtins.toFile "keep" "";
   home.file."Downloads/.keep".source = builtins.toFile "keep" "";
   home.file."Music/.keep".source = builtins.toFile "keep" "";
   home.file."Work/.keep".source = builtins.toFile "keep" "";
