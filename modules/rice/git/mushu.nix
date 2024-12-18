@@ -27,8 +27,5 @@
     extraConfig = {
       pull.rebase = true;
     };
-    signing = {
-      signByDefault = false;
-    };
   };
 }
