@@ -14,6 +14,9 @@ mushu-laptop:
 lanath-desktop:
 	nixos-rebuild switch -I nixos-config=hosts/lanath-desktop.nix
 
+mushu-desktop:
+	nixos-rebuild switch -I nixos-config=hosts/mushu-desktop.nix
+
 build-lanath-iso:
 	sudo nixos-generate -f iso -c config/lanath-laptop/configuration.nix
 
