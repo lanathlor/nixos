@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ./de/hyprland.nix
+    ./de/gnome.nix
     ./theme/nordic
   ];
 
@@ -17,7 +17,7 @@
       ./terms/fish/lanath.nix
       ./terms/starship.nix
       ./theme/nordic/homeManager.nix
-      ./xserver/lanath.nix
+      ./xserver/mushu.nix
     ];
   };
 }
