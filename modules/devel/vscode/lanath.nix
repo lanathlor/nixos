@@ -14,6 +14,9 @@
       "[javascript]" = {
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
       };
+      "[json]" = {
+        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      };
       "[nix]" = {
         "editor.defaultFormatter" = "jnoortheen.nix-ide";
         "editor.formatOnSave" = true;
@@ -93,6 +96,7 @@
 
     extensions = with pkgs; with vscode-extensions; [
       golang.go
+      ms-azuretools.vscode-docker
       bbenoist.nix
       jnoortheen.nix-ide
       ms-dotnettools.csharp
@@ -101,6 +105,7 @@
       ms-azuretools.vscode-docker
       eamodio.gitlens
       esbenp.prettier-vscode
+      gitlab.gitlab-workflow
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
         publisher = "Orta";
@@ -108,12 +113,18 @@
         version = "1.2.2";
         sha256 = "sha256-Gl2wmwZWnVE9LKdBu7JW8EbBNPRWV9yMoyI+J2NzXwY=";
       }
-      # curl https://marketplace.visualstudio.com/_apis/public/gallery/publishers/pomdtr/vsextensions/excalidraw-editor/3.7.3/vspackage | sha256sum
       {
         publisher = "pomdtr";
         name = "excalidraw-editor";
         version = "3.7.3";
         sha256 = "sha256-ORwyFwbKQgspI+uSTAcHqiM3vWQNHaRk2QD/4uRq+do=";
+      }
+      # curl https://marketplace.visualstudio.com/_apis/public/gallery/publishers/4ops/vsextensions/terraform/0.2.5/vspackage | sha256sum
+      {
+        publisher = "4ops";
+        name = "terraform";
+        version = "0.2.5";
+        sha256 = "sha256-y5LljxK8V9Fir9EoG8g9N735gISrlMg3czN21qF/KjI=";
       }
     ];
   };
