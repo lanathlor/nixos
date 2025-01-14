@@ -31,7 +31,7 @@ update:
 	sudo nix-channel --update
 
 upgrade:
-	sudo nixos-rebuild boot -I "nixos-config=config/$(NIX_CONFIG_USER)/configuration.nix" --upgrade
+	sudo nixos-rebuild boot -I "nixos-config=hosts/$(NIX_CONFIG_USER).nix" --upgrade
 
 re: update upgrade
 
@@ -43,4 +43,4 @@ wipe:
 
 clean: wipe garbage
 
-all: clean re
+all: re clean
