@@ -121,10 +121,10 @@
       }
       # curl https://marketplace.visualstudio.com/_apis/public/gallery/publishers/4ops/vsextensions/terraform/0.2.5/vspackage | sha256sum
       {
-        publisher = "4ops";
+        publisher = "hashicorp";
         name = "terraform";
-        version = "0.2.5";
-        sha256 = "sha256-y5LljxK8V9Fir9EoG8g9N735gISrlMg3czN21qF/KjI=";
+        version = "2.34.2";
+        sha256 = "sha256-lU1SrAPDCCSanJaB0xRVFWmi9a1J4Btj9oORatToM6w=";
       }
     ];
   };
