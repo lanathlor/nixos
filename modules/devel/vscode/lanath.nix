@@ -106,6 +106,8 @@
       eamodio.gitlens
       esbenp.prettier-vscode
       gitlab.gitlab-workflow
+      github.copilot
+      vscode-extensions.github.copilot-chat
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
         publisher = "Orta";
