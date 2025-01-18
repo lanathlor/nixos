@@ -5,9 +5,6 @@
 env:
 	sudo nixos-rebuild switch -I "nixos-config=hosts/$(NIX_CONFIG_USER).nix"
 
-lanath-laptop:
-	sudo nixos-rebuild switch -I nixos-config=config/lanath-laptop/configuration.nix
-
 mushu-laptop:
 	nixos-rebuild switch -I nixos-config=hosts/mushu-laptop.nix
 
@@ -16,12 +13,6 @@ lanath-desktop:
 
 mushu-desktop:
 	nixos-rebuild switch -I nixos-config=hosts/mushu-desktop.nix
-
-build-lanath-iso:
-	sudo nixos-generate -f iso -c config/lanath-laptop/configuration.nix
-
-basic:
-	sudo nixos-rebuild switch -I nixos-config=config/basic/configuration.nix
 
 #####
 ##### misc
