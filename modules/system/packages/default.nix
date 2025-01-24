@@ -12,6 +12,8 @@ in
     # dev
     git
     nixpkgs-fmt
+    nodejs_22
+    pnpm
 
     # utils
     htop
