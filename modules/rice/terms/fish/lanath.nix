@@ -8,6 +8,7 @@
       g = "git";
       kssh = "kitten ssh";
       bc = "pnpx better-commits";
+      bb = "npx --package=better-commits better-branch";
     };
   };
 }

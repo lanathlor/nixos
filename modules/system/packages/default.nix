@@ -26,6 +26,8 @@ in
     tig
     brightnessctl
 
+    dive
+
     nil
 
     # maintenance
