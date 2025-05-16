@@ -11,6 +11,7 @@
       exec-once = swww init; swww img ${../theme/nordic/nord-city.jpeg}
       exec-once = wl-paste --type text --watch cliphist store
       exec-once = wl-paste --type image --watch cliphist store
+      exec-once = wl-paste -t text -w xclip -selection clipboard
       # exec-once = lxqt-policykit-agent
       # exec-once = ssh-add
 
