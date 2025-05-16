@@ -3,6 +3,7 @@
   services.xserver.desktopManager.gnome = {
     enable = true;
   };
+  services.xserver.displayManager.gdm.autoSuspend = false;
 
   # services.xserver.displayManager.sddm.enable = lib.mkForce false;
   # xdg.portal.enable = lib.mkForce false;
