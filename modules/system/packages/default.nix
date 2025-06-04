@@ -83,7 +83,10 @@ in
     dina-font
     font-awesome
     font-awesome_5
-    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.caskaydia-mono
+    nerd-fonts.noto
     nomacs
   ];
 }

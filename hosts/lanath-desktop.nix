@@ -54,7 +54,7 @@ in
       };
     };
 
-    home.stateVersion = "24.11";
+    home.stateVersion = "25.05";
   };
 
   home-manager.users.mushu = { pkgs, ... }: {
@@ -76,6 +76,6 @@ in
       };
     };
 
-    home.stateVersion = "24.11";
+    home.stateVersion = "25.05";
   };
 }

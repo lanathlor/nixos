@@ -8,7 +8,7 @@
       monitor=DP-1,1920x1080@144,1920x0,1
       monitor=DP-2,1920x1080@144,3840x0,1
       env = XCURSOR_SIZE,24
-      exec-once = swww init; swww img ${../theme/nordic/nord-city.jpeg}
+      exec-once = swww-daemon; swww img ${../theme/nordic/nord-city.jpeg}
       exec-once = wl-paste --type text --watch cliphist store
       exec-once = wl-paste --type image --watch cliphist store
       exec-once = wl-paste -t text -w xclip -selection clipboard
@@ -122,12 +122,6 @@
 
 
 
-      windowrule = float,^(spotify)$
-      windowrule = float,^(nm-connection-editor)$
-      windowrule = float,^(pavucontrol)$
-      windowrule = dimaround,^(pavucontrol)$
-      windowrule = opacity 0.7 0.7,^(pavucontrol)$
-      windowrule = opacity 0.9 0.9,^(discord)$
 
       windowrule=float,title:^(Open File)(.*)$
       windowrule=float,title:^(Select a File)(.*)$
@@ -136,6 +130,13 @@
       windowrule=float,title:^(Save As)(.*)$
       windowrule=float,title:^(Library)(.*)$
       windowrule=float,title:^(Home)(.*)$
+
+      windowrulev2 = float,class:^(spotify)$
+      windowrulev2 = float,class:^(nm-connection-editor)$
+      windowrulev2 = float,class:^(pavucontrol)$
+      windowrulev2 = dimaround,class:^(pavucontrol)$
+      windowrulev2 = opacity 0.7 0.7,class:^(pavucontrol)$
+      windowrulev2 = opacity 0.9 0.9,class:^(discord)$
 
       windowrulev2 = float,class:^(.*blueman-manager.*)$
       windowrulev2 = dimaround,class:^(.*blueman-manager.*)$

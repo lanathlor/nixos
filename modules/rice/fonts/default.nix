@@ -12,7 +12,11 @@
     font-awesome
     font-awesome_5
     proggyfonts
-    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    nerd-fonts.fira-code
+    nerd-fonts.fira-mono
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.caskaydia-mono
+    nerd-fonts.noto
   ];
 
   fonts.fontDir.enable = true;
@@ -22,9 +26,9 @@
 
     fontconfig = {
       defaultFonts = {
-        serif = [ "Noto Sans Mono" "FiraCode Nerd Font Mono" ];
-        sansSerif = [ "Noto Sans Mono" "FiraCode Nerd Font Mono" ];
-        monospace = [ "Noto Sans Mono" "FiraCode Nerd Font Mono" ];
+        serif = [ "Noto Sans Mono" "FiraCode Nerd Font Mono" "Fira Code" "Fira Code Symbol" ];
+        sansSerif = [ "Noto Sans Mono" "FiraCode Nerd Font Mono" "Fira Code" "Fira Code Symbol" ];
+        monospace = [ "Noto Sans Mono" "FiraCode Nerd Font Mono" "Fira Code" "Fira Code Symbol" ];
       };
     };
   };
