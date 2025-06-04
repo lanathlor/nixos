@@ -14,6 +14,7 @@
       exec-once = wl-paste -t text -w xclip -selection clipboard
       # exec-once = lxqt-policykit-agent
       # exec-once = ssh-add
+      exec-once = systemctl --user  restart waybar.service
 
       input {
           kb_layout = us

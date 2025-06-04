@@ -9,7 +9,8 @@ in
   programs.vscode = {
     enable = true;
     package = unstable.vscode;
-    userSettings = {
+
+    profiles.default.userSettings = {
       "[go]" = {
         "editor.defaultFormatter" = "golang.go";
         "editor.formatOnType" = true;
@@ -100,7 +101,7 @@ in
       "typescript.updateImportsOnFileMove.enabled" = "always";
     };
 
-    extensions = with pkgs; with vscode-extensions; [
+    profiles.default.extensions = with pkgs; with vscode-extensions; [
       golang.go
       ms-azuretools.vscode-docker
       bbenoist.nix
