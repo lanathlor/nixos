@@ -7,9 +7,9 @@
   home.file."Downloads/.keep".source = builtins.toFile "keep" "";
   home.file."Music/.keep".source = builtins.toFile "keep" "";
   home.file."Work/.keep".source = builtins.toFile "keep" "";
-  home.file."Dotfiles".source = builtins.fetchGit {
-    url = "https://github.com/lanathlor/nixos";
-  };
+  # home.file."Dotfiles".source = builtins.fetchGit {
+  #   url = "https://github.com/lanathlor/nixos";
+  # };
   xdg.mimeApps = {
     associations.added = {
       "text/plain" = [ "code.desktop" ];

@@ -3,16 +3,16 @@
 #####
 
 env:
-	sudo nixos-rebuild switch -I "nixos-config=hosts/$(NIX_CONFIG_USER).nix"
+	sudo nixos-rebuild switch --flake .#$(NIX_CONFIG_USER)
 
 mushu-laptop:
-	nixos-rebuild switch -I nixos-config=hosts/mushu-laptop.nix
+	sudo nixos-rebuild switch --flake .#mushu-laptop
 
 lanath-desktop:
-	nixos-rebuild switch -I nixos-config=hosts/lanath-desktop.nix
+	sudo nixos-rebuild switch --flake .#lanath-desktop
 
 mushu-desktop:
-	nixos-rebuild switch -I nixos-config=hosts/mushu-desktop.nix
+	sudo nixos-rebuild switch --flake .#mushu-desktop
 
 #####
 ##### misc
@@ -22,7 +22,7 @@ update:
 	sudo nix-channel --update
 
 upgrade:
-	sudo nixos-rebuild boot -I "nixos-config=hosts/$(NIX_CONFIG_USER).nix" --upgrade
+	sudo nixos-rebuild boot --flake .#$(NIX_CONFIG_USER) --upgrade
 
 re: update upgrade
 

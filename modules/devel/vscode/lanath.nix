@@ -1,14 +1,8 @@
-{ pkgs, config, ... }:
-let
-  unstable = import
-    (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
-    # reuse the current configuration
-    { config = config.nixpkgs.config; };
-in
+{ pkgs, pkgs-unstable, ... }:
 {
   programs.vscode = {
     enable = true;
-    package = unstable.vscode;
+    package = pkgs-unstable.vscode;
 
     profiles.default.userSettings = {
       "[go]" = {

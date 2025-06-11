@@ -1,11 +1,4 @@
-{ config, lib, pkgs, modulesPath, ... }:
-
-let
-  unstable = import
-    (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
-    # reuse the current configuration
-    { config = config.nixpkgs.config; };
-in
+{ lib, pkgs-unstable, ... }:
 {
 
   home-manager.users.mushu = { pkgs, ... }: {
@@ -42,7 +35,7 @@ in
 
     programs.rofi = {
       theme = ./nord.rasi;
-      package = unstable.rofi-wayland.override { plugins = with pkgs; [ rofi-power-menu rofi-mpd rofi-bluetooth ]; };
+      package = pkgs-unstable.rofi-wayland.override { plugins = with pkgs; [ rofi-power-menu rofi-mpd rofi-bluetooth ]; };
       plugins = with pkgs; lib.mkDefault [
         rofi-calc
         rofi-emoji

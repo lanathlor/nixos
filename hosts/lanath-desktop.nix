@@ -2,15 +2,10 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, ... }:
-let
-  unstable = import
-    (builtins.fetchTarball "https://github.com/nixos/nixpkgs/tarball/nixos-unstable")
-    { config = config.nixpkgs.config; };
-in
+{ pkgs-unstable, ... }:
 {
   imports = [
-    ./hardware-configuration.nix
+    ./lanath-desktop-hardware-configuration.nix
 
     ../modules/system
     ../modules/system/user/lanath.nix
@@ -41,8 +36,8 @@ in
     ];
 
     home.packages = [
-      unstable.discord
-      unstable.dorion
+      pkgs-unstable.discord
+      pkgs-unstable.dorion
     ];
 
     programs.home-manager.enable = true;
@@ -63,8 +58,8 @@ in
     ];
 
     home.packages = [
-      unstable.discord
-      unstable.dorion
+      pkgs-unstable.discord
+      pkgs-unstable.dorion
     ];
 
     programs.home-manager.enable = true;

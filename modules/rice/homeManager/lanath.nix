@@ -1,13 +1,8 @@
-{ pkgs, lib, config, ... }:
-let
-  unstable = import
-    (builtins.fetchTarball "https://github.com/nixos/nixpkgs/tarball/nixos-unstable")
-    { config = config.nixpkgs.config; };
-in
+{ pkgs, lib, pkgs-unstable, ... }:
 {
   programs.waybar = {
     enable = true;
-    package = lib.mkDefault unstable.waybar;
+    package = lib.mkDefault pkgs-unstable.waybar;
     systemd = lib.mkDefault {
       enable = true;
       target = "basic.target";
@@ -68,7 +63,7 @@ in
       ytdl-format = "bestvideo+bestaudio";
       cache-default = 4000000;
     };
-    scripts = with unstable.mpvScripts; lib.mkDefault [ mpris sponsorblock mpv-playlistmanager quality-menu thumbfast ];
+    scripts = with pkgs-unstable.mpvScripts; lib.mkDefault [ mpris sponsorblock mpv-playlistmanager quality-menu thumbfast ];
   };
 
   programs.yt-dlp = {
