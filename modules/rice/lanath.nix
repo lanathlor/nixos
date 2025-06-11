@@ -1,10 +1,13 @@
-{ ... }:
+{ pkgs-unstable, ... }:
 {
   imports = [
     ./de/hyprland.nix
     ./theme/nordic
   ];
 
+  home-manager.extraSpecialArgs = {
+    pkgs-unstable = pkgs-unstable;
+  };
   home-manager.users.lanath = { pkgs, ... }: {
     imports = [
       ./de/lanath.nix

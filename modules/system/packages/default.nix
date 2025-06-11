@@ -1,9 +1,4 @@
-{ pkgs, config, ... }:
-let
-  unstable = import
-    (builtins.fetchTarball "https://github.com/nixos/nixpkgs/tarball/nixos-unstable")
-    { config = config.nixpkgs.config; };
-in
+{ pkgs, pkgs-unstable, ... }:
 {
   environment.systemPackages = with pkgs; [
     # ide
@@ -60,7 +55,7 @@ in
 
     qemu
 
-    unstable.swww
+    pkgs-unstable.swww
     dmenu
     playerctl
     networkmanagerapplet

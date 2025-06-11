@@ -5,7 +5,7 @@
     ./theme/nordic
   ];
 
-  home-manager.users.mushu = { pkgs, ... }: {
+  home-manager.users.mushu = { pkgs, pkgs-unstable, ... }: {
     imports = [
       ./de/lanath.nix
       ./dunst
