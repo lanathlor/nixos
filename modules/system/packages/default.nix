@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, pkgs-unstable, stamusctl, ... }:
 {
   environment.systemPackages = with pkgs; [
     # ide
@@ -83,5 +83,7 @@
     nerd-fonts.caskaydia-mono
     nerd-fonts.noto
     nomacs
+
+    stamusctl.packages.${pkgs.system}.default
   ];
 }

@@ -1,4 +1,4 @@
-{ pkgs-unstable, ... }:
+{ pkgs-unstable, stamusctl, ... }:
 {
   imports = [
     ./de/hyprland.nix
@@ -7,6 +7,7 @@
 
   home-manager.extraSpecialArgs = {
     pkgs-unstable = pkgs-unstable;
+    stamusctl = stamusctl;
   };
   home-manager.users.lanath = { pkgs, ... }: {
     imports = [

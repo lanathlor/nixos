@@ -1,5 +1,5 @@
 { setDefault }:
-{ pkgs, lib, ... }:
+{ pkgs, lib, stamusctl, ... }:
 {
   users.defaultUserShell = lib.mkIf setDefault pkgs.fish;
   environment.shells = [ pkgs.fish ];
