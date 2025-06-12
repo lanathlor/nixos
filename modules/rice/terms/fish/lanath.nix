@@ -1,6 +1,7 @@
 { ... }:
 {
   programs.fish = {
+    enable = true;
     shellAliases = {
       k = "kubectl";
       d = "docker";

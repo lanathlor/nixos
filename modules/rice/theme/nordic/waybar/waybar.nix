@@ -1,47 +1,47 @@
 { pkgs, lib, ... }:
 {
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      weatherScript = pkgs.stdenv.mkDerivation rec {
-        name = "weather";
-        version = "0.1";
-        src = ./weather.sh;
-        nativeBuildInputs = [ pkgs.makeWrapper ];
-        buildInputs = with pkgs; [ coreutils jq curl ];
-        unpackCmd = ''
-          mkdir weather
+  # nixpkgs.overlays = [
+  #   (final: prev: {
+  #     weatherScript = pkgs.stdenv.mkDerivation rec {
+  #       name = "weather";
+  #       version = "0.1";
+  #       src = ./weather.sh;
+  #       nativeBuildInputs = [ pkgs.makeWrapper ];
+  #       buildInputs = with pkgs; [ coreutils jq curl ];
+  #       unpackCmd = ''
+  #         mkdir weather
 
-          cp $curSrc weather/weather.sh
-        '';
-        installPhase = ''
-          install -Dm755 weather.sh $out/bin/weather.sh
+  #         cp $curSrc weather/weather.sh
+  #       '';
+  #       installPhase = ''
+  #         install -Dm755 weather.sh $out/bin/weather.sh
 
-          wrapProgram $out/bin/weather.sh --prefix PATH : '${lib.strings.makeBinPath buildInputs}'
-        '';
-      };
-    })
+  #         wrapProgram $out/bin/weather.sh --prefix PATH : '${lib.strings.makeBinPath buildInputs}'
+  #       '';
+  #     };
+  #   })
 
-    (final: prev: {
-      rofi-override = pkgs.rofi-wayland.override { plugins = [ pkgs.rofi-power-menu ]; };
-      rofi-with-power-menu = pkgs.stdenv.mkDerivation rec {
-        name = "rofi-with-power-menu";
-        nativeBuildInputs = [ pkgs.makeWrapper ];
-        buildInputs = with pkgs; [ final.rofi-override rofi-power-menu util-linux ];
-        version = "0.1";
-        src = pkgs.writeShellScript "rofi-with-power-menu.sh" ''rofi -show p -modi p:"rofi-power-menu"'';
-        unpackCmd = ''
-          mkdir rofi-with-power-menu
-          cp $curSrc rofi-with-power-menu/rofi-with-power-menu.sh
-        '';
-        installPhase = ''
-          install -Dm755 rofi-with-power-menu.sh $out/bin/rofi-with-power-menu.sh
+  #   (final: prev: {
+  #     rofi-override = pkgs.rofi-wayland.override { plugins = [ pkgs.rofi-power-menu ]; };
+  #     rofi-with-power-menu = pkgs.stdenv.mkDerivation rec {
+  #       name = "rofi-with-power-menu";
+  #       nativeBuildInputs = [ pkgs.makeWrapper ];
+  #       buildInputs = with pkgs; [ final.rofi-override rofi-power-menu util-linux ];
+  #       version = "0.1";
+  #       src = pkgs.writeShellScript "rofi-with-power-menu.sh" ''rofi -show p -modi p:"rofi-power-menu"'';
+  #       unpackCmd = ''
+  #         mkdir rofi-with-power-menu
+  #         cp $curSrc rofi-with-power-menu/rofi-with-power-menu.sh
+  #       '';
+  #       installPhase = ''
+  #         install -Dm755 rofi-with-power-menu.sh $out/bin/rofi-with-power-menu.sh
 
-          wrapProgram $out/bin/rofi-with-power-menu.sh --prefix PATH : '${lib.strings.makeBinPath buildInputs}'
-        '';
-      };
-    })
-  ];
+  #         wrapProgram $out/bin/rofi-with-power-menu.sh --prefix PATH : '${lib.strings.makeBinPath buildInputs}'
+  #       '';
+  #     };
+  #   })
+  # ];
 
   programs.waybar = {
     enable = true;
