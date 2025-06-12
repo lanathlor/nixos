@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs-unstable, ... }:
+{ ... }:
 {
   imports = [
     ./lanath-desktop-hardware-configuration.nix
@@ -17,8 +17,10 @@
     ../modules/nix
 
     ../modules/rice
-    ../modules/rice/lanath.nix
-    ../modules/rice/mushu.nix
+    # ../modules/rice/lanath.nix
+    # ../modules/rice/mushu.nix
+    ../modules/rice/de/hyprland.nix
+    ../modules/rice/theme/nordic
 
     ../modules/services/ssh
   ];
@@ -30,47 +32,47 @@
 
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 
-  home-manager.users.lanath = { pkgs, ... }: {
-    imports = [
-      ../modules/devel/vscode/lanath.nix
-    ];
+  # home-manager.users.lanath = { pkgs, ... }: {
+  #   imports = [
+  #     ../modules/devel/vscode/lanath.nix
+  #   ];
 
-    home.packages = [
-      pkgs-unstable.discord
-      pkgs-unstable.dorion
-    ];
+  #   home.packages = [
+  #     pkgs-unstable.discord
+  #     pkgs-unstable.dorion
+  #   ];
 
-    programs.home-manager.enable = true;
+  #   programs.home-manager.enable = true;
 
-    nixpkgs = {
-      config = {
-        allowUnfree = true;
-        allowUnfreePredicate = (_: true);
-      };
-    };
+  #   nixpkgs = {
+  #     config = {
+  #       allowUnfree = true;
+  #       allowUnfreePredicate = (_: true);
+  #     };
+  #   };
 
-    home.stateVersion = "25.05";
-  };
+  #   home.stateVersion = "25.05";
+  # };
 
-  home-manager.users.mushu = { pkgs, ... }: {
-    imports = [
-      ../modules/devel/vscode/lanath.nix
-    ];
+  # home-manager.users.mushu = { pkgs, ... }: {
+  #   imports = [
+  #     ../modules/devel/vscode/lanath.nix
+  #   ];
 
-    home.packages = [
-      pkgs-unstable.discord
-      pkgs-unstable.dorion
-    ];
+  #   home.packages = [
+  #     pkgs-unstable.discord
+  #     pkgs-unstable.dorion
+  #   ];
 
-    programs.home-manager.enable = true;
+  #   programs.home-manager.enable = true;
 
-    nixpkgs = {
-      config = {
-        allowUnfree = true;
-        allowUnfreePredicate = (_: true);
-      };
-    };
+  #   nixpkgs = {
+  #     config = {
+  #       allowUnfree = true;
+  #       allowUnfreePredicate = (_: true);
+  #     };
+  #   };
 
-    home.stateVersion = "25.05";
-  };
+  #   home.stateVersion = "25.05";
+  # };
 }

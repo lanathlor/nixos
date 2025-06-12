@@ -6,7 +6,7 @@ in
   imports = [
     ./fileExplorer/thunar.nix
     ./fonts
-    ./homeManager
+    # ./homeManager
     ./terms/fish/lanath.nix
     ./terms/starship.nix
     ./xserver
