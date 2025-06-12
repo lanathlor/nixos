@@ -1,7 +1,13 @@
-{ ... }:
+{ pkgs, stamusctl, ... }:
 {
+  xdg.enable = true;
+
   xdg.userDirs.enable = true;
   xdg.mimeApps.enable = true;
+
+  xdg.configFile."fish/completions/stamusctl.fish".text = ''
+    ${stamusctl.packages.${pkgs.system}.default}/bin/stamusctl completion fish
+  '';
 
   home.file."Documents/.keep".source = builtins.toFile "keep" "";
   home.file."Downloads/.keep".source = builtins.toFile "keep" "";
