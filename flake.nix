@@ -8,10 +8,12 @@
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+
     stamusctl.url = "github:StamusNetworks/stamusctl";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, stamusctl, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, stamusctl, zen-browser, ... }:
     let
       system = "x86_64-linux";
 
@@ -30,7 +32,7 @@
       };
 
       sharedSpecialArgs = {
-        inherit pkgs-unstable stamusctl;
+        inherit system pkgs-unstable stamusctl zen-browser;
       };
 
       homeManagerModule = {
