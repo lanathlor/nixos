@@ -1,9 +1,14 @@
-{ ... }:
+{ pkgs-unstable, stamusctl, ... }:
 {
   imports = [
     ./de/gnome.nix
     ./theme/nordic
   ];
+
+  home-manager.extraSpecialArgs = {
+    pkgs-unstable = pkgs-unstable;
+    stamusctl = stamusctl;
+  };
 
   home-manager.users.mushu = { pkgs, pkgs-unstable, ... }: {
     imports = [

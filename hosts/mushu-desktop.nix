@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs-unstable, ... }:
+{ ... }:
 {
   imports = [
     ./mushu-desktop-hardware-configuration.nix
@@ -17,8 +17,6 @@
     ../modules/nix
 
     ../modules/rice
-    ../modules/rice/lanath.nix
-    ../modules/rice/mushu.nix
 
     ../modules/services/ssh
   ];
