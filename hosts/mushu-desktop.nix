@@ -5,7 +5,7 @@
 { pkgs-unstable, ... }:
 {
   imports = [
-    ./hardware-configuration.nix
+    ./mushu-desktop-hardware-configuration.nix
 
     ../modules/system
     ../modules/system/user/lanath.nix
@@ -29,48 +29,4 @@
   networking.hostName = "mushu-desktop";
 
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
-
-  home-manager.users.lanath = { pkgs, ... }: {
-    imports = [
-      ../modules/devel/vscode/lanath.nix
-    ];
-
-    home.packages = [
-      pkgs-unstable.discord
-      pkgs-unstable.dorion
-    ];
-
-    programs.home-manager.enable = true;
-
-    nixpkgs = {
-      config = {
-        allowUnfree = true;
-        allowUnfreePredicate = (_: true);
-      };
-    };
-
-    home.stateVersion = "24.11";
-  };
-
-  home-manager.users.mushu = { pkgs, ... }: {
-    imports = [
-      ../modules/devel/vscode/lanath.nix
-    ];
-
-    home.packages = [
-      pkgs-unstable.discord
-      pkgs-unstable.dorion
-    ];
-
-    programs.home-manager.enable = true;
-
-    nixpkgs = {
-      config = {
-        allowUnfree = true;
-        allowUnfreePredicate = (_: true);
-      };
-    };
-
-    home.stateVersion = "24.11";
-  };
 }
