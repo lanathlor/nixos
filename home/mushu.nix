@@ -1,6 +1,5 @@
-{ pkgs-unstable, ... }: {
+{ ... }: {
   imports = [
-    ../modules/devel/vscode/lanath.nix
     ../modules/devel/vscode/lanath.nix
     ../modules/rice/de/lanath.nix
     ../modules/rice/dunst
@@ -13,11 +12,8 @@
     ../modules/rice/terms/starship.nix
     ../modules/rice/theme/nordic/homeManager.nix
     ../modules/rice/xserver/lanath.nix
-  ];
 
-  home.packages = [
-    pkgs-unstable.discord
-    pkgs-unstable.dorion
+    ./programs/browsers.nix
   ];
 
   programs.home-manager.enable = true;

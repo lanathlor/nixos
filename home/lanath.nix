@@ -1,7 +1,6 @@
 { ... }: {
   imports = [
     ../modules/devel/vscode/lanath.nix
-    ../modules/devel/vscode/lanath.nix
     ../modules/rice/de/lanath.nix
     ../modules/rice/dunst
     ../modules/rice/git/lanath.nix
