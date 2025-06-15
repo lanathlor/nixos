@@ -17,6 +17,8 @@
     ../modules/nix
 
     ../modules/rice
+    ../modules/rice/de/gnome.nix
+    ../modules/rice/theme/nordic
 
     ../modules/services/ssh
   ];

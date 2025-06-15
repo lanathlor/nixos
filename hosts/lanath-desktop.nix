@@ -31,48 +31,4 @@
   networking.hostName = "desktop";
 
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
-
-  # home-manager.users.lanath = { pkgs, ... }: {
-  #   imports = [
-  #     ../modules/devel/vscode/lanath.nix
-  #   ];
-
-  #   home.packages = [
-  #     pkgs-unstable.discord
-  #     pkgs-unstable.dorion
-  #   ];
-
-  #   programs.home-manager.enable = true;
-
-  #   nixpkgs = {
-  #     config = {
-  #       allowUnfree = true;
-  #       allowUnfreePredicate = (_: true);
-  #     };
-  #   };
-
-  #   home.stateVersion = "25.05";
-  # };
-
-  # home-manager.users.mushu = { pkgs, ... }: {
-  #   imports = [
-  #     ../modules/devel/vscode/lanath.nix
-  #   ];
-
-  #   home.packages = [
-  #     pkgs-unstable.discord
-  #     pkgs-unstable.dorion
-  #   ];
-
-  #   programs.home-manager.enable = true;
-
-  #   nixpkgs = {
-  #     config = {
-  #       allowUnfree = true;
-  #       allowUnfreePredicate = (_: true);
-  #     };
-  #   };
-
-  #   home.stateVersion = "25.05";
-  # };
 }
