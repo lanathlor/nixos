@@ -8,7 +8,7 @@
       monitor=DP-1,1920x1080@144,1920x0,1
       monitor=DP-2,1920x1080@144,3840x0,1
       env = XCURSOR_SIZE,24
-      exec-once = swww-daemon; swww img ${../theme/nordic/nord-city.jpeg}
+      exec-once = swww-daemon; swww img ${../../themes/nordic/nord-city.jpeg}
       exec-once = wl-paste --type text --watch cliphist store
       exec-once = wl-paste --type image --watch cliphist store
       exec-once = wl-paste -t text -w xclip -selection clipboard

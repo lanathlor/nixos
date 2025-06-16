@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 {
   imports = [
-    ./waybar/waybar.nix
+    ./waybar
   ];
   services.dunst.settings = {
     base16_low = {

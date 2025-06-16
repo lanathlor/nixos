@@ -79,6 +79,16 @@
     forwardAgent = true;
   };
 
+  programs.lazygit = {
+    enable = true;
+    settings = lib.mkDefault {
+      theme = "dark";
+      confirmOnQuit = true;
+      confirmOnQuitTimeout = 5;
+      confirmOnQuitMessage = "Are you sure you want to quit?";
+    };
+  };
+
   services.swayidle = {
     enable = true;
     systemdTarget = "graphical-session.target";

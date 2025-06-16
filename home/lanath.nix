@@ -1,19 +1,17 @@
 { nur, ... }: {
   imports = [
-    ../modules/devel/vscode/lanath.nix
-    ../modules/rice/de/lanath.nix
-    ../modules/rice/dunst
-    ../modules/rice/git/lanath.nix
-    ../modules/rice/homeManager/lanath.nix
-    ../modules/rice/lock/swaylock.nix
-    ../modules/rice/rofi
-    ../modules/rice/rofi
-    ../modules/rice/terms/fish/lanath.nix
-    ../modules/rice/terms/starship.nix
-    ../modules/rice/theme/nordic/homeManager.nix
-    ../modules/rice/xserver/lanath.nix
-
-    ./programs/browsers.nix
+    ./programs/basics/lanath.nix
+    ./programs/browsers/lanath.nix
+    ./programs/fish/lanath.nix
+    ./programs/git/lanath.nix
+    ./programs/hyprland/lanath.nix
+    ./programs/rofi/lanath.nix
+    ./programs/starship/lanath.nix
+    ./programs/swaylock/lanath.nix
+    ./programs/vscode/lanath.nix
+    ./programs/xdg/lanath.nix
+    ./services/dunst
+    ./themes/nordic
 
     nur.modules.homeManager.default
   ];
