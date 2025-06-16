@@ -1,4 +1,4 @@
-{ ... }: {
+{ nur, ... }: {
   imports = [
     ../modules/devel/vscode/lanath.nix
     ../modules/rice/de/lanath.nix
@@ -14,6 +14,8 @@
     ../modules/rice/xserver/lanath.nix
 
     ./programs/browsers.nix
+
+    nur.modules.homeManager.default
   ];
 
   programs.home-manager.enable = true;
