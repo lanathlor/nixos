@@ -17,8 +17,6 @@
     ../modules/nix
 
     ../modules/rice
-    # ../modules/rice/lanath.nix
-    # ../modules/rice/mushu.nix
     ../modules/rice/de/hyprland.nix
     ../modules/rice/theme/nordic
 

@@ -7,8 +7,6 @@ in
     ./fileExplorer/thunar.nix
     ./fonts
     # ./homeManager
-    ./terms/fish/lanath.nix
-    ./terms/starship.nix
     ./xserver
 
     fish
