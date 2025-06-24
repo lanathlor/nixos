@@ -13,7 +13,7 @@
     };
 
     firewall.checkReversePath = lib.mkDefault false;
-    firewall.enable = lib.mkDefault false;
+    firewall.enable = false;
     useDHCP = lib.mkDefault true;
     # nameservers = [ "10.1.0.1" "1.1.1.1" "8.8.8.8" ];
     hosts = {

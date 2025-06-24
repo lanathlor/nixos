@@ -60,7 +60,7 @@
             definedAliases = [ "@np" ];
           };
 
-          "YouTube" = {
+          "youtube" = {
             urls = [{
               template = "https://www.youtube.com/results";
               params = [
@@ -71,7 +71,7 @@
             definedAliases = [ "@yt" ];
           };
 
-          "GitHub" = {
+          "github" = {
             urls = [{
               template = "https://github.com/search";
               params = [
@@ -82,7 +82,7 @@
             definedAliases = [ "@gh" ];
           };
 
-          "GitLab (Stamus)" = {
+          "gitlab (stamus)" = {
             urls = [{
               template = "https://git.stamus-networks.com/search";
               params = [

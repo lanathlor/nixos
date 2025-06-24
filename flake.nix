@@ -24,6 +24,7 @@
 
       myOverlays = [
         (import ./overlays/waybar.nix)
+        (import ./overlays/linux-firmware.nix)
       ];
 
       pkgs = import nixpkgs {
