@@ -1,8 +1,13 @@
 { pkgs, pkgs-unstable, stamusctl, ... }:
 {
+  services.mullvad-vpn.enable = true;
   environment.systemPackages = with pkgs; [
     # ide
     vim
+
+    mullvad
+    mullvad-vpn
+    mullvad-browser
 
     # dev
     git
