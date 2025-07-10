@@ -7,6 +7,8 @@
   imports = [
     ./lanath-desktop-hardware-configuration.nix
 
+    ../modules/services/llm
+
     ../modules/system
     ../modules/system/user/lanath.nix
     ../modules/system/user/mushu.nix
