@@ -125,4 +125,11 @@
   };
 
   fonts.fontconfig.enable = true;
+
+  home.packages = with pkgs; [
+    gcc
+  ];
+  home.sessionVariables.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+    pkgs.gcc.cc.lib
+  ];
 }

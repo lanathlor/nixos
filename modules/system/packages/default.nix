@@ -89,6 +89,16 @@
     nerd-fonts.noto
     nomacs
 
+    rocmPackages.clr
+    rocmPackages.rocm-smi
+    clinfo
+    ocl-icd
+    mesa
+    mesa.opencl
+    radeontop
+
+    gcc
+
     stamusctl.packages.${pkgs.system}.default
   ];
 }
