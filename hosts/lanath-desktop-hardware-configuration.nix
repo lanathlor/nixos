@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" "sd_mod" ];
@@ -14,19 +15,20 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/64463497-f622-4e91-ab3f-17d0be24c853";
+    {
+      device = "/dev/disk/by-uuid/64463497-f622-4e91-ab3f-17d0be24c853";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/5414-549A";
+    {
+      device = "/dev/disk/by-uuid/5414-549A";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/d366191f-f930-4eaa-8405-1ba25d5dbe77"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/d366191f-f930-4eaa-8405-1ba25d5dbe77"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -37,4 +39,8 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.opengl.extraPackages = [
+    pkgs.rocmPackages.clr.icd
+  ];
+
 }
