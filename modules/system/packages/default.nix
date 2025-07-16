@@ -99,6 +99,8 @@
 
     gcc
 
+    pkgs-unstable.claude-code
+
     stamusctl.packages.${pkgs.system}.default
   ];
 }
