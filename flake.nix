@@ -26,6 +26,8 @@
         (import ./overlays/waybar.nix)
         (import ./overlays/linux-firmware.nix)
         (import ./overlays/curseforge.nix)
+        (import ./overlays/wago-addons.nix)
+        (import ./overlays/warcraftlogs.nix)
       ];
 
       pkgs = import nixpkgs {
@@ -69,6 +71,8 @@
       packages.${system} = {
         stamusctl = pkgs.stamusctl;
         curseforge = pkgs.curseforge;
+        wago-addons = pkgs.wago-addons;
+        warcraftlogs = pkgs.warcraftlogs;
       };
 
       nixosConfigurations = {
