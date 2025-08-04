@@ -25,6 +25,7 @@ in
       ".envrc"
       "*tfstate*"
       ".terraform"
+      "CLAUDE.md"
     ];
     extraConfig = {
       includeIf."gitdir:${homeDir}/**".path = "${homeDir}/.config/git/config-personal";

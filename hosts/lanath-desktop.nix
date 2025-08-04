@@ -14,6 +14,7 @@
     ../modules/system/user/mushu.nix
     ../modules/system/virt/docker.nix
     ../modules/system/virt/kubernetes.nix
+    ../modules/system/virt/qemu.nix
 
     ../modules/games
     ../modules/nix
