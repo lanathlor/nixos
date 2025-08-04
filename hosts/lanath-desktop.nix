@@ -39,5 +39,8 @@
 
   networking.hostName = "desktop";
 
+  # Enable games
+  modules.games.warcraftlogs.enable = true;
+
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 }
