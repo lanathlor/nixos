@@ -25,6 +25,7 @@
       myOverlays = [
         (import ./overlays/waybar.nix)
         (import ./overlays/linux-firmware.nix)
+        (import ./overlays/curseforge.nix)
       ];
 
       pkgs = import nixpkgs {
@@ -65,7 +66,10 @@
     {
       overlays = { };
 
-      packages.${system}.stamusctl = pkgs.stamusctl;
+      packages.${system} = {
+        stamusctl = pkgs.stamusctl;
+        curseforge = pkgs.curseforge;
+      };
 
       nixosConfigurations = {
         lanath-desktop = mkHost ./hosts/lanath-desktop.nix;
