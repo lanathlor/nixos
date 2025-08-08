@@ -41,6 +41,7 @@
 
   # Enable games
   modules.games.warcraftlogs.enable = true;
+  modules.games.wago-addons.enable = true;
 
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 }
