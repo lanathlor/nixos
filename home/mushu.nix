@@ -4,7 +4,7 @@
     ./programs/browsers/lanath.nix
     ./programs/fish/lanath.nix
     ./programs/git/mushu.nix
-    ./programs/hyprland/lanath.nix
+    ./programs/hyprland/mushu.nix
     ./programs/rofi/lanath.nix
     ./programs/starship/lanath.nix
     ./programs/swaylock/lanath.nix

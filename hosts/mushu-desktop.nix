@@ -17,6 +17,7 @@
     ../modules/nix
 
     ../modules/rice
+    ../modules/rice/de/hyprland.nix
     ../modules/rice/de/gnome.nix
     ../modules/rice/theme/nordic
 
