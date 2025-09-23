@@ -18,7 +18,7 @@ final: prev: {
     '';
   };
 
-  rofi-override = prev.rofi-wayland.override {
+  rofi-override = prev.rofi.override {
     plugins = [ prev.rofi-power-menu ];
   };
 
