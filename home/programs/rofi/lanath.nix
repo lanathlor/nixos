@@ -23,7 +23,7 @@
     pass = {
       enable = true;
     };
-    package = pkgs-unstable.rofi-wayland.override { plugins = with pkgs; [ rofi-power-menu rofi-mpd rofi-bluetooth ]; };
+    package = pkgs-unstable.rofi.override { plugins = with pkgs; [ rofi-power-menu rofi-mpd rofi-bluetooth ]; };
     plugins = with pkgs; lib.mkDefault [
       rofi-calc
       rofi-emoji

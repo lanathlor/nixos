@@ -100,6 +100,10 @@
     gcc
 
     pkgs-unstable.claude-code
+    pkgs-unstable.codex
+    xdg-utils
+
+    pkgs-unstable.discord
 
     stamusctl.packages.${pkgs.system}.default
   ];

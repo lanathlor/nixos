@@ -5,7 +5,7 @@
       "text/plain" = [ "code.desktop" ];
     };
     defaultApplications = {
-      "application/pdf" = [ "firefox.desktop" ];
+      "application/pdf" = [ "zen.desktop" ];
       "application/javascript" = [ "code.desktop" ];
       "text/plain" = [ "code.desktop" ];
       "text/*" = [ "code.desktop" ];
@@ -14,14 +14,14 @@
       "text/javascript" = [ "code.desktop" ];
       "text/json" = [ "code.desktop" ];
       "text/x-csrc" = [ "code.desktop" ]; # ts files
-      "image/gif" = [ "firefox.desktop" ];
-      "image/jpeg" = [ "firefox.desktop" ];
-      "image/png" = [ "firefox.desktop" ];
-      "image/webp" = [ "firefox.desktop" ];
-      "x-scheme-handler/http" = [ "firefox.desktop" ];
-      "x-scheme-handler/https" = [ "firefox.desktop" ];
-      "x-scheme-handler/about" = [ "firefox.desktop" ];
-      "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+      "image/gif" = [ "zen.desktop" ];
+      "image/jpeg" = [ "zen.desktop" ];
+      "image/png" = [ "zen.desktop" ];
+      "image/webp" = [ "zen.desktop" ];
+      "x-scheme-handler/http" = [ "zen.desktop" ];
+      "x-scheme-handler/https" = [ "zen.desktop" ];
+      "x-scheme-handler/about" = [ "zen.desktop" ];
+      "x-scheme-handler/unknown" = [ "zen.desktop" ];
       "x-scheme-handler/mailto" = [ "thunderbird.desktop" ];
       "x-scheme-handler/sms" = [ "thunderbird.desktop" ];
       "x-scheme-handler/mms" = [ "thunderbird.desktop" ];
