@@ -9,8 +9,9 @@
 
   boot.supportedFilesystems = [ "ntfs" ];
 
+  boot.loader.systemd-boot.enable = true;
   boot.loader.grub = {
-    enable = true;
+    enable = false;
     useOSProber = true;
     efiSupport = true;
     devices = [ "nodev" ];
