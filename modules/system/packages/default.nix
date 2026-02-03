@@ -1,5 +1,15 @@
 { pkgs, pkgs-unstable, stamusctl, ... }:
 {
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+      openssl
+      zlib
+      icu
+    ];
+  };
+
   services.mullvad-vpn.enable = true;
   environment.systemPackages = with pkgs; [
     # ide
@@ -104,6 +114,8 @@
     xdg-utils
 
     pkgs-unstable.discord
+
+    jetbrains.rider
 
     stamusctl.packages.${pkgs.system}.default
   ];
