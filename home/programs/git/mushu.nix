@@ -2,8 +2,8 @@
 {
   programs.git = {
     enable = true;
-    userName = "mushu";
-    userEmail = "contact@marieforja.com";
+    settings.user.name = "mushu";
+    settings.user.email = "contact@marieforja.com";
     ignores = [
       "node_modules"
       "out"
@@ -24,7 +24,7 @@
       "*tfstate*"
       ".terraform"
     ];
-    extraConfig = {
+    settings = {
       pull.rebase = true;
     };
   };

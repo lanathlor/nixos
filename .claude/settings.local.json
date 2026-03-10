@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(find:*)",
-      "Bash(nix-env:*)"
+      "Bash(nix-env:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(nix flake show:*)"
     ],
     "deny": []
   }

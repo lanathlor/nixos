@@ -19,7 +19,7 @@ mushu-desktop:
 #####
 
 update:
-	sudo nix-channel --update
+	nix flake update
 
 upgrade:
 	sudo nixos-rebuild boot --flake .#$(NIX_CONFIG_USER) --upgrade

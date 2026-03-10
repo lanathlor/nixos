@@ -5,7 +5,7 @@ in
 {
   programs.git = {
     enable = true;
-    userName = "lanath";
+    settings.user.name = "lanath";
     ignores = [
       "node_modules"
       "out"
@@ -27,7 +27,7 @@ in
       ".terraform"
       "CLAUDE.md"
     ];
-    extraConfig = {
+    settings = {
       includeIf."gitdir:${homeDir}/**".path = "${homeDir}/.config/git/config-personal";
       includeIf."gitdir:${homeDir}/Work/stamus/**".path = "${homeDir}/.config/git/config-work";
       pull.rebase = true;

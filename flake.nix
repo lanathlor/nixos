@@ -2,10 +2,10 @@
   description = "NixOS flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nur = {
@@ -24,10 +24,11 @@
 
       myOverlays = [
         (import ./overlays/waybar.nix)
-        (import ./overlays/linux-firmware.nix)
         (import ./overlays/curseforge.nix)
         (import ./overlays/wago-addons.nix)
         (import ./overlays/warcraftlogs.nix)
+        (import ./overlays/claude-code.nix)
+        (import ./overlays/codex.nix)
       ];
 
       pkgs = import nixpkgs {
@@ -40,8 +41,16 @@
         config.allowUnfree = true;
       };
 
+      # Override stamusctl with correct vendorHash
+      stamusctl-fixed = {
+        packages.${system}.default = stamusctl.packages.${system}.default.overrideAttrs (oldAttrs: {
+          vendorHash = "sha256-NvuiyrMfgpGDBGyLFt1wtmGI1dlAicN4DpITF/rBUUQ=";
+        });
+      };
+
       sharedSpecialArgs = {
-        inherit system pkgs-unstable stamusctl zen-browser nur;
+        inherit system pkgs-unstable zen-browser nur;
+        stamusctl = stamusctl-fixed;
       };
 
       homeManagerModule = {

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    firefox-wayland
+    firefox
     google-chrome
     chromium
     google-chrome
