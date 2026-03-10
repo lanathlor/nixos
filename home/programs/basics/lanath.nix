@@ -29,6 +29,29 @@
     enable = true;
   };
 
+  programs.tmux = {
+    enable = true;
+    mouse = true;
+    historyLimit = 50000;
+    extraConfig = ''
+      # Copy selection to system clipboard (Wayland)
+      bind -T copy-mode MouseDragEnd1Pane send -X copy-pipe-and-cancel "${pkgs.wl-clipboard}/bin/wl-copy"
+      bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel "${pkgs.wl-clipboard}/bin/wl-copy"
+
+      # Intuitive splits (open in current directory)
+      bind | split-window -h -c "#{pane_current_path}"
+      bind - split-window -v -c "#{pane_current_path}"
+
+      # New window keeps current directory
+      bind c new-window -c "#{pane_current_path}"
+
+      # Status bar styling
+      set -g window-status-current-style "bg=blue,fg=white,bold"
+      set -g window-status-current-format " #I:#W "
+      set -g window-status-format " #I:#W "
+    '';
+  };
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -38,7 +61,7 @@
     enable = true;
     settings = {
       core = {
-        askPass = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
+        askPass = "";
       };
       init = {
         defaultBranch = "main";
@@ -76,6 +99,7 @@
 
   programs.ssh = {
     enable = true;
+    addKeysToAgent = "yes";
     matchBlocks."*".forwardAgent = true;
   };
 
@@ -122,14 +146,17 @@
     enable = true;
     defaultCacheTtl = 34560000;
     maxCacheTtl = 34560000;
-    enableSshSupport = true;
-    pinentryPackage = pkgs.pinentry-curses;
+    defaultCacheTtlSsh = 34560000;
+    maxCacheTtlSsh = 34560000;
+    enableSshSupport = false;
+    pinentryPackage = pkgs.pinentry-tty;
   };
 
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
     gcc
+    gnupg
   ];
   home.sessionVariables.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
     pkgs.gcc.cc.lib

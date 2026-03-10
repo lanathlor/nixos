@@ -26,6 +26,7 @@ in
       "*tfstate*"
       ".terraform"
       "CLAUDE.md"
+      ".claude"
     ];
     settings = {
       includeIf."gitdir:${homeDir}/**".path = "${homeDir}/.config/git/config-personal";

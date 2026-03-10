@@ -5,12 +5,12 @@ final: prev: {
 
     src = final.fetchurl {
       url = "https://registry.npmjs.org/@openai/codex/-/codex-${version}.tgz";
-      hash = "sha256-104lk5ah6q9sqrqqwlcrgnwik92989mks5b5apclcydgvbl44c2b";
+      hash = "sha256-SzBC6NqveUbZVWUVPWtCSaQZuX2ZUY5xxjphA1WZlIA=";
     };
 
     srcPlatform = final.fetchurl {
       url = "https://registry.npmjs.org/@openai/codex/-/codex-${version}-linux-x64.tgz";
-      hash = "sha256-0875bd3dd70r86adqiq1f19ba4cfirbrs0l76r79434hrcnbzms8";
+      hash = "sha256-SNe/LMuQDJJONocCnVeOjhG1UnABR9yUQRmc1kZb5SA=";
     };
 
     nativeBuildInputs = [ final.makeWrapper ];
