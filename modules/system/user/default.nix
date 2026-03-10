@@ -6,6 +6,9 @@
     description = username;
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" ];
     initialHashedPassword = "$y$j9T$TFdhvKQ4clM.JxX1ScPkq1$tOxZv2DOIBWF/uhoyfCbzIkCYZuwa9BfEPNI4wmzqN3";
-    openssh.authorizedKeys.keyFiles = [ (./. + "../../../../keys/${username}.pub") ];
+    openssh.authorizedKeys.keyFiles = [
+      (./. + "../../../../keys/${username}.pub")
+      (./. + "../../../../keys/id_ed25519.pub")
+    ];
   };
 }

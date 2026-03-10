@@ -36,7 +36,7 @@
 
   programs.git = {
     enable = true;
-    extraConfig = {
+    settings = {
       core = {
         askPass = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
       };
@@ -76,7 +76,7 @@
 
   programs.ssh = {
     enable = true;
-    forwardAgent = true;
+    matchBlocks."*".forwardAgent = true;
   };
 
   programs.lazygit = {
@@ -120,8 +120,10 @@
 
   services.gpg-agent = {
     enable = true;
-    defaultCacheTtl = 1800;
+    defaultCacheTtl = 34560000;
+    maxCacheTtl = 34560000;
     enableSshSupport = true;
+    pinentryPackage = pkgs.pinentry-curses;
   };
 
   fonts.fontconfig.enable = true;

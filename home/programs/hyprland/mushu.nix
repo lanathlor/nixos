@@ -105,9 +105,7 @@
       }
 
       gestures {
-          workspace_swipe = on
-          workspace_swipe_fingers = 3
-          workspace_swipe_min_speed_to_force = 30
+          gesture = 3, horizontal, workspace
       }
 
       device {

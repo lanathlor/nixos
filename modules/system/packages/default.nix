@@ -26,6 +26,7 @@
     pnpm
 
     # utils
+    tmux
     htop
     lxqt.lxqt-openssh-askpass
     ssh-askpass-fullscreen
@@ -48,7 +49,7 @@
     libva-utils
     acpi
     fd
-    sptk
+    pkgs-unstable.sptk
     bat
     jq
     ripgrep
@@ -85,7 +86,7 @@
     cliphist
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     liberation_ttf
     fira-code
     fira-code-symbols
@@ -109,8 +110,11 @@
 
     gcc
 
-    pkgs-unstable.claude-code
+    claude-code
     pkgs-unstable.codex
+
+    pkgs-unstable.code-server
+
     xdg-utils
 
     pkgs-unstable.discord
