@@ -1,4 +1,7 @@
 { ... }:
+let
+  homeDir = "/home/mushu";
+in
 {
   programs.git = {
     enable = true;
@@ -23,9 +26,18 @@
       ".envrc"
       "*tfstate*"
       ".terraform"
+      ".claude"
     ];
     settings = {
+      includeIf."gitdir:${homeDir}/Work/masterMonkeys/**".path = "${homeDir}/.config/git/config-mastermonkeys";
       pull.rebase = true;
     };
   };
+
+  xdg.configFile."git/config-mastermonkeys".text = ''
+    [commit]
+      gpgSign = true
+    [user]
+      signingKey = F54E5E007F0EE47C1F2F4B2486E1F5832C3882A6
+  '';
 }
