@@ -6,7 +6,11 @@
     thunar-archive-plugin
     thunar-volman
   ];
-  environment.systemPackages = [ pkgs.file-roller ];
+
+  environment.systemPackages = with pkgs; [
+    file-roller
+  ];
+
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
 }
