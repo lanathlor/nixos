@@ -21,6 +21,7 @@
     ../modules/rice/theme/nordic
 
     ../modules/services/ssh
+    ../modules/services/traefik
   ];
 
   hardware.enableAllFirmware = true;
