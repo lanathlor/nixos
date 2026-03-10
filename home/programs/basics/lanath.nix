@@ -99,8 +99,10 @@
 
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
-    matchBlocks."*".forwardAgent = true;
+    matchBlocks."*" = {
+      addKeysToAgent = "yes";
+      forwardAgent = true;
+    };
   };
 
   programs.lazygit = {
@@ -149,7 +151,7 @@
     defaultCacheTtlSsh = 34560000;
     maxCacheTtlSsh = 34560000;
     enableSshSupport = false;
-    pinentryPackage = pkgs.pinentry-tty;
+    pinentry.package = pkgs.pinentry-tty;
   };
 
   fonts.fontconfig.enable = true;
