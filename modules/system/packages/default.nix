@@ -1,4 +1,23 @@
 { pkgs, pkgs-unstable, stamusctl, ... }:
+let
+  dev-up = pkgs.writeShellScriptBin "dev-up" ''
+    set -euo pipefail
+
+    TOPLEVEL=$(git rev-parse --show-toplevel)
+    PROJECT=$(basename "$TOPLEVEL" | tr '[:upper:]' '[:lower:]' | sed 's/[/_]/-/g')
+    BRANCH=$(git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]' | sed 's/[/_]/-/g')
+    DOMAIN="''${BRANCH}.''${PROJECT}.local.dosismart.com"
+
+    export PROJECT BRANCH DOMAIN
+
+    echo "Project: $PROJECT"
+    echo "Branch:  $BRANCH"
+    echo "Domain:  $DOMAIN"
+    echo ""
+
+    docker compose --project-name "''${PROJECT}-''${BRANCH}" up -d
+  '';
+in
 {
   programs.nix-ld = {
     enable = true;
@@ -28,8 +47,6 @@
     # utils
     tmux
     htop
-    lxqt.lxqt-openssh-askpass
-    ssh-askpass-fullscreen
     nixfmt-rfc-style
     openvpn
     wireguard-tools
@@ -111,7 +128,7 @@
     gcc
 
     claude-code
-    pkgs-unstable.codex
+    codex
 
     pkgs-unstable.code-server
 
@@ -120,6 +137,8 @@
     pkgs-unstable.discord
 
     jetbrains.rider
+
+    dev-up
 
     stamusctl.packages.${pkgs.system}.default
   ];

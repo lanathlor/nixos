@@ -14,10 +14,9 @@
   };
 
   programs.ssh = {
-    startAgent = false;
-    enableAskPassword = true;
-    askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
+    startAgent = true;
+    enableAskPassword = false;
   };
 
-  programs.gnupg.agent.enable = true;
+  programs.gnupg.agent.enable = false;
 }
