@@ -87,6 +87,7 @@
       "prettier.useTabs" = true;
       "redhat.telemetry.enabled" = false;
       "settingsSync.ignoredExtensions" = [ ];
+      "remote.SSH.configFile" = "~/.ssh/vscode_hosts";
       "vs-kubernetes" = { };
       "workbench.colorTheme" = "Nord";
       "workbench.editor.enablePreview" = false;
