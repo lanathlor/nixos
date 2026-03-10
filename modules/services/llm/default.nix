@@ -27,8 +27,6 @@
     KERNEL=="renderD*", GROUP="render", MODE="0666"
   '';
 
-  services.open-webui = {
-    enable = true;
-    port = 18080;
-  };
+  # open-webui NixOS package broken in 25.11 (npm prefetch HTTP/2 bug)
+  # Run via Docker: docker run -d -p 18080:8080 ghcr.io/open-webui/open-webui:main
 }
