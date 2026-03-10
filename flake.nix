@@ -16,9 +16,11 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
 
     stamusctl.url = "github:StamusNetworks/stamusctl";
+
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, stamusctl, zen-browser, nur, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, stamusctl, zen-browser, nur, vscode-server, ... }:
     let
       system = "x86_64-linux";
 
@@ -73,6 +75,19 @@
         ];
       };
 
+      mkHostWithVscodeServer = hostFile: nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = sharedSpecialArgs;
+        modules = [
+          hostFile
+          home-manager.nixosModules.home-manager
+          homeManagerModule
+          nur.modules.nixos.default
+          vscode-server.nixosModules.default
+          { services.vscode-server.enable = true; }
+        ];
+      };
+
     in
     {
       overlays = { };
@@ -85,7 +100,7 @@
       };
 
       nixosConfigurations = {
-        lanath-desktop = mkHost ./hosts/lanath-desktop.nix;
+        lanath-desktop = mkHostWithVscodeServer ./hosts/lanath-desktop.nix;
         lanath-laptop = mkHost ./hosts/lanath-laptop.nix;
         mushu-desktop = mkHost ./hosts/mushu-desktop.nix;
         mushu-laptop = mkHost ./hosts/mushu-laptop.nix;

@@ -99,6 +99,7 @@
 
   programs.ssh = {
     enable = true;
+    extraConfig = "Include ~/.ssh/vscode_hosts";
     matchBlocks."*" = {
       addKeysToAgent = "yes";
       forwardAgent = true;
