@@ -14,10 +14,7 @@
         network = "traefik-net";
       };
 
-      api = {
-        dashboard = true;
-        insecure = true;
-      };
+      api.dashboard = true;
     };
 
     dynamicConfigOptions = {
@@ -39,7 +36,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "/run/current-system/sw/bin/docker network create traefik-net || true";
+      ExecStart = "/bin/sh -c '/run/current-system/sw/bin/docker network create traefik-net || true'";
     };
   };
 

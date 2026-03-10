@@ -21,6 +21,7 @@
     ../modules/rice/mushu.nix
 
     ../modules/services/ssh
+    ../modules/services/traefik
   ];
 
   environment.sessionVariables.NIX_CONFIG_USER = "mushu-desktop";
