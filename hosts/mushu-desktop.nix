@@ -7,6 +7,8 @@
   imports = [
     ./mushu-desktop-hardware-configuration.nix
 
+    ../modules/services/llm
+
     ../modules/system
     ../modules/system/user/lanath.nix
     ../modules/system/user/mushu.nix
@@ -29,6 +31,9 @@
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
 
   networking.hostName = "mushu-desktop";
+
+  modules.games.warcraftlogs.enable = true;
+  modules.games.wago-addons.enable = true;
 
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
 }
