@@ -1,7 +1,22 @@
-{ pkgs, zen-browser, ... }: {
+{ pkgs, lib, zen-browser, ... }: {
   imports = [
     zen-browser.homeModules.beta
   ];
+
+  # Import mkcert CA into Zen's NSS database (runs on each home-manager activation)
+  home.activation.importMkcertCA = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    CAROOT=/var/lib/mkcert
+    if [ -f "$CAROOT/rootCA.pem" ]; then
+      for profile in "$HOME/.zen"/*/; do
+        if [ -f "$profile/cert9.db" ]; then
+          ${pkgs.nss.tools}/bin/certutil -A \
+            -n "mkcert local CA" -t "CT,," \
+            -i "$CAROOT/rootCA.pem" \
+            -d "sql:$profile" 2>/dev/null || true
+        fi
+      done
+    fi
+  '';
 
   programs.zen-browser = {
     enable = true;
@@ -12,6 +27,9 @@
       DisableFirefoxStudies = true;
       DisableTelemetry = true;
       OfferToSaveLogins = false;
+      Certificates = {
+        ImportEnterpriseRoots = true;
+      };
     };
     profiles.default = {
       bookmarks = {
