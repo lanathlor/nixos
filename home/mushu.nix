@@ -11,7 +11,7 @@
     ./programs/vscode/lanath.nix
     ./programs/xdg/lanath.nix
     ./services/dunst
-    ./themes/nordic
+    ./themes
 
     nur.modules.homeManager.default
   ];
