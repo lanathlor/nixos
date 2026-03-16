@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }:
+{ config, pkgs, pkgs-unstable, ... }:
 {
   programs.neovim = {
     defaultEditor = true;
@@ -24,9 +24,6 @@
     ];
 
     plugins = with pkgs.vimPlugins; [
-      # Theme
-      nord-nvim
-
       # UI
       nvim-web-devicons
       lualine-nvim
@@ -101,16 +98,39 @@
       vim.g.maplocalleader = " "
 
       -- ============================================================
-      -- Theme: Nord
+      -- Theme: read from ~/.cache/nvim-colorscheme (written by theme-switch)
+      -- Falls back to the build-time default if the file doesn't exist.
       -- ============================================================
-      vim.cmd.colorscheme("nord")
+      local _cs_file = vim.fn.expand("~/.cache/nvim-colorscheme")
+      local _cs_f    = io.open(_cs_file, "r")
+      local _cs      = _cs_f and vim.trim(_cs_f:read("*l") or "") or ""
+      if _cs_f then _cs_f:close() end
+      if _cs == "" then _cs = "${config.theme.neovim.colorscheme}" end
+      if _cs == "everforest" then
+        vim.g.everforest_background = "hard"
+        vim.g.everforest_better_performance = 1
+      end
+      vim.cmd.colorscheme(_cs)
+
+      local _lualine_map = {
+        nord                = "nord",
+        ["catppuccin-mocha"]= "catppuccin",
+        dracula             = "dracula",
+        gruvbox             = "gruvbox",
+        ["tokyonight-night"]= "tokyonight",
+        everforest          = "everforest",
+        ["rose-pine"]       = "rose-pine",
+        onedark             = "onedark",
+        ["kanagawa-wave"]   = "kanagawa",
+      }
+      local _lualine_theme = _lualine_map[_cs] or "${config.theme.neovim.lualineTheme}"
 
       -- ============================================================
       -- Status line
       -- ============================================================
       require("lualine").setup({
         options = {
-          theme = "nord",
+          theme = _lualine_theme,
           globalstatus = true,
         },
         sections = {
@@ -163,19 +183,14 @@
       })
 
       -- ============================================================
-      -- LSP
+      -- LSP (nvim 0.11+ native API)
       -- ============================================================
-      local lspconfig    = require("lspconfig")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local ok_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+      local capabilities = ok_cmp and cmp_nvim_lsp.default_capabilities() or vim.lsp.protocol.make_client_capabilities()
 
-      lspconfig.gopls.setup({ capabilities = capabilities })
+      vim.lsp.config("*", { capabilities = capabilities })
 
-      lspconfig.ts_ls.setup({ capabilities = capabilities })
-
-      lspconfig.pyright.setup({ capabilities = capabilities })
-
-      lspconfig.nil_ls.setup({
-        capabilities = capabilities,
+      vim.lsp.config("nil_ls", {
         settings = {
           ["nil"] = {
             formatting = { command = { "nixpkgs-fmt" } },
@@ -183,9 +198,7 @@
         },
       })
 
-      lspconfig.terraformls.setup({ capabilities = capabilities })
-
-      lspconfig.bashls.setup({ capabilities = capabilities })
+      vim.lsp.enable({ "gopls", "ts_ls", "pyright", "nil_ls", "terraformls", "bashls" })
 
       -- LSP keymaps (attached per buffer)
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -380,6 +393,9 @@
         { "<leader>c", group = "Code actions" },
       })
 
+      -- ? = keybindings cheatsheet (like lazygit)
+      vim.keymap.set("n", "?", function() telescope.keymaps() end, { desc = "Keybindings cheatsheet" })
+
       -- ============================================================
       -- Trailing whitespace on save (matches VSCode trimTrailingWhitespace)
       -- ============================================================
@@ -393,42 +409,99 @@
       })
 
       -- ============================================================
-      -- Keymaps
+      -- Keymaps (VSCode-like)
       -- ============================================================
 
-      -- File explorer toggle (Ctrl+\ like VSCode)
+      -- Explorer (Ctrl+B = focus/open like VSCode, Ctrl+\ = toggle)
+      vim.keymap.set("n", "<C-b>",      ":NvimTreeFocus<CR>",   { silent = true, desc = "Focus explorer" })
       vim.keymap.set("n", "<C-\\>",     ":NvimTreeToggle<CR>",  { silent = true, desc = "Toggle explorer" })
       vim.keymap.set("n", "<leader>e",  ":NvimTreeFocus<CR>",   { silent = true, desc = "Focus explorer" })
 
-      -- Buffer navigation (like VSCode tabs)
-      vim.keymap.set("n", "<S-l>",      ":bnext<CR>",           { silent = true })
-      vim.keymap.set("n", "<S-h>",      ":bprevious<CR>",       { silent = true })
+      -- Save (Ctrl+S)
+      vim.keymap.set({ "n", "v" }, "<C-s>", ":w<CR>",           { silent = true })
+      vim.keymap.set("i",          "<C-s>", "<Esc>:w<CR>a",     { silent = true })
+
+      -- Undo / Redo (Ctrl+Z / Ctrl+Y)
+      vim.keymap.set("n", "<C-z>",      "u",                    { silent = true, desc = "Undo" })
+      vim.keymap.set("i", "<C-z>",      "<C-o>u",               { silent = true, desc = "Undo" })
+      vim.keymap.set("n", "<C-y>",      "<C-r>",                { silent = true, desc = "Redo" })
+      vim.keymap.set("i", "<C-y>",      "<C-o><C-r>",           { silent = true, desc = "Redo" })
+
+      -- Find files (Ctrl+P — explicit in case telescope section failed)
+      vim.keymap.set("n", "<C-p>",      function() telescope.find_files() end,              { desc = "Find files" })
+
+      -- Find in file (Ctrl+F)
+      vim.keymap.set("n", "<C-f>",      function() telescope.current_buffer_fuzzy_find() end, { desc = "Find in file" })
+      vim.keymap.set("i", "<C-f>",      "<Esc><cmd>Telescope current_buffer_fuzzy_find<CR>",  { desc = "Find in file" })
+
+      -- Find in project (Ctrl+Shift+F)
+      vim.keymap.set("n", "<C-S-f>",    function() telescope.live_grep() end,   { desc = "Find in project" })
+
+      -- Toggle comment (Ctrl+/)  -- terminals may send Ctrl+/ as Ctrl+_
+      vim.keymap.set("n", "<C-/>",      "gcc",  { remap = true, silent = true, desc = "Toggle comment" })
+      vim.keymap.set("v", "<C-/>",      "gc",   { remap = true, silent = true, desc = "Toggle comment" })
+      vim.keymap.set("i", "<C-/>",      "<Esc>gcc<CR>i", { remap = true, silent = true, desc = "Toggle comment" })
+      vim.keymap.set("n", "<C-_>",      "gcc",  { remap = true, silent = true, desc = "Toggle comment" })
+      vim.keymap.set("v", "<C-_>",      "gc",   { remap = true, silent = true, desc = "Toggle comment" })
+
+      -- Close buffer (Ctrl+W)
+      vim.keymap.set("n", "<C-w>",      ":bdelete<CR>",         { silent = true, desc = "Close buffer" })
       vim.keymap.set("n", "<leader>bd", ":bdelete<CR>",         { silent = true, desc = "Close buffer" })
 
-      -- Save
-      vim.keymap.set("n", "<C-s>",      ":w<CR>",               { silent = true })
-      vim.keymap.set("i", "<C-s>",      "<Esc>:w<CR>a",         { silent = true })
+      -- Close all other buffers (Ctrl+K, Ctrl+W — VSCode chord)
+      vim.keymap.set("n", "<C-k><C-w>", function()
+        local cur = vim.fn.bufnr()
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+          if buf ~= cur and vim.api.nvim_buf_is_loaded(buf) then
+            vim.cmd("bdelete " .. buf)
+          end
+        end
+      end, { silent = true, desc = "Close all other buffers" })
 
-      -- Split navigation
+      -- Buffer navigation (Ctrl+Tab / Ctrl+Shift+Tab)
+      vim.keymap.set("n", "<C-Tab>",    ":bnext<CR>",           { silent = true, desc = "Next buffer" })
+      vim.keymap.set("n", "<C-S-Tab>",  ":bprevious<CR>",       { silent = true, desc = "Prev buffer" })
+      vim.keymap.set("n", "<S-l>",      ":bnext<CR>",           { silent = true })
+      vim.keymap.set("n", "<S-h>",      ":bprevious<CR>",       { silent = true })
+
+      -- Delete line (Ctrl+Shift+K)
+      vim.keymap.set("n", "<C-S-k>",    "dd",                   { silent = true, desc = "Delete line" })
+      vim.keymap.set("i", "<C-S-k>",    "<Esc>ddi",             { silent = true, desc = "Delete line" })
+
+      -- Duplicate line (Shift+Alt+Down/Up)
+      vim.keymap.set("n", "<S-A-Down>", "yyp",                  { silent = true, desc = "Duplicate line down" })
+      vim.keymap.set("n", "<S-A-Up>",   "yyP",                  { silent = true, desc = "Duplicate line up" })
+      vim.keymap.set("i", "<S-A-Down>", "<Esc>yypi",            { silent = true, desc = "Duplicate line down" })
+      vim.keymap.set("i", "<S-A-Up>",   "<Esc>yyPi",            { silent = true, desc = "Duplicate line up" })
+
+      -- Select all (Ctrl+A)
+      vim.keymap.set("n", "<C-a>",      "ggVG",                 { silent = true, desc = "Select all" })
+
+      -- Split navigation (Ctrl+hjkl)
       vim.keymap.set("n", "<C-h>",      "<C-w>h",               { silent = true })
       vim.keymap.set("n", "<C-j>",      "<C-w>j",               { silent = true })
       vim.keymap.set("n", "<C-k>",      "<C-w>k",               { silent = true })
       vim.keymap.set("n", "<C-l>",      "<C-w>l",               { silent = true })
 
-      -- Move lines (Alt+j/k like VSCode)
+      -- Move lines (Alt+Up/Down like VSCode)
+      vim.keymap.set("n", "<A-Down>",   ":m .+1<CR>==",         { silent = true, desc = "Move line down" })
+      vim.keymap.set("n", "<A-Up>",     ":m .-2<CR>==",         { silent = true, desc = "Move line up" })
+      vim.keymap.set("v", "<A-Down>",   ":m '>+1<CR>gv=gv",     { silent = true, desc = "Move selection down" })
+      vim.keymap.set("v", "<A-Up>",     ":m '<-2<CR>gv=gv",     { silent = true, desc = "Move selection up" })
       vim.keymap.set("n", "<A-j>",      ":m .+1<CR>==",         { silent = true })
       vim.keymap.set("n", "<A-k>",      ":m .-2<CR>==",         { silent = true })
       vim.keymap.set("v", "<A-j>",      ":m '>+1<CR>gv=gv",     { silent = true })
       vim.keymap.set("v", "<A-k>",      ":m '<-2<CR>gv=gv",     { silent = true })
 
-      -- Stay in indent mode (like VSCode Tab in visual)
+      -- Stay in indent mode (Tab/Shift+Tab in visual like VSCode)
       vim.keymap.set("v", "<",          "<gv")
       vim.keymap.set("v", ">",          ">gv")
 
       -- Clear search highlight
       vim.keymap.set("n", "<Esc>",      ":nohlsearch<CR>",      { silent = true })
 
-      -- Terminal
+      -- Terminal (Ctrl+` like VSCode)
+      vim.keymap.set("n", "<C-`>",      ":split | terminal<CR>", { silent = true, desc = "Open terminal" })
       vim.keymap.set("n", "<leader>t",  ":split | terminal<CR>", { silent = true, desc = "Open terminal" })
     '';
   };
