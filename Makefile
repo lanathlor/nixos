@@ -5,6 +5,9 @@
 env:
 	sudo nixos-rebuild switch --flake .#$(NIX_CONFIG_USER)
 
+lanath-laptop:
+	sudo nixos-rebuild switch --flake .#lanath-laptop
+
 mushu-laptop:
 	sudo nixos-rebuild switch --flake .#mushu-laptop
 

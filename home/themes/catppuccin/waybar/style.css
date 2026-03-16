@@ -1,0 +1,304 @@
+@keyframes blink-warning {
+	70% { color: @light; }
+	to  { color: @base; background-color: @warning; }
+}
+
+@keyframes blink-critical {
+	70% { color: @light; }
+	to  { color: @light; background-color: @critical; }
+}
+
+/* ============================================================
+   Catppuccin Mocha palette
+   ============================================================ */
+@define-color base      #1e1e2e;
+@define-color mantle    #181825;
+@define-color crust     #11111b;
+@define-color surface0  #313244;
+@define-color surface1  #45475a;
+@define-color surface2  #585b70;
+@define-color overlay0  #6c7086;
+@define-color overlay1  #7f849c;
+@define-color overlay2  #9399b2;
+@define-color text      #cdd6f4;
+@define-color subtext0  #a6adc8;
+@define-color subtext1  #bac2de;
+@define-color rosewater #f5e0dc;
+@define-color flamingo  #f2cdcd;
+@define-color pink      #f5c2e7;
+@define-color mauve     #cba6f7;
+@define-color red       #f38ba8;
+@define-color maroon    #eba0ac;
+@define-color peach     #fab387;
+@define-color yellow    #f9e2af;
+@define-color green     #a6e3a1;
+@define-color teal      #94e2d5;
+@define-color sky       #89dceb;
+@define-color sapphire  #74c7ec;
+@define-color blue      #89b4fa;
+@define-color lavender  #b4befe;
+
+@define-color bg       @base;
+@define-color surface  @surface0;
+@define-color overlay  @surface2;
+@define-color light    @text;
+@define-color warning  @yellow;
+@define-color critical @red;
+
+/* ============================================================
+   Base Reset
+   ============================================================ */
+* {
+	border: none;
+	border-radius: 0;
+	min-height: 0;
+	font-family: 'FiraCode Nerd Font Mono', 'Fira Code', 'Font Awesome 6', monospace;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+/* ============================================================
+   Bar Window — floating pill look
+   ============================================================ */
+window#waybar {
+	background: alpha(@base, 0.92);
+	color: @light;
+	border-radius: 14px;
+}
+
+/* ============================================================
+   All modules — shared base
+   ============================================================ */
+#idle_inhibitor,
+#battery,
+#clock,
+#cpu,
+#memory,
+#disk,
+#network,
+#bluetooth,
+#pulseaudio,
+#temperature,
+#tray,
+#backlight,
+#custom-weather,
+#custom-powermenu,
+#mpris,
+#mode {
+	background: alpha(@surface0, 0.7);
+	color: @light;
+	border-radius: 10px;
+	margin: 4px 3px;
+	padding: 4px 12px;
+	transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* ============================================================
+   Hover effects
+   ============================================================ */
+#idle_inhibitor:hover,
+#battery:hover,
+#clock:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#temperature:hover,
+#backlight:hover,
+#custom-weather:hover,
+#custom-powermenu:hover {
+	background: @surface1;
+}
+
+/* ============================================================
+   Module accent colors
+   ============================================================ */
+#clock {
+	background: @mauve;
+	color: @base;
+	border-radius: 10px;
+	padding: 4px 16px;
+}
+#clock:hover {
+	background: shade(@mauve, 1.15);
+}
+
+#custom-powermenu {
+	background: @red;
+	color: @base;
+	padding: 4px 14px;
+}
+#custom-powermenu:hover {
+	background: shade(@red, 1.2);
+}
+
+#cpu          { color: @sky;      }
+#memory       { color: @green;    }
+#temperature  { color: @peach;    }
+#disk         { color: @text;     }
+#network      { color: @teal;     }
+#bluetooth    { color: @blue;     }
+#pulseaudio   { color: @lavender; }
+#custom-weather { color: @yellow; }
+#backlight    { color: @yellow;   }
+#battery      { color: @green;    }
+
+#idle_inhibitor {
+	color: @text;
+}
+#idle_inhibitor.activated {
+	background: @green;
+	color: @base;
+}
+
+#mode {
+	background: @mauve;
+	color: @base;
+}
+
+/* MPRIS */
+#mpris {
+	color: @sky;
+	font-style: italic;
+}
+
+/* Tray */
+#tray {
+	padding: 4px 8px;
+}
+#tray > .passive {
+	-gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+	-gtk-icon-effect: highlight;
+	background-color: @yellow;
+	border-radius: 6px;
+}
+
+/* Window title */
+#window {
+	background: transparent;
+	color: alpha(@text, 0.55);
+	font-weight: normal;
+	border-radius: 0;
+	margin: 0 30px;
+	padding: 0;
+}
+
+/* ============================================================
+   Workspaces
+   ============================================================ */
+#workspaces {
+	background: alpha(@surface0, 0.8);
+	border-radius: 12px;
+	margin: 4px 4px;
+	padding: 2px 4px;
+}
+
+#workspaces button {
+	background: transparent;
+	color: @text;
+	border-radius: 9px;
+	margin: 2px;
+	padding: 2px 10px;
+	font-weight: bold;
+	opacity: 0.45;
+	min-width: 20px;
+	transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+#workspaces button:hover {
+	background: @surface1;
+	opacity: 0.85;
+}
+
+#workspaces button.active {
+	background: @mauve;
+	color: @base;
+	opacity: 1;
+}
+
+#workspaces button.urgent {
+	background: @red;
+	color: @base;
+	opacity: 1;
+}
+
+/* ============================================================
+   Warning states
+   ============================================================ */
+#memory.warning,
+#cpu.warning,
+#temperature.warning,
+#disk.warning,
+#battery.warning {
+	background: alpha(@warning, 0.22);
+	color: @warning;
+}
+
+#network.disconnected {
+	background: alpha(@warning, 0.22);
+	color: @warning;
+}
+
+/* ============================================================
+   Critical states
+   ============================================================ */
+#memory.critical,
+#cpu.critical,
+#disk.critical,
+#battery.critical {
+	background: alpha(@critical, 0.22);
+	color: @critical;
+}
+
+#temperature.critical {
+	background: @critical;
+	color: @base;
+}
+
+/* Blink animations */
+#mode,
+#memory.critical,
+#temperature.critical,
+#battery.critical.discharging {
+	animation-name: blink-critical;
+	animation-duration: 2s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+#battery.warning.discharging {
+	animation-name: blink-warning;
+	animation-duration: 3s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+/* ============================================================
+   Bluetooth states
+   ============================================================ */
+#bluetooth.disabled,
+#bluetooth.off {
+	color: @critical;
+}
+
+#bluetooth.connected {
+	color: @green;
+}
+
+/* ============================================================
+   Pulseaudio states
+   ============================================================ */
+#pulseaudio.muted {
+	color: @overlay;
+}
+
+#pulseaudio.source-muted {
+	background: alpha(@critical, 0.22);
+	color: @critical;
+}
