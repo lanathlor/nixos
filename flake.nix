@@ -59,6 +59,7 @@
         nixpkgs.overlays = myOverlays;
         home-manager.useUserPackages = true;
         home-manager.useGlobalPkgs = true;
+        home-manager.backupFileExtension = "bak";
         home-manager.extraSpecialArgs = sharedSpecialArgs;
         home-manager.users.lanath = import ./home/lanath.nix;
         home-manager.users.mushu = import ./home/mushu.nix;

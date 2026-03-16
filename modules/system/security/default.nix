@@ -3,6 +3,8 @@
   security.rtkit.enable = true;
   security.polkit.enable = true;
 
+  security.sudo.wheelNeedsPassword = false;
+
   security.pam.services = {
     swaylock = { };
     kwallet = {

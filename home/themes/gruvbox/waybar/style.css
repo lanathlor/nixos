@@ -1,0 +1,91 @@
+@keyframes blink-warning {
+	70% { color: @light; }
+	to  { color: @bg; background-color: @warning; }
+}
+
+@keyframes blink-critical {
+	70% { color: @light; }
+	to  { color: @light; background-color: @critical; }
+}
+
+@define-color gruvbox-bg0        #282828;
+@define-color gruvbox-bg1        #3c3836;
+@define-color gruvbox-bg3        #665c54;
+@define-color gruvbox-fg1        #ebdbb2;
+@define-color gruvbox-yellowB    #fabd2f;
+@define-color gruvbox-redB       #fb4934;
+@define-color gruvbox-aquaB      #8ec07c;
+@define-color gruvbox-greenB     #b8bb26;
+@define-color gruvbox-orangeB    #fe8019;
+@define-color gruvbox-blueB      #83a598;
+@define-color gruvbox-blue       #458588;
+@define-color gruvbox-purpleB    #d3869b;
+
+@define-color bg       #282828;
+@define-color surface  #3c3836;
+@define-color overlay  #665c54;
+@define-color light    #ebdbb2;
+@define-color warning  #fabd2f;
+@define-color critical #fb4934;
+
+* {
+	border: none;
+	border-radius: 0;
+	min-height: 0;
+	font-family: 'FiraCode Nerd Font Mono', 'Fira Code', 'Font Awesome 6', monospace;
+	font-size: 13px;
+	font-weight: bold;
+}
+window#waybar {
+	background: alpha(@bg, 0.92);
+	color: @light;
+	border-radius: 14px;
+}
+#idle_inhibitor, #battery, #clock, #cpu, #memory, #disk, #network, #bluetooth, #pulseaudio, #temperature, #tray, #backlight, #custom-weather, #custom-powermenu, #mpris, #mode {
+	background: alpha(@surface, 0.7);
+	color: @light;
+	border-radius: 10px;
+	margin: 4px 3px;
+	padding: 4px 12px;
+	transition: background 0.2s ease, color 0.2s ease;
+}
+#idle_inhibitor:hover, #battery:hover, #clock:hover, #cpu:hover, #memory:hover, #disk:hover, #network:hover, #bluetooth:hover, #pulseaudio:hover, #temperature:hover, #backlight:hover, #custom-weather:hover, #custom-powermenu:hover {
+	background: @overlay;
+}
+#clock { background: #458588; color: #ebdbb2; border-radius: 10px; padding: 4px 16px; }
+#clock:hover { background: shade(#458588, 1.15); }
+#custom-powermenu { background: @critical; color: #ebdbb2; padding: 4px 14px; }
+#custom-powermenu:hover { background: shade(@critical, 1.2); }
+#cpu          { color: #8ec07c; }
+#memory       { color: #b8bb26; }
+#temperature  { color: #fe8019; }
+#disk         { color: @light; }
+#network      { color: #83a598; }
+#bluetooth    { color: #458588; }
+#pulseaudio   { color: #d3869b; }
+#custom-weather { color: @warning; }
+#backlight    { color: @warning; }
+#battery      { color: #b8bb26; }
+#idle_inhibitor { color: @light; }
+#idle_inhibitor.activated { background: #b8bb26; color: @bg; }
+#mode { background: #458588; color: @bg; }
+#mpris { color: #8ec07c; font-style: italic; }
+#tray { padding: 4px 8px; }
+#tray > .passive { -gtk-icon-effect: dim; }
+#tray > .needs-attention { -gtk-icon-effect: highlight; background-color: @warning; border-radius: 6px; }
+#window { background: transparent; color: alpha(@light, 0.55); font-weight: normal; border-radius: 0; margin: 0 30px; padding: 0; }
+#workspaces { background: alpha(@surface, 0.8); border-radius: 12px; margin: 4px 4px; padding: 2px 4px; }
+#workspaces button { background: transparent; color: @light; border-radius: 9px; margin: 2px; padding: 2px 10px; font-weight: bold; opacity: 0.45; min-width: 20px; transition: background 0.15s ease, opacity 0.15s ease; }
+#workspaces button:hover { background: @overlay; opacity: 0.85; }
+#workspaces button.active { background: #458588; color: #ebdbb2; opacity: 1; }
+#workspaces button.urgent { background: @critical; color: #ebdbb2; opacity: 1; }
+#memory.warning, #cpu.warning, #temperature.warning, #disk.warning, #battery.warning { background: alpha(@warning, 0.22); color: @warning; }
+#network.disconnected { background: alpha(@warning, 0.22); color: @warning; }
+#memory.critical, #cpu.critical, #disk.critical, #battery.critical { background: alpha(@critical, 0.22); color: @critical; }
+#temperature.critical { background: @critical; color: @bg; }
+#mode, #memory.critical, #temperature.critical, #battery.critical.discharging { animation-name: blink-critical; animation-duration: 2s; animation-timing-function: linear; animation-iteration-count: infinite; animation-direction: alternate; }
+#battery.warning.discharging { animation-name: blink-warning; animation-duration: 3s; animation-timing-function: linear; animation-iteration-count: infinite; animation-direction: alternate; }
+#bluetooth.disabled, #bluetooth.off { color: @critical; }
+#bluetooth.connected { color: #b8bb26; }
+#pulseaudio.muted { color: @overlay; }
+#pulseaudio.source-muted { background: alpha(@critical, 0.22); color: @critical; }
