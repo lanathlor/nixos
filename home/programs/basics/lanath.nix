@@ -1,4 +1,45 @@
 { pkgs, lib, pkgs-unstable, ... }:
+let
+  tmuxTestMonitor = pkgs.writeShellScript "tmux-test-monitor" ''
+    TMUX="${pkgs.tmux}/bin/tmux"
+    GREP="${pkgs.gnugrep}/bin/grep"
+    TAIL="${pkgs.coreutils}/bin/tail"
+    SLEEP="${pkgs.coreutils}/bin/sleep"
+
+    while true; do
+      if ! $TMUX info &>/dev/null 2>&1; then
+        $SLEEP 5
+        continue
+      fi
+
+      declare -A win_fail
+      declare -A win_pass
+
+      while IFS=' ' read -r pane_id win_target; do
+        [[ -z "$pane_id" || -z "$win_target" ]] && continue
+        content=$($TMUX capture-pane -p -t "$pane_id" -J 2>/dev/null | $TAIL -n 80)
+        if echo "$content" | $GREP -qE "FAIL[[:space:]]|[0-9]+ failed|[×✗]"; then
+          win_fail[$win_target]=1
+        elif echo "$content" | $GREP -qE "PASS[[:space:]]|[0-9]+ passed|[✓✔]"; then
+          win_pass[$win_target]=1
+        fi
+      done < <($TMUX list-panes -a -F "#{pane_id} #{session_name}:#{window_index}" 2>/dev/null)
+
+      while IFS= read -r win; do
+        if [[ "''${win_fail[$win]:-}" == "1" ]]; then
+          $TMUX set-option -wt "$win" @test_status fail 2>/dev/null
+        elif [[ "''${win_pass[$win]:-}" == "1" ]]; then
+          $TMUX set-option -wt "$win" @test_status pass 2>/dev/null
+        else
+          $TMUX set-option -uwt "$win" @test_status 2>/dev/null
+        fi
+      done < <($TMUX list-windows -a -F "#{session_name}:#{window_index}" 2>/dev/null)
+
+      unset win_fail win_pass
+      $SLEEP 2
+    done
+  '';
+in
 {
   programs.waybar = {
     enable = true;
@@ -15,13 +56,15 @@
       "ctrl+f>2" = "set_font_size 20";
     };
     font = {
-      package = pkgs.noto-fonts;
-      name = "Noto Sans Mono";
+      package = pkgs.nerd-fonts.fira-code;
+      name = "FiraCode Nerd Font Mono";
       size = 11;
     };
     settings = lib.mkDefault {
       enable_audio_bell = false;
       update_check_interval = 0;
+      allow_remote_control = "socket-only";
+      listen_on            = "unix:/tmp/kitty-{kitty_pid}";
     };
   };
 
@@ -53,29 +96,6 @@
 
       # New window keeps current directory
       bind c new-window -c "#{pane_current_path}"
-
-      # ── Nord theme ─────────────────────────────────────────────────
-      set -g status-style          "bg=#3B4252,fg=#D8DEE9"
-      set -g status-left-style     "bg=#4C566A,fg=#ECEFF4,bold"
-      set -g status-right-style    "bg=#4C566A,fg=#ECEFF4"
-      set -g status-left           " #S "
-      set -g status-right          " %H:%M  %d %b "
-      set -g status-left-length    20
-      set -g status-right-length   30
-
-      set -g window-status-style          "bg=#3B4252,fg=#D8DEE9"
-      set -g window-status-current-style  "bg=#88C0D0,fg=#2E3440,bold"
-      set -g window-status-format         " #I:#W "
-      set -g window-status-current-format " #I:#W "
-      set -g window-status-separator      ""
-
-      set -g pane-border-style        "fg=#4C566A"
-      set -g pane-active-border-style "fg=#88C0D0"
-
-      set -g message-style     "bg=#4C566A,fg=#D8DEE9"
-      set -g message-command-style "bg=#4C566A,fg=#D8DEE9"
-
-      set -g mode-style "bg=#88C0D0,fg=#2E3440"
     '';
   };
 
@@ -98,11 +118,6 @@
 
   programs.btop = {
     enable = true;
-    settings = lib.mkDefault {
-      color_theme = "TTY";
-      theme_background = false;
-      truecolor = true;
-    };
   };
 
   programs.mpv = {
@@ -120,8 +135,21 @@
     enable = true;
   };
 
-  services.dunst = {
-    enable = true;
+  # Run dunst directly — config managed by theme-switch (not home-manager)
+  systemd.user.services.dunst = {
+    Unit = {
+      Description = "Dunst notification daemon";
+      PartOf = [ "graphical-session.target" ];
+      After  = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type        = "dbus";
+      BusName     = "org.freedesktop.Notifications";
+      ExecStart   = "${pkgs.dunst}/bin/dunst";
+      Restart     = "on-failure";
+      RestartSec  = "1s";
+    };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
   };
 
   programs.ssh = {
@@ -136,10 +164,11 @@
   programs.lazygit = {
     enable = true;
     settings = lib.mkDefault {
-      theme = "dark";
-      confirmOnQuit = true;
-      confirmOnQuitTimeout = 5;
-      confirmOnQuitMessage = "Are you sure you want to quit?";
+      keybinding = {
+        universal = {
+          undo = "<c-z>";  # VSCode-style undo
+        };
+      };
     };
   };
 
@@ -187,8 +216,25 @@
   home.packages = with pkgs; [
     gcc
     gnupg
+    dunst
   ];
   home.sessionVariables.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
     pkgs.gcc.cc.lib
   ];
+
+  systemd.user.services.tmux-test-monitor = {
+    Unit = {
+      Description = "Monitor tmux panes for test runner pass/fail status";
+      After = [ "default.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${tmuxTestMonitor}";
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
 }

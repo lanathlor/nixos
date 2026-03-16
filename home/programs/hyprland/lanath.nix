@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -9,7 +9,8 @@
       monitor=DP-2,1920x1080@144,3840x0,1
       monitor=eDP-1,1920x1200@59.95Hz,0x0,1
       env = XCURSOR_SIZE,24
-      exec-once = swww-daemon; swww img ${../../themes/nordic/nord-city.jpeg}
+      exec-once = swww-daemon
+      exec-once = sleep 1 && swww img ${config.theme.wallpaper}
       exec-once = wl-paste --type text --watch cliphist store
       exec-once = wl-paste --type image --watch cliphist store
       exec-once = wl-paste -t text -w xclip -selection clipboard
@@ -150,6 +151,14 @@
       windowrulev2 = dimaround,class:^(.*orage.*)$
       windowrulev2 = opacity 0.8 0.8, class:^(.*orage.*)$
 
+      windowrulev2 = float,class:^(lazygit)$
+      windowrulev2 = size 1800 900,class:^(lazygit)$
+      windowrulev2 = center,class:^(lazygit)$
+
+      windowrulev2 = float,class:^(btop)$
+      windowrulev2 = size 1800 900,class:^(btop)$
+      windowrulev2 = center,class:^(btop)$
+
       # layerrules for better blurs
       layerrule = blur, gtk-layer-shell
       layerrule = blur, swaync-control-center
@@ -187,8 +196,12 @@
       bind = $mainMod, Return, exec, kitty
       bind = $mainMod, b, exec, blueman-manager
       bind = $mainMod, E, exec, thunar ~
+      bind = $secMod, G, exec, kitty --class lazygit -e lazygit  # Super+Shift+G = git (mirrors VSCode Ctrl+Shift+G)
+      bind = $secMod, T, exec, kitty --class btop -e btop        # Super+Shift+T = task monitor
+      bind = $mainMod, F1, exec, notify-send -t 10000 "btop shortcuts" "q / ESC  quit\n?        toggle help overlay\nf        filter processes\nk        kill selected\nm        memory display mode\np/n/i    sort (pid/name/idle)\n+/-      expand CPU / memory details\nF2       settings\nF5       process tree\nF6       select sort field"  # btop help
 
       # misc
+      bind = $secMod, Space, exec, theme-switch
       bind = $secMod, S, exec, grim -g "$(slurp)" - | wl-copy
       bind = $mainMod, l, exec, swaylock
 
