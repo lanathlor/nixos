@@ -1,10 +1,27 @@
 { pkgs }:
-let c = import ./colors.nix; in
+let
+  c = import ./colors.nix;
+  wallpaper = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/rose-pine/wallpapers/main/illustration/block-wave-moon.png";
+    sha256 = "0l9yj4lq2vxg5zmf3ga6xymj4ffdhy16gsh7y1a9irw9cqzwvsam";
+  };
+  previewPng = pkgs.runCommand "rosepine-preview.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
+    tmp=$(mktemp -d)
+    convert "${wallpaper}" -resize 400x195^ -gravity Center -extent 400x195 "$tmp/bg.png"
+    convert \
+      \( -size 50x30 xc:"${c.base}" \) \( -size 50x30 xc:"${c.text}" \) \
+      \( -size 50x30 xc:"${c.iris}" \) \( -size 50x30 xc:"${c.pine}" \) \
+      \( -size 50x30 xc:"${c.foam}" \) \( -size 50x30 xc:"${c.rose}" \) \
+      \( -size 50x30 xc:"${c.love}" \) \( -size 50x30 xc:"${c.gold}" \) \
+      +append "$tmp/swatches.png"
+    convert "$tmp/bg.png" "$tmp/swatches.png" -append "$out"
+  '';
+in
 {
   name     = "Rose Pine";
-  wallpaper = pkgs.runCommand "rosepine-wallpaper.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
-    convert -size 1920x1080 gradient:"#191724-#26233a" $out
-  '';
+  inherit wallpaper previewPng;
+  rofiColors  = { bg = c.base; bg2 = c.overlay; fg = c.text; selected = c.highlightMed; urgent = c.love; };
+  dunstColors = { bg2 = c.overlay; fg = c.text; accent = c.iris; red = c.love; };
   waybarCss = ./waybar/style.css;
   gtkTheme  = "rose-pine";
   gtkIcons  = "Papirus-Dark";
@@ -19,36 +36,29 @@ let c = import ./colors.nix; in
     selection_background  #403d52
     url_color             #9ccfd8
     cursor                #ebbcba
-    color0  #26233a   color8  #6e6a86
-    color1  #eb6f92   color9  #eb6f92
-    color2  #31748f   color10 #9ccfd8
-    color3  #f6c177   color11 #f6c177
-    color4  #31748f   color12 #c4a7e7
-    color5  #c4a7e7   color13 #c4a7e7
-    color6  #9ccfd8   color14 #9ccfd8
-    color7  #908caa   color15 #e0def4
+    color0  #26233a
+    color8  #6e6a86
+    color1  #eb6f92
+    color9  #eb6f92
+    color2  #31748f
+    color10 #9ccfd8
+    color3  #f6c177
+    color11 #f6c177
+    color4  #31748f
+    color12 #c4a7e7
+    color5  #c4a7e7
+    color13 #c4a7e7
+    color6  #9ccfd8
+    color14 #9ccfd8
+    color7  #908caa
+    color15 #e0def4
+    active_tab_background   ${c.iris}
+    active_tab_foreground   ${c.base}
+    inactive_tab_background ${c.overlay}
+    inactive_tab_foreground ${c.subtle}
   '';
 
-  tmuxConf = pkgs.writeText "rosepine-tmux-colors" ''
-    set -g status-style    "bg=#191724,fg=#e0def4"
-    set -g status-interval 2
-    set -g status-left        "#[bg=#191724,fg=#c4a7e7]#[bg=#c4a7e7,fg=#191724,bold] #S #[bg=#191724,fg=#c4a7e7] "
-    set -g status-left-length 30
-    set -g status-right        " #[bg=#191724,fg=#c4a7e7]#[bg=#c4a7e7,fg=#191724]  %H:%M    %d %b #[bg=#191724,fg=#c4a7e7]"
-    set -g status-right-length 40
-    set -g window-status-style         "bg=#191724"
-    set -g window-status-current-style "bg=#191724"
-    set -g window-status-separator     ""
-    set -g window-status-format \
-      "#[bg=#191724,fg=#26233a]#[bg=#26233a,fg=#e0def4] #I  #W #[bg=#191724,fg=#26233a]"
-    set -g window-status-current-format \
-      "#[bg=#191724,fg=#c4a7e7]#[bg=#c4a7e7,fg=#191724,bold] #I  #W #[bg=#191724,fg=#c4a7e7]"
-    set -g pane-border-style        "fg=#26233a"
-    set -g pane-active-border-style "fg=#c4a7e7"
-    set -g message-style            "bg=#26233a,fg=#e0def4"
-    set -g message-command-style    "bg=#26233a,fg=#e0def4"
-    set -g mode-style               "bg=#c4a7e7,fg=#191724"
-  '';
+  tmuxColors = { bg = "#191724"; fg = "#e0def4"; accent = "#c4a7e7"; bg2 = "#26233a"; fgOnAccent = "#191724"; };
 
   starshipToml = pkgs.writeText "rosepine-starship.toml" ''
     add_newline = false

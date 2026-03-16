@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./module.nix ./nordic ]; }
+{ ... }: { imports = [ ./module.nix ./nordic ./registry.nix ]; }

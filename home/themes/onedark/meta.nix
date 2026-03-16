@@ -1,10 +1,27 @@
 { pkgs }:
-let c = import ./colors.nix; in
+let
+  c = import ./colors.nix;
+  wallpaper = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/Narmis-E/onedark-wallpapers/main/minimal/od_wave.png";
+    sha256 = "17q5x63jr8r1wpzy5sw6vpqqw1gf1c2vzwmzm0dkh02kbf0wr6ib";
+  };
+  previewPng = pkgs.runCommand "onedark-preview.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
+    tmp=$(mktemp -d)
+    convert "${wallpaper}" -resize 400x195^ -gravity Center -extent 400x195 "$tmp/bg.png"
+    convert \
+      \( -size 50x30 xc:"${c.bg}"     \) \( -size 50x30 xc:"${c.fg}"     \) \
+      \( -size 50x30 xc:"${c.blue}"   \) \( -size 50x30 xc:"${c.purple}"  \) \
+      \( -size 50x30 xc:"${c.green}"  \) \( -size 50x30 xc:"${c.red}"     \) \
+      \( -size 50x30 xc:"${c.yellow}" \) \( -size 50x30 xc:"${c.cyan}"    \) \
+      +append "$tmp/swatches.png"
+    convert "$tmp/bg.png" "$tmp/swatches.png" -append "$out"
+  '';
+in
 {
   name     = "One Dark";
-  wallpaper = pkgs.runCommand "onedark-wallpaper.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
-    convert -size 1920x1080 gradient:"#282c34-#3b4048" $out
-  '';
+  inherit wallpaper previewPng;
+  rofiColors  = { bg = c.bg; bg2 = c.bg4; fg = c.fg; selected = c.bg3; urgent = c.red; };
+  dunstColors = { bg2 = c.bg4; fg = c.fg; accent = c.blue; red = c.red; };
   waybarCss = ./waybar/style.css;
   gtkTheme  = "Adwaita-dark";
   gtkIcons  = "Papirus-Dark";
@@ -19,36 +36,29 @@ let c = import ./colors.nix; in
     selection_background  #323842
     url_color             #61afef
     cursor                #abb2bf
-    color0  #282c34   color8  #5c6370
-    color1  #e06c75   color9  #e06c75
-    color2  #98c379   color10 #98c379
-    color3  #e5c07b   color11 #e5c07b
-    color4  #61afef   color12 #61afef
-    color5  #c678dd   color13 #c678dd
-    color6  #56b6c2   color14 #56b6c2
-    color7  #abb2bf   color15 #c8ccd4
+    color0  #282c34
+    color8  #5c6370
+    color1  #e06c75
+    color9  #e06c75
+    color2  #98c379
+    color10 #98c379
+    color3  #e5c07b
+    color11 #e5c07b
+    color4  #61afef
+    color12 #61afef
+    color5  #c678dd
+    color13 #c678dd
+    color6  #56b6c2
+    color14 #56b6c2
+    color7  #abb2bf
+    color15 #c8ccd4
+    active_tab_background   ${c.blue}
+    active_tab_foreground   ${c.bg}
+    inactive_tab_background ${c.bg4}
+    inactive_tab_foreground ${c.fg}
   '';
 
-  tmuxConf = pkgs.writeText "onedark-tmux-colors" ''
-    set -g status-style    "bg=#282c34,fg=#abb2bf"
-    set -g status-interval 2
-    set -g status-left        "#[bg=#282c34,fg=#61afef]#[bg=#61afef,fg=#282c34,bold] #S #[bg=#282c34,fg=#61afef] "
-    set -g status-left-length 30
-    set -g status-right        " #[bg=#282c34,fg=#61afef]#[bg=#61afef,fg=#282c34]  %H:%M    %d %b #[bg=#282c34,fg=#61afef]"
-    set -g status-right-length 40
-    set -g window-status-style         "bg=#282c34"
-    set -g window-status-current-style "bg=#282c34"
-    set -g window-status-separator     ""
-    set -g window-status-format \
-      "#[bg=#282c34,fg=#3b4048]#[bg=#3b4048,fg=#abb2bf] #I  #W #[bg=#282c34,fg=#3b4048]"
-    set -g window-status-current-format \
-      "#[bg=#282c34,fg=#61afef]#[bg=#61afef,fg=#282c34,bold] #I  #W #[bg=#282c34,fg=#61afef]"
-    set -g pane-border-style        "fg=#3b4048"
-    set -g pane-active-border-style "fg=#61afef"
-    set -g message-style            "bg=#3b4048,fg=#abb2bf"
-    set -g message-command-style    "bg=#3b4048,fg=#abb2bf"
-    set -g mode-style               "bg=#61afef,fg=#282c34"
-  '';
+  tmuxColors = { bg = "#282c34"; fg = "#abb2bf"; accent = "#61afef"; bg2 = "#3b4048"; fgOnAccent = "#282c34"; };
 
   starshipToml = pkgs.writeText "onedark-starship.toml" ''
     add_newline = false

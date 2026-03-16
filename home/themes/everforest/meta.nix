@@ -1,10 +1,27 @@
 { pkgs }:
-let c = import ./colors.nix; in
+let
+  c = import ./colors.nix;
+  wallpaper = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/Apeiros-46B/everforest-walls/main/nature/mist_forest_1.png";
+    sha256 = "17b1q72ds17mz4pgs1dwqy8spdlkssshdhj00hdprwsl815rssxl";
+  };
+  previewPng = pkgs.runCommand "everforest-preview.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
+    tmp=$(mktemp -d)
+    convert "${wallpaper}" -resize 400x195^ -gravity Center -extent 400x195 "$tmp/bg.png"
+    convert \
+      \( -size 50x30 xc:"${c.bg0}"    \) \( -size 50x30 xc:"${c.fg}"     \) \
+      \( -size 50x30 xc:"${c.green}"  \) \( -size 50x30 xc:"${c.blue}"   \) \
+      \( -size 50x30 xc:"${c.purple}" \) \( -size 50x30 xc:"${c.red}"    \) \
+      \( -size 50x30 xc:"${c.yellow}" \) \( -size 50x30 xc:"${c.orange}" \) \
+      +append "$tmp/swatches.png"
+    convert "$tmp/bg.png" "$tmp/swatches.png" -append "$out"
+  '';
+in
 {
   name     = "Everforest";
-  wallpaper = pkgs.runCommand "everforest-wallpaper.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
-    convert -size 1920x1080 gradient:"#2d353b-#3d484d" $out
-  '';
+  inherit wallpaper previewPng;
+  rofiColors  = { bg = c.bg0; bg2 = c.bg2; fg = c.fg; selected = c.bg3; urgent = c.red; };
+  dunstColors = { bg2 = c.bg2; fg = c.fg; accent = c.blue; red = c.red; };
   waybarCss = ./waybar/style.css;
   gtkTheme  = "Everforest-Dark-B";
   gtkIcons  = "Papirus-Dark";
@@ -19,36 +36,29 @@ let c = import ./colors.nix; in
     selection_background  #475258
     url_color             #7fbbb3
     cursor                #d3c6aa
-    color0  #2d353b   color8  #475258
-    color1  #e67e80   color9  #e67e80
-    color2  #a7c080   color10 #a7c080
-    color3  #dbbc7f   color11 #dbbc7f
-    color4  #7fbbb3   color12 #7fbbb3
-    color5  #d699b6   color13 #d699b6
-    color6  #83c092   color14 #83c092
-    color7  #859289   color15 #d3c6aa
+    color0  #2d353b
+    color8  #475258
+    color1  #e67e80
+    color9  #e67e80
+    color2  #a7c080
+    color10 #a7c080
+    color3  #dbbc7f
+    color11 #dbbc7f
+    color4  #7fbbb3
+    color12 #7fbbb3
+    color5  #d699b6
+    color13 #d699b6
+    color6  #83c092
+    color14 #83c092
+    color7  #859289
+    color15 #d3c6aa
+    active_tab_background   ${c.blue}
+    active_tab_foreground   ${c.bg0}
+    inactive_tab_background ${c.bg2}
+    inactive_tab_foreground ${c.fg}
   '';
 
-  tmuxConf = pkgs.writeText "everforest-tmux-colors" ''
-    set -g status-style    "bg=#2d353b,fg=#d3c6aa"
-    set -g status-interval 2
-    set -g status-left        "#[bg=#2d353b,fg=#7fbbb3]#[bg=#7fbbb3,fg=#2d353b,bold] #S #[bg=#2d353b,fg=#7fbbb3] "
-    set -g status-left-length 30
-    set -g status-right        " #[bg=#2d353b,fg=#7fbbb3]#[bg=#7fbbb3,fg=#2d353b]  %H:%M    %d %b #[bg=#2d353b,fg=#7fbbb3]"
-    set -g status-right-length 40
-    set -g window-status-style         "bg=#2d353b"
-    set -g window-status-current-style "bg=#2d353b"
-    set -g window-status-separator     ""
-    set -g window-status-format \
-      "#[bg=#2d353b,fg=#3d484d]#[bg=#3d484d,fg=#d3c6aa] #I  #W #[bg=#2d353b,fg=#3d484d]"
-    set -g window-status-current-format \
-      "#[bg=#2d353b,fg=#7fbbb3]#[bg=#7fbbb3,fg=#2d353b,bold] #I  #W #[bg=#2d353b,fg=#7fbbb3]"
-    set -g pane-border-style        "fg=#3d484d"
-    set -g pane-active-border-style "fg=#7fbbb3"
-    set -g message-style            "bg=#3d484d,fg=#d3c6aa"
-    set -g message-command-style    "bg=#3d484d,fg=#d3c6aa"
-    set -g mode-style               "bg=#7fbbb3,fg=#2d353b"
-  '';
+  tmuxColors = { bg = "#2d353b"; fg = "#d3c6aa"; accent = "#7fbbb3"; bg2 = "#3d484d"; fgOnAccent = "#2d353b"; };
 
   starshipToml = pkgs.writeText "everforest-starship.toml" ''
     add_newline = false

@@ -1,10 +1,27 @@
 { pkgs }:
-let c = import ./colors.nix; in
+let
+  c = import ./colors.nix;
+  wallpaper = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/dracula/wallpaper/master/big.png";
+    sha256 = "1grnijvcg3y6706nwnlrcmphkmi8lwczidq8xilchzc020pglggl";
+  };
+  previewPng = pkgs.runCommand "dracula-preview.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
+    tmp=$(mktemp -d)
+    convert "${wallpaper}" -resize 400x195^ -gravity Center -extent 400x195 "$tmp/bg.png"
+    convert \
+      \( -size 50x30 xc:"#282a36" \) \( -size 50x30 xc:"#f8f8f2" \) \
+      \( -size 50x30 xc:"#bd93f9" \) \( -size 50x30 xc:"#8be9fd" \) \
+      \( -size 50x30 xc:"#50fa7b" \) \( -size 50x30 xc:"#ff5555" \) \
+      \( -size 50x30 xc:"#f1fa8c" \) \( -size 50x30 xc:"#ff79c6" \) \
+      +append "$tmp/swatches.png"
+    convert "$tmp/bg.png" "$tmp/swatches.png" -append "$out"
+  '';
+in
 {
   name     = "Dracula";
-  wallpaper = pkgs.runCommand "dracula-wallpaper.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
-    convert -size 1920x1080 gradient:"#282a36-#44475a" $out
-  '';
+  inherit wallpaper previewPng;
+  rofiColors  = { bg = "#282a36"; bg2 = "#44475a"; fg = "#f8f8f2"; selected = "#6272a4"; urgent = "#ff5555"; };
+  dunstColors = { bg2 = "#44475a"; fg = "#f8f8f2"; accent = "#bd93f9"; red = "#ff5555"; };
   waybarCss = ./waybar/style.css;
   gtkTheme  = "Dracula";
   gtkIcons  = "Papirus-Dark";
@@ -19,36 +36,29 @@ let c = import ./colors.nix; in
     selection_background  #44475a
     url_color             #8be9fd
     cursor                #f8f8f2
-    color0  #21222c   color8  #6272a4
-    color1  #ff5555   color9  #ff5555
-    color2  #50fa7b   color10 #50fa7b
-    color3  #f1fa8c   color11 #f1fa8c
-    color4  #bd93f9   color12 #bd93f9
-    color5  #ff79c6   color13 #ff79c6
-    color6  #8be9fd   color14 #8be9fd
-    color7  #f8f8f2   color15 #f8f8f2
+    color0  #21222c
+    color8  #6272a4
+    color1  #ff5555
+    color9  #ff5555
+    color2  #50fa7b
+    color10 #50fa7b
+    color3  #f1fa8c
+    color11 #f1fa8c
+    color4  #bd93f9
+    color12 #bd93f9
+    color5  #ff79c6
+    color13 #ff79c6
+    color6  #8be9fd
+    color14 #8be9fd
+    color7  #f8f8f2
+    color15 #f8f8f2
+    active_tab_background   #bd93f9
+    active_tab_foreground   #282a36
+    inactive_tab_background #44475a
+    inactive_tab_foreground #f8f8f2
   '';
 
-  tmuxConf = pkgs.writeText "dracula-tmux-colors" ''
-    set -g status-style    "bg=#282a36,fg=#f8f8f2"
-    set -g status-interval 2
-    set -g status-left        "#[bg=#282a36,fg=#bd93f9]#[bg=#bd93f9,fg=#282a36,bold] #S #[bg=#282a36,fg=#bd93f9] "
-    set -g status-left-length 30
-    set -g status-right        " #[bg=#282a36,fg=#bd93f9]#[bg=#bd93f9,fg=#282a36]  %H:%M    %d %b #[bg=#282a36,fg=#bd93f9]"
-    set -g status-right-length 40
-    set -g window-status-style         "bg=#282a36"
-    set -g window-status-current-style "bg=#282a36"
-    set -g window-status-separator     ""
-    set -g window-status-format \
-      "#[bg=#282a36,fg=#44475a]#[bg=#44475a,fg=#f8f8f2] #I  #W #[bg=#282a36,fg=#44475a]"
-    set -g window-status-current-format \
-      "#[bg=#282a36,fg=#bd93f9]#[bg=#bd93f9,fg=#282a36,bold] #I  #W #[bg=#282a36,fg=#bd93f9]"
-    set -g pane-border-style        "fg=#44475a"
-    set -g pane-active-border-style "fg=#bd93f9"
-    set -g message-style            "bg=#44475a,fg=#f8f8f2"
-    set -g message-command-style    "bg=#44475a,fg=#f8f8f2"
-    set -g mode-style               "bg=#bd93f9,fg=#282a36"
-  '';
+  tmuxColors = { bg = "#282a36"; fg = "#f8f8f2"; accent = "#bd93f9"; bg2 = "#44475a"; fgOnAccent = "#282a36"; };
 
   starshipToml = pkgs.writeText "dracula-starship.toml" ''
     add_newline = false

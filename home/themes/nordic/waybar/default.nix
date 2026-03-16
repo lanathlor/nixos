@@ -50,6 +50,10 @@
       topBar = {
         layer = "top";
         position = "top";
+        height = 30;
+        margin-top = 6;
+        margin-left = 8;
+        margin-right = 8;
         modules-left = [ "clock" "idle_inhibitor" "custom/media" ];
         modules-center = [ "mpris" ];
         modules-right = [ "cpu" "memory" "temperature" "disk" "disk#data" ];
@@ -117,6 +121,10 @@
       bottomBar = {
         layer = "top";
         position = "bottom";
+        height = 30;
+        margin-bottom = 6;
+        margin-left = 8;
+        margin-right = 8;
         modules-left = [ "custom/powermenu" "custom/weather" ];
         modules-center = [ "hyprland/workspaces" ];
         modules-right = [ "bluetooth" "pulseaudio" "network" "tray" ];
@@ -215,7 +223,6 @@
       enable = true;
       target = "basic.target";
     };
-
-    style = builtins.readFile ./style.css;
+    # style is managed by theme-switch (symlinked to current theme's CSS)
   };
 }
