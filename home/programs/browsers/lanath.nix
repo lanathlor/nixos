@@ -3,6 +3,26 @@
     zen-browser.homeModules.beta
   ];
 
+  # Enable userChrome.css and force dark base theme in all browser profiles
+  home.activation.browserEnableUserChrome = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    _apply_browser_prefs() {
+      local _zp="$1"
+      [ -d "$_zp" ] || return
+      local _userjs="$_zp/user.js"
+      for _pref in \
+        "toolkit.legacyUserProfileCustomizations.stylesheets" \
+        "browser.theme.toolbar-theme" \
+        "ui.systemUsesDarkTheme"; do
+        sed -i "/\"$_pref\"/d" "$_userjs" 2>/dev/null || true
+      done
+      printf '\nuser_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);\n' >> "$_userjs"
+      printf 'user_pref("browser.theme.toolbar-theme", 1);\n' >> "$_userjs"
+      printf 'user_pref("ui.systemUsesDarkTheme", 1);\n' >> "$_userjs"
+    }
+    for _zp in "$HOME/.zen"/*/;              do _apply_browser_prefs "$_zp"; done
+    for _zp in "$HOME/.mozilla/firefox"/*/;  do _apply_browser_prefs "$_zp"; done
+  '';
+
   # Import mkcert CA into Zen's NSS database (runs on each home-manager activation)
   home.activation.importMkcertCA = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     CAROOT=/var/lib/mkcert
@@ -59,7 +79,6 @@
           react-devtools
           reduxdevtools
           linkhints
-          theme-nord-polar-night
         ];
       };
 
