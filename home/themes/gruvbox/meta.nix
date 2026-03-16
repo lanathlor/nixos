@@ -1,10 +1,27 @@
 { pkgs }:
-let c = import ./colors.nix; in
+let
+  c = import ./colors.nix;
+  wallpaper = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/AngelJumbo/gruvbox-wallpapers/main/wallpapers/minimalistic/gruvbox_astro.jpg";
+    sha256 = "0kfm6g3h5rmlbz0dba18avzpvy3wlxbrp31s8f3902ysxcip4g31";
+  };
+  previewPng = pkgs.runCommand "gruvbox-preview.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
+    tmp=$(mktemp -d)
+    convert "${wallpaper}" -resize 400x195^ -gravity Center -extent 400x195 "$tmp/bg.png"
+    convert \
+      \( -size 50x30 xc:"#282828" \) \( -size 50x30 xc:"#ebdbb2" \) \
+      \( -size 50x30 xc:"#458588" \) \( -size 50x30 xc:"#b8bb26" \) \
+      \( -size 50x30 xc:"#fabd2f" \) \( -size 50x30 xc:"#fb4934" \) \
+      \( -size 50x30 xc:"#b16286" \) \( -size 50x30 xc:"#689d6a" \) \
+      +append "$tmp/swatches.png"
+    convert "$tmp/bg.png" "$tmp/swatches.png" -append "$out"
+  '';
+in
 {
   name     = "Gruvbox";
-  wallpaper = pkgs.runCommand "gruvbox-wallpaper.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
-    convert -size 1920x1080 gradient:"#282828-#504945" $out
-  '';
+  inherit wallpaper previewPng;
+  rofiColors  = { bg = "#282828"; bg2 = "#3c3836"; fg = "#ebdbb2"; selected = "#504945"; urgent = "#cc241d"; };
+  dunstColors = { bg2 = "#3c3836"; fg = "#ebdbb2"; accent = "#458588"; red = "#fb4934"; };
   waybarCss = ./waybar/style.css;
   gtkTheme  = "Gruvbox-Dark";
   gtkIcons  = "Papirus-Dark";
@@ -19,36 +36,29 @@ let c = import ./colors.nix; in
     selection_background  #665c54
     url_color             #83a598
     cursor                #d5c4a1
-    color0  #282828   color8  #928374
-    color1  #cc241d   color9  #fb4934
-    color2  #98971a   color10 #b8bb26
-    color3  #d79921   color11 #fabd2f
-    color4  #458588   color12 #83a598
-    color5  #b16286   color13 #d3869b
-    color6  #689d6a   color14 #8ec07c
-    color7  #a89984   color15 #ebdbb2
+    color0  #282828
+    color8  #928374
+    color1  #cc241d
+    color9  #fb4934
+    color2  #98971a
+    color10 #b8bb26
+    color3  #d79921
+    color11 #fabd2f
+    color4  #458588
+    color12 #83a598
+    color5  #b16286
+    color13 #d3869b
+    color6  #689d6a
+    color14 #8ec07c
+    color7  #a89984
+    color15 #ebdbb2
+    active_tab_background   #458588
+    active_tab_foreground   #282828
+    inactive_tab_background #3c3836
+    inactive_tab_foreground #a89984
   '';
 
-  tmuxConf = pkgs.writeText "gruvbox-tmux-colors" ''
-    set -g status-style    "bg=#282828,fg=#ebdbb2"
-    set -g status-interval 2
-    set -g status-left        "#[bg=#282828,fg=#458588]#[bg=#458588,fg=#ebdbb2,bold] #S #[bg=#282828,fg=#458588] "
-    set -g status-left-length 30
-    set -g status-right        " #[bg=#282828,fg=#458588]#[bg=#458588,fg=#ebdbb2]  %H:%M    %d %b #[bg=#282828,fg=#458588]"
-    set -g status-right-length 40
-    set -g window-status-style         "bg=#282828"
-    set -g window-status-current-style "bg=#282828"
-    set -g window-status-separator     ""
-    set -g window-status-format \
-      "#[bg=#282828,fg=#3c3836]#[bg=#3c3836,fg=#ebdbb2] #I  #W #[bg=#282828,fg=#3c3836]"
-    set -g window-status-current-format \
-      "#[bg=#282828,fg=#458588]#[bg=#458588,fg=#ebdbb2,bold] #I  #W #[bg=#282828,fg=#458588]"
-    set -g pane-border-style        "fg=#3c3836"
-    set -g pane-active-border-style "fg=#458588"
-    set -g message-style            "bg=#3c3836,fg=#ebdbb2"
-    set -g message-command-style    "bg=#3c3836,fg=#ebdbb2"
-    set -g mode-style               "bg=#458588,fg=#ebdbb2"
-  '';
+  tmuxColors = { bg = "#282828"; fg = "#ebdbb2"; accent = "#458588"; bg2 = "#3c3836"; fgOnAccent = "#ebdbb2"; };
 
   starshipToml = pkgs.writeText "gruvbox-starship.toml" ''
     add_newline = false

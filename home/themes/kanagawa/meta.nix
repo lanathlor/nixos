@@ -1,10 +1,27 @@
 { pkgs }:
-let c = import ./colors.nix; in
+let
+  c = import ./colors.nix;
+  wallpaper = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/Gurjaka/Kanagawa-Wallpapers/main/wallpapers/great_wave_of_kanagawa.jpg";
+    sha256 = "0l6i89004q0m5nqpx7szw7m2s8l793niay30aawc7w2d5cdngbgc";
+  };
+  previewPng = pkgs.runCommand "kanagawa-preview.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
+    tmp=$(mktemp -d)
+    convert "${wallpaper}" -resize 400x195^ -gravity Center -extent 400x195 "$tmp/bg.png"
+    convert \
+      \( -size 50x30 xc:"${c.sumiInk1}"    \) \( -size 50x30 xc:"${c.fujiWhite}"   \) \
+      \( -size 50x30 xc:"${c.crystalBlue}" \) \( -size 50x30 xc:"${c.oniViolet}"   \) \
+      \( -size 50x30 xc:"${c.springGreen}" \) \( -size 50x30 xc:"${c.carpYellow}"  \) \
+      \( -size 50x30 xc:"${c.waveRed}"     \) \( -size 50x30 xc:"${c.waveAqua}"    \) \
+      +append "$tmp/swatches.png"
+    convert "$tmp/bg.png" "$tmp/swatches.png" -append "$out"
+  '';
+in
 {
   name     = "Kanagawa";
-  wallpaper = pkgs.runCommand "kanagawa-wallpaper.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
-    convert -size 1920x1080 gradient:"#1F1F28-#363646" $out
-  '';
+  inherit wallpaper previewPng;
+  rofiColors  = { bg = "#1F1F28"; bg2 = "#2A2A37"; fg = "#DCD7BA"; selected = "#363646"; urgent = "#E46876"; };
+  dunstColors = { bg2 = "#2A2A37"; fg = "#DCD7BA"; accent = "#7E9CD8"; red = "#E46876"; };
   waybarCss = ./waybar/style.css;
   gtkTheme  = "Adwaita-dark";
   gtkIcons  = "Papirus-Dark";
@@ -19,36 +36,29 @@ let c = import ./colors.nix; in
     selection_background  #363646
     url_color             #7E9CD8
     cursor                #C8C093
-    color0  #16161D   color8  #727169
-    color1  #E46876   color9  #E46876
-    color2  #98BB6C   color10 #98BB6C
-    color3  #C0A36E   color11 #E6C384
-    color4  #7E9CD8   color12 #7E9CD8
-    color5  #957FB8   color13 #957FB8
-    color6  #7AA89F   color14 #7AA89F
-    color7  #C8C093   color15 #DCD7BA
+    color0  #16161D
+    color8  #727169
+    color1  #E46876
+    color9  #E46876
+    color2  #98BB6C
+    color10 #98BB6C
+    color3  #C0A36E
+    color11 #E6C384
+    color4  #7E9CD8
+    color12 #7E9CD8
+    color5  #957FB8
+    color13 #957FB8
+    color6  #7AA89F
+    color14 #7AA89F
+    color7  #C8C093
+    color15 #DCD7BA
+    active_tab_background   #7E9CD8
+    active_tab_foreground   #1F1F28
+    inactive_tab_background #2A2A37
+    inactive_tab_foreground #C8C093
   '';
 
-  tmuxConf = pkgs.writeText "kanagawa-tmux-colors" ''
-    set -g status-style    "bg=#1F1F28,fg=#DCD7BA"
-    set -g status-interval 2
-    set -g status-left        "#[bg=#1F1F28,fg=#7E9CD8]#[bg=#7E9CD8,fg=#1F1F28,bold] #S #[bg=#1F1F28,fg=#7E9CD8] "
-    set -g status-left-length 30
-    set -g status-right        " #[bg=#1F1F28,fg=#7E9CD8]#[bg=#7E9CD8,fg=#1F1F28]  %H:%M    %d %b #[bg=#1F1F28,fg=#7E9CD8]"
-    set -g status-right-length 40
-    set -g window-status-style         "bg=#1F1F28"
-    set -g window-status-current-style "bg=#1F1F28"
-    set -g window-status-separator     ""
-    set -g window-status-format \
-      "#[bg=#1F1F28,fg=#2A2A37]#[bg=#2A2A37,fg=#DCD7BA] #I  #W #[bg=#1F1F28,fg=#2A2A37]"
-    set -g window-status-current-format \
-      "#[bg=#1F1F28,fg=#7E9CD8]#[bg=#7E9CD8,fg=#1F1F28,bold] #I  #W #[bg=#1F1F28,fg=#7E9CD8]"
-    set -g pane-border-style        "fg=#2A2A37"
-    set -g pane-active-border-style "fg=#7E9CD8"
-    set -g message-style            "bg=#2A2A37,fg=#DCD7BA"
-    set -g message-command-style    "bg=#2A2A37,fg=#DCD7BA"
-    set -g mode-style               "bg=#7E9CD8,fg=#1F1F28"
-  '';
+  tmuxColors = { bg = "#1F1F28"; fg = "#DCD7BA"; accent = "#7E9CD8"; bg2 = "#2A2A37"; fgOnAccent = "#1F1F28"; };
 
   starshipToml = pkgs.writeText "kanagawa-starship.toml" ''
     add_newline = false
