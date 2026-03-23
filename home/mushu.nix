@@ -5,6 +5,7 @@
     ./programs/fish/lanath.nix
     ./programs/git/mushu.nix
     ./programs/hyprland/mushu.nix
+    ./programs/neovim/lanath.nix
     ./programs/rofi/lanath.nix
     ./programs/starship/lanath.nix
     ./programs/swaylock/lanath.nix
