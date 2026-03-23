@@ -76,7 +76,21 @@ in
     enable = true;
     mouse = true;
     historyLimit = 50000;
+    plugins = with pkgs.tmuxPlugins; [
+      resurrect
+      {
+        plugin = continuum;
+        extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '15'
+        '';
+      }
+    ];
     extraConfig = ''
+      # True-color and UTF-8 support (needed for powerline glyphs)
+      set -g default-terminal "tmux-256color"
+      set -ag terminal-overrides ",xterm-kitty:Tc,xterm-256color:Tc"
+
       # Vi-style key bindings in copy mode
       set -g mode-keys vi
 
