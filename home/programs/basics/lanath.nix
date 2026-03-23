@@ -221,8 +221,12 @@ in
     maxCacheTtl = 34560000;
     defaultCacheTtlSsh = 34560000;
     maxCacheTtlSsh = 34560000;
-    enableSshSupport = false;
-    pinentry.package = pkgs.pinentry-tty;
+    enableSshSupport = true;
+    grabKeyboardAndMouse = false;
+    pinentry.package = pkgs.pinentry-curses;
+    extraConfig = ''
+      allow-loopback-pinentry
+    '';
   };
 
   fonts.fontconfig.enable = true;
