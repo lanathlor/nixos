@@ -26,6 +26,9 @@ in
   gtkTheme  = "Dracula";
   gtkIcons  = "Papirus-Dark";
 
+  vscodeThemeName = "Dracula";
+  vscodeExtension = pkgs.vscode-extensions.dracula-theme.theme-dracula;
+
   neovimColorscheme = "dracula";
   neovimPlugin      = pkgs.vimPlugins.dracula-nvim;
 

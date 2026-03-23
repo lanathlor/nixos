@@ -23,6 +23,9 @@ in
   gtkTheme  = "Nordic";
   gtkIcons  = "Papirus-Dark";
 
+  vscodeThemeName = "Nord";
+  vscodeExtension = pkgs.vscode-extensions.arcticicestudio.nord-visual-studio-code;
+
   neovimColorscheme = "nord";
   neovimPlugin      = pkgs.vimPlugins.nord-nvim;
 

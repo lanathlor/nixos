@@ -26,6 +26,9 @@ in
   gtkTheme  = "Adwaita-dark";
   gtkIcons  = "Papirus-Dark";
 
+  vscodeThemeName = "Tokyo Night";
+  vscodeExtension = pkgs.vscode-extensions.enkia.tokyo-night;
+
   neovimColorscheme = "tokyonight-night";
   neovimPlugin      = pkgs.vimPlugins.tokyonight-nvim;
 

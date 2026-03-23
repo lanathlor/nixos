@@ -26,6 +26,9 @@ in
   gtkTheme  = "Gruvbox-Dark";
   gtkIcons  = "Papirus-Dark";
 
+  vscodeThemeName = "Gruvbox Dark Medium";
+  vscodeExtension = pkgs.vscode-extensions.jdinhlife.gruvbox;
+
   neovimColorscheme = "gruvbox";
   neovimPlugin      = pkgs.vimPlugins.gruvbox-nvim;
 

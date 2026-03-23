@@ -253,6 +253,11 @@ let
     }
   '';
 
+  baseVscodeSettings = import ../programs/vscode/settings.nix;
+
+  mkVscodeSettings = themeName: pkgs.writeText "vscode-settings.json"
+    (builtins.toJSON (baseVscodeSettings // { "workbench.colorTheme" = themeName; }));
+
   mkGtkSettings = { theme, icons }: pkgs.writeText "gtk-settings.ini" ''
     [Settings]
     gtk-theme-name=${theme}
@@ -272,7 +277,8 @@ let
     dunstConf   = mkDunstConf t.dunstColors;
     tmuxConf    = mkTmuxConf  t.tmuxColors;
     gtkSettings = mkGtkSettings { theme = t.gtkTheme; icons = t.gtkIcons; };
-    firefoxCss  = mkUserChromeCss t.tmuxColors;
+    firefoxCss      = mkUserChromeCss t.tmuxColors;
+    vscodeSettings  = mkVscodeSettings t.vscodeThemeName;
   };
 
   themeEntry   = t: ''printf '%s\x00icon\x1f%s\n' "${t.name}" "${t.previewPng}"'';
@@ -307,6 +313,8 @@ let
       done
       dconf write /org/gnome/desktop/interface/gtk-theme  "'${t.gtkTheme}'"  || true
       dconf write /org/gnome/desktop/interface/icon-theme "'${t.gtkIcons}'" || true
+      mkdir -p "$HOME/.config/Code/User"
+      ln -sf "${t.vscodeSettings}" "$HOME/.config/Code/User/settings.json"
       for _zp in "$HOME/.zen"/*/ "$HOME/.mozilla/firefox"/*/; do
         [ -f "$_zp/cert9.db" ] || continue
         mkdir -p "$_zp/chrome"
@@ -326,6 +334,9 @@ in
   # Install all theme neovim plugins so :colorscheme works after live switch
   programs.neovim.plugins = map (t: t.neovimPlugin) allThemes;
 
+  # Install all theme VSCode extensions so workbench.colorTheme works after live switch
+  programs.vscode.profiles.default.extensions = map (t: t.vscodeExtension) allThemes;
+
   # Remove files that HM now owns (e.g. rofi/config.rasi) but were previously
   # managed by theme-switch. Must run before writeBoundary so HM can write freely.
   # Only rofi/config.rasi needs clearing: it was previously owned by theme-switch,
@@ -333,6 +344,7 @@ in
   # (HM auto-cleans it on first rebuild; no need to clear it here or it resets on every rebuild).
   home.activation.clearThemeMigration = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
     rm -f "$HOME/.config/rofi/config.rasi"
+    rm -f "$HOME/.config/Code/User/settings.json"
   '';
 
   # On first activation (or after a theme-switch reset), create initial symlinks
@@ -348,6 +360,8 @@ in
     [ -L "$HOME/.config/gtk-3.0/settings.ini"        ] || ln -sf "${nordFull.gtkSettings}"  "$HOME/.config/gtk-3.0/settings.ini"
     [ -L "$HOME/.config/gtk-4.0/settings.ini"        ] || ln -sf "${nordFull.gtkSettings}"  "$HOME/.config/gtk-4.0/settings.ini"
     [ -L "$HOME/.wallpapers/wallpaper.png"           ] || ln -sf "${nordFull.wallpaper}"    "$HOME/.wallpapers/wallpaper.png"
+    mkdir -p "$HOME/.config/Code/User"
+    [ -L "$HOME/.config/Code/User/settings.json" ] || ln -sf "${nordFull.vscodeSettings}" "$HOME/.config/Code/User/settings.json"
     for _zp in "$HOME/.zen"/*/ "$HOME/.mozilla/firefox"/*/; do
       [ -f "$_zp/cert9.db" ] || continue
       mkdir -p "$_zp/chrome"

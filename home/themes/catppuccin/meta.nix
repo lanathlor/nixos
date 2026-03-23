@@ -23,6 +23,9 @@ in
   gtkTheme  = "catppuccin-mocha-mauve-standard";
   gtkIcons  = "Papirus-Dark";
 
+  vscodeThemeName = "Catppuccin Mocha";
+  vscodeExtension = pkgs.vscode-extensions.catppuccin.catppuccin-vsc;
+
   neovimColorscheme = "catppuccin-mocha";
   neovimPlugin      = pkgs.vimPlugins.catppuccin-nvim;
 

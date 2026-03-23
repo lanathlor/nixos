@@ -26,6 +26,9 @@ in
   gtkTheme  = "Adwaita-dark";
   gtkIcons  = "Papirus-Dark";
 
+  vscodeThemeName = "One Dark Pro";
+  vscodeExtension = pkgs.vscode-extensions.zhuangtongfa.material-theme;
+
   neovimColorscheme = "onedark";
   neovimPlugin      = pkgs.vimPlugins.onedark-nvim;
 
