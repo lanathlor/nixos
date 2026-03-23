@@ -26,6 +26,14 @@ in
   gtkTheme  = "Everforest-Dark-B";
   gtkIcons  = "Papirus-Dark";
 
+  vscodeThemeName = "Everforest Dark";
+  vscodeExtension = builtins.head (pkgs.vscode-utils.extensionsFromVscodeMarketplace [{
+    publisher = "sainnhe";
+    name = "everforest";
+    version = "0.3.0";
+    sha256 = "1dbkk2nys97a825kvrmjh6qgjzfricllwjwh9qcsvmycbg6sp64x";
+  }]);
+
   neovimColorscheme = "everforest";
   neovimPlugin      = pkgs.vimPlugins.everforest;
 

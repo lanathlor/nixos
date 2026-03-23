@@ -26,6 +26,9 @@ in
   gtkTheme  = "rose-pine";
   gtkIcons  = "Papirus-Dark";
 
+  vscodeThemeName = "Rosé Pine";
+  vscodeExtension = pkgs.vscode-extensions.mvllow.rose-pine;
+
   neovimColorscheme = "rose-pine";
   neovimPlugin      = pkgs.vimPlugins.rose-pine;
 

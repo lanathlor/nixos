@@ -26,6 +26,14 @@ in
   gtkTheme  = "Adwaita-dark";
   gtkIcons  = "Papirus-Dark";
 
+  vscodeThemeName = "Kanagawa Wave";
+  vscodeExtension = builtins.head (pkgs.vscode-utils.extensionsFromVscodeMarketplace [{
+    publisher = "qufiwefefwoyn";
+    name = "kanagawa";
+    version = "1.5.1";
+    sha256 = "0mwgbdis84npl8lhrxkrsi82y6igx9l975jnd37ziz8afyhs4q80";
+  }]);
+
   neovimColorscheme = "kanagawa-wave";
   neovimPlugin      = pkgs.vimPlugins.kanagawa-nvim;
 
