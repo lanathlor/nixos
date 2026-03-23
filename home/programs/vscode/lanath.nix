@@ -3,8 +3,9 @@
   programs.vscode = {
     enable = true;
     package = pkgs-unstable.vscode;
+    mutableExtensionsDir = false;
 
-    extensions = with pkgs; with vscode-extensions; [
+    profiles.default.extensions = with pkgs; with vscode-extensions; [
       golang.go
       ms-azuretools.vscode-docker
       bbenoist.nix
