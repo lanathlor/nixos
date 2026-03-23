@@ -19,14 +19,18 @@
       printf 'user_pref("browser.theme.toolbar-theme", 1);\n' >> "$_userjs"
       printf 'user_pref("ui.systemUsesDarkTheme", 1);\n' >> "$_userjs"
     }
-    for _zp in "$HOME/.zen"/*/;              do _apply_browser_prefs "$_zp"; done
-    for _zp in "$HOME/.mozilla/firefox"/*/;  do _apply_browser_prefs "$_zp"; done
+    if [ -d "$HOME/.zen" ]; then
+      for _zp in "$HOME/.zen"/*/; do _apply_browser_prefs "$_zp"; done
+    fi
+    if [ -d "$HOME/.mozilla/firefox" ]; then
+      for _zp in "$HOME/.mozilla/firefox"/*/; do _apply_browser_prefs "$_zp"; done
+    fi
   '';
 
   # Import mkcert CA into Zen's NSS database (runs on each home-manager activation)
   home.activation.importMkcertCA = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     CAROOT=/var/lib/mkcert
-    if [ -f "$CAROOT/rootCA.pem" ]; then
+    if [ -f "$CAROOT/rootCA.pem" ] && [ -d "$HOME/.zen" ]; then
       for profile in "$HOME/.zen"/*/; do
         if [ -f "$profile/cert9.db" ]; then
           ${pkgs.nss.tools}/bin/certutil -A \

@@ -170,7 +170,7 @@
             show = { file = true, folder = true, folder_arrow = true, git = true },
           },
         },
-        filters = { dotfiles = false },
+        filters = { dotfiles = false, git_ignored = false },
         git = { enable = true },
       })
 
