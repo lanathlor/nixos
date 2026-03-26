@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     ./lanath-desktop-hardware-configuration.nix
@@ -45,4 +45,22 @@
   modules.games.wago-addons.enable = true;
 
   systemd.targets.time-sync.wantedBy = [ "multi-user.target" ];
+
+  environment.systemPackages = with pkgs; [
+    (writeShellScriptBin "switch-to-headless" ''
+      exec sudo /run/current-system/specialisation/headless/bin/switch-to-configuration switch
+    '')
+    (writeShellScriptBin "switch-to-desktop" ''
+      exec sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
+    '')
+  ];
+
+  specialisation = {
+    headless.configuration = {
+      services.xserver.enable = lib.mkForce false;
+      services.displayManager.gdm.enable = lib.mkForce false;
+      programs.hyprland.enable = lib.mkForce false;
+      services.ollama.enable = lib.mkForce false;
+    };
+  };
 }
