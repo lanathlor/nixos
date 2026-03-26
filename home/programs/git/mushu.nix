@@ -1,12 +1,12 @@
 { ... }:
 let
-  homeDir = "/home/mushu";
+  profile = import ../../../users/mushu/profile.nix;
 in
 {
   programs.git = {
     enable = true;
-    settings.user.name = "mushu";
-    settings.user.email = "contact@marieforja.com";
+    settings.user.name = profile.git.name;
+    settings.user.email = profile.git.personalEmail;
     ignores = [
       "node_modules"
       "out"
@@ -29,7 +29,7 @@ in
       ".claude"
     ];
     settings = {
-      includeIf."gitdir:${homeDir}/Work/masterMonkeys/**".path = "${homeDir}/.config/git/config-mastermonkeys";
+      includeIf."gitdir:${profile.homeDir}/${profile.git.workDir}/**".path = "${profile.homeDir}/.config/git/config-mastermonkeys";
       pull.rebase = true;
     };
   };
@@ -38,6 +38,6 @@ in
     [commit]
       gpgSign = true
     [user]
-      signingKey = F54E5E007F0EE47C1F2F4B2486E1F5832C3882A6
+      signingKey = ${profile.git.gpgKey}
   '';
 }

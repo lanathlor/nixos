@@ -1,11 +1,11 @@
 { ... }:
 let
-  homeDir = "/home/lanath";
+  profile = import ../../../users/lanath/profile.nix;
 in
 {
   programs.git = {
     enable = true;
-    settings.user.name = "lanath";
+    settings.user.name = profile.git.name;
     ignores = [
       "node_modules"
       "out"
@@ -29,23 +29,23 @@ in
       ".claude"
     ];
     settings = {
-      includeIf."gitdir:${homeDir}/**".path = "${homeDir}/.config/git/config-personal";
-      includeIf."gitdir:${homeDir}/Work/stamus/**".path = "${homeDir}/.config/git/config-work";
+      includeIf."gitdir:${profile.homeDir}/**".path = "${profile.homeDir}/.config/git/config-personal";
+      includeIf."gitdir:${profile.homeDir}/${profile.git.workDir}/**".path = "${profile.homeDir}/.config/git/config-work";
       pull.rebase = true;
     };
     signing = {
-      signByDefault = true;
-      key = "B3319E23B4F37099073FD764AC81A86C4854A64B";
+      signByDefault = profile.git.signByDefault;
+      key = profile.git.gpgKey;
     };
   };
 
   xdg.configFile."git/config-personal".text = ''
     [user]
-      email = valentin@viviersoft.com
+      email = ${profile.git.personalEmail}
   '';
 
   xdg.configFile."git/config-work".text = ''
     [user]
-      email = vvivier@stamus-networks.com
+      email = ${profile.git.workEmail}
   '';
 }
