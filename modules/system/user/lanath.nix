@@ -1,12 +1,15 @@
 { ... }:
 let
-  lanath = import ./default.nix {
-    username = "lanath";
-    initialHashedPassword = "$y$j9T$TFdhvKQ4clM.JxX1ScPkq1$tOxZv2DOIBWF/uhoyfCbzIkCYZuwa9BfEPNI4wmzqN3";
-  };
+  profile = import ../../../users/lanath/profile.nix;
+  keysDir = ../../../keys;
+  sshKeyFiles = map (f: keysDir + "/${f}") profile.sshKeyFiles;
 in
 {
   imports = [
-    lanath
+    (import ./default.nix {
+      username = profile.username;
+      initialHashedPassword = profile.hashedPassword;
+      inherit sshKeyFiles;
+    })
   ];
 }
