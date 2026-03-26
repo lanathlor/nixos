@@ -1,12 +1,15 @@
 { ... }:
 let
-  mushu = import ./default.nix {
-    username = "mushu";
-    initialHashedPassword = "***REMOVED-PASSWORD-HASH***";
-  };
+  profile = import ../../../users/mushu/profile.nix;
+  keysDir = ../../../keys;
+  sshKeyFiles = map (f: keysDir + "/${f}") profile.sshKeyFiles;
 in
 {
   imports = [
-    mushu
+    (import ./default.nix {
+      username = profile.username;
+      initialHashedPassword = profile.hashedPassword;
+      inherit sshKeyFiles;
+    })
   ];
 }
