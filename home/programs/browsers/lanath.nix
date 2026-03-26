@@ -7,7 +7,7 @@
   home.activation.browserEnableUserChrome = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     _apply_browser_prefs() {
       local _zp="$1"
-      [ -d "$_zp" ] || return
+      [ -d "$_zp" ] || return 0
       local _userjs="$_zp/user.js"
       for _pref in \
         "toolkit.legacyUserProfileCustomizations.stylesheets" \
