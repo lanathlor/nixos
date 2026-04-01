@@ -1,4 +1,4 @@
-{ pkgs-unstable, pkgs, lib, ... }:
+{ pkgs-unstable, pkgs, lib, config, ... }:
 {
 
   home.packages = with pkgs; [
@@ -12,7 +12,7 @@
     enable = true;
     terminal = lib.mkDefault "${pkgs.kitty}/bin/kitty";
     # Points to runtime symlink managed by theme-switch; generates @theme "..." after config block
-    theme = "/home/lanath/.config/rofi/theme.rasi";
+    theme = "${config.home.homeDirectory}/.config/rofi/theme.rasi";
     extraConfig = lib.mkDefault {
       modi = "drun,emoji,ssh,filebrowser,calc";
       case-sensitive = false;
