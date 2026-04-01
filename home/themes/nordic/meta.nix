@@ -3,7 +3,7 @@ let
   c = import ./colors.nix;
   previewPng = pkgs.runCommand "nord-preview.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
     tmp=$(mktemp -d)
-    convert "${./nord-city.jpeg}" -resize 400x195^ -gravity Center -extent 400x195 "$tmp/bg.png"
+    convert "${./nord-city.jpeg}" -resize 400x370^ -gravity Center -extent 400x370 "$tmp/bg.png"
     convert \
       \( -size 50x30 xc:"${c.nord0}"  \) \( -size 50x30 xc:"${c.nord4}"  \) \
       \( -size 50x30 xc:"${c.nord8}"  \) \( -size 50x30 xc:"${c.nord9}"  \) \

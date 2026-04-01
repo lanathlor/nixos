@@ -83,6 +83,7 @@ window#waybar {
 #backlight,
 #custom-weather,
 #custom-powermenu,
+#custom-theme-switch,
 #mpris,
 #mode {
 	background: alpha(@surface0, 0.7);
@@ -108,7 +109,8 @@ window#waybar {
 #temperature:hover,
 #backlight:hover,
 #custom-weather:hover,
-#custom-powermenu:hover {
+#custom-powermenu:hover,
+#custom-theme-switch:hover {
 	background: @surface1;
 }
 
@@ -144,6 +146,8 @@ window#waybar {
 #custom-weather { color: @yellow; }
 #backlight    { color: @yellow;   }
 #battery      { color: @green;    }
+
+#custom-theme-switch { color: @lavender; }
 
 #idle_inhibitor {
 	color: @text;
