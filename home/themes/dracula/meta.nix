@@ -63,6 +63,12 @@ in
 
   tmuxColors = { bg = "#282a36"; fg = "#f8f8f2"; accent = "#bd93f9"; bg2 = "#44475a"; fgOnAccent = "#282a36"; };
 
+  swaylockColors = {
+    bg = c.bg; bg2 = c.currentLine; fg = c.fg;
+    accent = c.purple; clear = c.cyan; wrong = c.red;
+    green = c.green; purple = c.pink; yellow = c.yellow; orange = c.orange;
+  };
+
   starshipToml = pkgs.writeText "dracula-starship.toml" ''
     add_newline = false
     format = "$shell$username$hostname$nix_shell$git_branch$git_commit$git_state$git_status$directory$jobs$cmd_duration$character"

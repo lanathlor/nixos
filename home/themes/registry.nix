@@ -263,6 +263,36 @@ let
   mkVscodeSettings = themeName: pkgs.writeText "vscode-settings.json"
     (builtins.toJSON (baseVscodeSettings // { "workbench.colorTheme" = themeName; }));
 
+  mkSwaylockConf = { bg, bg2, fg, accent, clear, wrong, green, purple, yellow, orange }:
+    let s = c: builtins.substring 1 6 c;  # strip "#" – swaylock wants raw hex
+    in pkgs.writeText "swaylock-config" ''
+    ignore-empty-password
+    show-failed-attempts
+    show-keyboard-layout
+    line-uses-ring
+    color=${s bg}
+    indicator-radius=100
+    indicator-thickness=10
+    inside-color=${s bg}ff
+    inside-clear-color=${s clear}ff
+    inside-ver-color=${s accent}ff
+    inside-wrong-color=${s wrong}ff
+    key-hl-color=${s green}ff
+    bs-hl-color=${s purple}ff
+    caps-lock-key-hl-color=${s yellow}ff
+    caps-lock-bs-hl-color=${s orange}ff
+    layout-bg-color=${s bg}ff
+    ring-color=${s bg2}ff
+    ring-clear-color=${s clear}ff
+    ring-ver-color=${s accent}ff
+    ring-wrong-color=${s wrong}ff
+    separator-color=${s bg2}ff
+    text-color=${s fg}ff
+    text-clear-color=${s bg2}ff
+    text-ver-color=${s bg2}ff
+    text-wrong-color=${s bg2}ff
+    '';
+
   mkGtkSettings = { theme, icons }: pkgs.writeText "gtk-settings.ini" ''
     [Settings]
     gtk-theme-name=${theme}
@@ -277,6 +307,196 @@ let
     gtk-xft-rgba=rgb
   '';
 
+  # Qt5 palette for qt5ct – maps theme colors to QPalette roles (21 colors).
+  # Format: #AARRGGBB per qt5ct convention.
+  mkQt5ctColors = { bg, fg, accent, bg2, fgOnAccent }:
+    let
+      o = c: "#ff" + builtins.substring 1 6 c;  # opaque
+      t = c: "#80" + builtins.substring 1 6 c;  # semi-transparent
+      d = c: "#40" + builtins.substring 1 6 c;  # dim
+      #        WinText  Button   Light    MidLt    Dark     Mid      Text     Bright   BtnText  Base     Window   Shadow   Hilite   HiText   Link     LinkVis  AltBase  NoRole   TipBase  TipText  Placeh
+      active   = builtins.concatStringsSep ", " [ (o fg) (o bg2) (o bg2) (o bg2) (o bg) (o bg2) (o fg) (o fgOnAccent) (o fg) (o bg) (o bg) (o bg) (o accent) (o fgOnAccent) (o accent) (o accent) (o bg2) (o bg) (o bg2) (o fg) (t fg) ];
+      inactive = builtins.concatStringsSep ", " [ (o fg) (o bg2) (o bg2) (o bg2) (o bg) (o bg2) (o fg) (o fgOnAccent) (o fg) (o bg) (o bg) (o bg) (t accent) (o fgOnAccent) (o accent) (o accent) (o bg2) (o bg) (o bg2) (o fg) (t fg) ];
+      disabled = builtins.concatStringsSep ", " [ (t fg) (o bg2) (o bg2) (o bg2) (o bg) (o bg2) (t fg) (o fgOnAccent) (t fg) (o bg) (o bg) (o bg) (o bg2) (t fg) (t accent) (t accent) (o bg2) (o bg) (o bg2) (t fg) (d fg) ];
+    in pkgs.writeText "qt5ct-colors.conf" ''
+      [ColorScheme]
+      active_colors=${active}
+      inactive_colors=${inactive}
+      disabled_colors=${disabled}
+    '';
+
+  # Custom QSS stylesheet for Qt5 apps – overrides built-in application styles.
+  # Loaded by qt5ct AFTER the app's own setStyleSheet(), so these rules win.
+  mkQt5ctQss = { bg, fg, accent, bg2, fgOnAccent }: pkgs.writeText "qt5ct-theme.qss" ''
+    QMainWindow, QDialog, QWidget { background-color: ${bg}; color: ${fg}; }
+    QLabel { color: ${fg}; background-color: transparent; }
+
+    QMenuBar { background-color: ${bg}; color: ${fg}; border: none; }
+    QMenuBar::item:selected { background-color: ${bg2}; }
+    QMenu { background-color: ${bg}; color: ${fg}; border: 1px solid ${bg2}; }
+    QMenu::item:selected { background-color: ${accent}; color: ${fgOnAccent}; }
+    QMenu::separator { background-color: ${bg2}; height: 1px; margin: 4px 8px; }
+
+    QToolBar { background-color: ${bg}; border: none; spacing: 4px; padding: 4px; }
+    QToolButton { background-color: transparent; color: ${fg}; border: none;
+                  border-radius: 4px; padding: 6px; margin: 1px; }
+    QToolButton:hover { background-color: ${bg2}; }
+    QToolButton:pressed, QToolButton:checked { background-color: ${accent}; color: ${fgOnAccent}; }
+
+    QTreeView, QTableView, QListView, QTreeWidget, QListWidget {
+      background-color: ${bg}; alternate-background-color: ${bg2}; color: ${fg};
+      selection-background-color: ${accent}; selection-color: ${fgOnAccent};
+      border: 1px solid ${bg2}; outline: none;
+    }
+    QTreeView::item, QListView::item, QListWidget::item {
+      padding: 4px 2px; min-height: 22px;
+    }
+    QTableView::item { padding: 6px 8px; }
+    QTreeView::branch { background-color: ${bg}; }
+    QTreeView::branch:selected { background-color: ${accent}; }
+    QTreeView::item:selected, QTableView::item:selected, QListView::item:selected {
+      background-color: ${accent}; color: ${fgOnAccent};
+    }
+    QTreeView::item:hover, QTableView::item:hover, QListView::item:hover {
+      background-color: ${bg2};
+    }
+    QHeaderView::section { background-color: ${bg2}; color: ${fg};
+                           border: 1px solid ${bg}; padding: 6px 10px; }
+
+    QLineEdit, QTextEdit, QPlainTextEdit, QSpinBox, QDoubleSpinBox {
+      background-color: ${bg2}; color: ${fg}; border: 1px solid ${bg2};
+      border-radius: 4px; padding: 6px 8px; selection-background-color: ${accent};
+      selection-color: ${fgOnAccent};
+    }
+    QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
+      border-color: ${accent};
+    }
+    QComboBox { background-color: ${bg2}; color: ${fg}; border: 1px solid ${bg2};
+                border-radius: 4px; padding: 6px 10px; }
+    QComboBox:hover { border-color: ${accent}; }
+    QComboBox::drop-down { border: none; }
+    QComboBox QAbstractItemView { background-color: ${bg}; color: ${fg};
+                                  selection-background-color: ${accent};
+                                  selection-color: ${fgOnAccent}; }
+    QComboBox QAbstractItemView::item { padding: 6px 8px; min-height: 22px; }
+
+    QPushButton { background-color: ${bg2}; color: ${fg}; border: 1px solid ${bg2};
+                  border-radius: 4px; padding: 8px 20px; }
+    QPushButton:hover { background-color: ${accent}; color: ${fgOnAccent};
+                        border-color: ${accent}; }
+    QPushButton:pressed { background-color: ${accent}; }
+    QPushButton:default { border-color: ${accent}; }
+    QPushButton:disabled { color: ${bg2}; }
+
+    QTabWidget::pane { border: 1px solid ${bg2}; background-color: ${bg}; }
+    QTabBar::tab { background-color: ${bg2}; color: ${fg}; padding: 8px 18px;
+                   border: none; margin-right: 2px; }
+    QTabBar::tab:selected { background-color: ${accent}; color: ${fgOnAccent}; }
+    QTabBar::tab:hover:!selected { background-color: ${bg2}; }
+
+    QMenuBar { padding: 2px; }
+    QMenuBar::item { padding: 6px 10px; }
+    QMenu::item { padding: 6px 24px 6px 12px; }
+
+    QStatusBar { background-color: ${bg}; color: ${fg}; padding: 2px; }
+    QStatusBar::item { border: none; }
+
+    QScrollBar:vertical { background-color: ${bg}; width: 10px; margin: 0; }
+    QScrollBar:horizontal { background-color: ${bg}; height: 10px; margin: 0; }
+    QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+      background-color: ${bg2}; border-radius: 4px; min-height: 20px; min-width: 20px;
+    }
+    QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
+      background-color: ${accent};
+    }
+    QScrollBar::add-line, QScrollBar::sub-line { height: 0; width: 0; }
+    QScrollBar::add-page, QScrollBar::sub-page { background: none; }
+
+    QToolTip { background-color: ${bg2}; color: ${fg}; border: 1px solid ${accent};
+               padding: 6px; }
+    QGroupBox { border: 1px solid ${bg2}; border-radius: 4px; margin-top: 10px;
+                padding: 20px 8px 8px 8px; color: ${fg}; }
+    QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 6px;
+                       color: ${accent}; }
+
+    QCheckBox, QRadioButton { color: ${fg}; spacing: 8px; padding: 4px; }
+    QCheckBox::indicator, QRadioButton::indicator { width: 18px; height: 18px; }
+
+    QProgressBar { background-color: ${bg2}; border-radius: 4px; text-align: center;
+                   color: ${fg}; min-height: 20px; }
+    QProgressBar::chunk { background-color: ${accent}; border-radius: 4px; }
+
+    QSplitter::handle { background-color: ${bg2}; }
+    QFrame[frameShape="4"], QFrame[frameShape="5"] { color: ${bg2}; }
+  '';
+
+  # GTK4 CSS for regreet greeter – overlays on top of the base Adwaita-dark GTK theme.
+  # Uses semi-transparent backgrounds so the wallpaper shows through.
+  mkRegreetCss = { bg, fg, accent, bg2, fgOnAccent }: pkgs.writeText "regreet-theme.css" ''
+    window {
+      background-color: rgba(0, 0, 0, 0.85);
+    }
+
+    entry {
+      background-color: ${bg2};
+      color: ${fg};
+      border: 2px solid ${bg2};
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+
+    entry:focus {
+      border-color: ${accent};
+    }
+
+    button {
+      background-color: ${bg2};
+      color: ${fg};
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+    }
+
+    button:hover {
+      background-color: ${accent};
+      color: ${fgOnAccent};
+    }
+
+    button:active {
+      background-color: ${accent};
+      color: ${fgOnAccent};
+      opacity: 0.8;
+    }
+
+    label {
+      color: ${fg};
+    }
+
+    comboboxtext button {
+      background-color: ${bg2};
+      color: ${fg};
+    }
+
+    comboboxtext button:hover {
+      background-color: ${accent};
+      color: ${fgOnAccent};
+    }
+  '';
+
+  qt5ctConfTemplate = pkgs.writeText "qt5ct.conf.template" ''
+    [Appearance]
+    color_scheme_path=__HOME__/.config/qt5ct/colors/theme-switch.conf
+    custom_palette=true
+    icon_theme=Papirus-Dark
+    standard_dialogs=default
+    style=Fusion
+    stylesheets=__HOME__/.config/qt5ct/qss/theme-switch.qss
+
+    [Fonts]
+    fixed="FiraCode Nerd Font Mono,10,-1,5,50,0,0,0,0,0"
+    general="Noto Sans,10,-1,5,50,0,0,0,0,0"
+  '';
+
   withAssets = t: t // {
     rofiTheme     = mkRofiTheme     t.rofiColors;
     switcherTheme = mkSwitcherTheme t.rofiColors;
@@ -285,6 +505,10 @@ let
     gtkSettings   = mkGtkSettings { theme = t.gtkTheme; icons = t.gtkIcons; };
     firefoxCss      = mkUserChromeCss t.tmuxColors;
     vscodeSettings  = mkVscodeSettings t.vscodeThemeName;
+    qt5ctColors     = mkQt5ctColors t.tmuxColors;
+    qt5ctQss        = mkQt5ctQss t.tmuxColors;
+    swaylockConf    = mkSwaylockConf t.swaylockColors;
+    regreetCss      = mkRegreetCss t.tmuxColors;
   };
 
   themeEntry   = t: ''printf '%s\x00icon\x1f%s\n' "${t.name}" "${t.previewPng}"'';
@@ -299,9 +523,10 @@ let
       ln -sf "${t.starshipToml}"  "$HOME/.config/starship.toml"
       ln -sf "${t.rofiTheme}"       "$HOME/.config/rofi/theme.rasi"
       ln -sf "${t.switcherTheme}"   "$HOME/.config/rofi/switcher.rasi"
-      mkdir -p "$HOME/.config/kitty" "$HOME/.config/dunst" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
+      mkdir -p "$HOME/.config/kitty" "$HOME/.config/dunst" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0" "$HOME/.config/swaylock"
       ln -sf "${t.kittyColors}"   "$HOME/.config/kitty/current-theme.conf"
       ln -sf "${t.dunstConf}"     "$HOME/.config/dunst/dunstrc"
+      ln -sf "${t.swaylockConf}" "$HOME/.config/swaylock/config"
       ln -sf "${t.gtkSettings}"   "$HOME/.config/gtk-3.0/settings.ini"
       ln -sf "${t.gtkSettings}"   "$HOME/.config/gtk-4.0/settings.ini"
       dunstctl reload 2>/dev/null || systemctl --user restart dunst 2>/dev/null || true
@@ -327,6 +552,11 @@ let
         mkdir -p "$_zp/chrome"
         ln -sf "${t.firefoxCss}" "$_zp/chrome/userChrome.css"
       done
+      mkdir -p "$HOME/.config/qt5ct/colors" "$HOME/.config/qt5ct/qss"
+      ln -sf "${t.qt5ctColors}" "$HOME/.config/qt5ct/colors/theme-switch.conf"
+      ln -sf "${t.qt5ctQss}"    "$HOME/.config/qt5ct/qss/theme-switch.qss"
+      ln -sf "${t.regreetCss}" /var/lib/regreet-theme/regreet.css 2>/dev/null || true
+      ln -sf "${t.wallpaper}"  /var/lib/regreet-theme/wallpaper   2>/dev/null || true
       if [ "''${THEME_PICKER_PREVIEW:-0}" = "0" ]; then
         printf '%s' "${t.name}"              > "$HOME/.cache/current-theme"
         printf '%s' "${t.neovimColorscheme}" > "$HOME/.cache/nvim-colorscheme"
@@ -359,6 +589,13 @@ let
   '') allThemes;
 in
 {
+  # Qt5 theming via qt5ct – applies themed palette to KeePassXC and other Qt apps.
+  # KeePassXC must be set to View > Theme > Classic (Platform-native) for this to work.
+  qt = {
+    enable = true;
+    platformTheme.name = "qt5ct";
+  };
+
   # Install all theme neovim plugins so :colorscheme works after live switch
   programs.neovim.plugins = map (t: t.neovimPlugin) allThemes;
 
@@ -373,6 +610,7 @@ in
   home.activation.clearThemeMigration = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
     rm -f "$HOME/.config/rofi/config.rasi"
     rm -f "$HOME/.config/Code/User/settings.json"
+    rm -f "$HOME/.config/swaylock/config"
   '';
 
   # On first activation (or after a theme-switch reset), create initial symlinks
@@ -380,7 +618,8 @@ in
   # If a file is already a symlink (set by theme-switch), leave it alone.
   home.activation.initTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/waybar" "$HOME/.config/rofi" "$HOME/.config/dunst" \
-             "$HOME/.config/kitty" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0" "$HOME/.wallpapers"
+             "$HOME/.config/kitty" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0" \
+             "$HOME/.config/swaylock" "$HOME/.wallpapers"
     _INIT_THEME=$(cat "$HOME/.cache/current-theme" 2>/dev/null || echo "Nord")
     case "$_INIT_THEME" in
       ${themeInitCase}
@@ -402,6 +641,7 @@ in
     [ -L "$HOME/.config/rofi/theme.rasi"           ] || ln -sf "$_rofiTheme"      "$HOME/.config/rofi/theme.rasi"
     [ -L "$HOME/.config/rofi/switcher.rasi"        ] || ln -sf "$_switcherTheme"  "$HOME/.config/rofi/switcher.rasi"
     [ -L "$HOME/.config/dunst/dunstrc"            ] || ln -sf "$_dunstConf"      "$HOME/.config/dunst/dunstrc"
+    [ -L "$HOME/.config/swaylock/config"          ] || ln -sf "${nordFull.swaylockConf}" "$HOME/.config/swaylock/config"
     [ -L "$HOME/.config/kitty/current-theme.conf" ] || ln -sf "$_kittyColors"    "$HOME/.config/kitty/current-theme.conf"
     [ -L "$HOME/.config/gtk-3.0/settings.ini"     ] || ln -sf "$_gtkSettings"    "$HOME/.config/gtk-3.0/settings.ini"
     [ -L "$HOME/.config/gtk-4.0/settings.ini"     ] || ln -sf "$_gtkSettings"    "$HOME/.config/gtk-4.0/settings.ini"
@@ -413,9 +653,18 @@ in
       mkdir -p "$_zp/chrome"
       [ -L "$_zp/chrome/userChrome.css" ] || ln -sf "$_firefoxCss" "$_zp/chrome/userChrome.css"
     done
+    mkdir -p "$HOME/.config/qt5ct/colors" "$HOME/.config/qt5ct/qss"
+    [ -L "$HOME/.config/qt5ct/colors/theme-switch.conf" ] || ln -sf "${nordFull.qt5ctColors}" "$HOME/.config/qt5ct/colors/theme-switch.conf"
+    [ -L "$HOME/.config/qt5ct/qss/theme-switch.qss" ]    || ln -sf "${nordFull.qt5ctQss}"    "$HOME/.config/qt5ct/qss/theme-switch.qss"
+    sed "s|__HOME__|$HOME|g" "${qt5ctConfTemplate}" > "$HOME/.config/qt5ct/qt5ct.conf"
+    [ -f /var/lib/regreet-theme/regreet.css ] || ln -sf "${nordFull.regreetCss}" /var/lib/regreet-theme/regreet.css 2>/dev/null || true
+    [ -f /var/lib/regreet-theme/wallpaper ]   || ln -sf "${nordFull.wallpaper}"  /var/lib/regreet-theme/wallpaper   2>/dev/null || true
   '';
 
   home.packages = with pkgs; [
+    # Qt5 platform theme plugin (qt module sets env var but may not install the plugin)
+    libsForQt5.qt5ct
+
     # GTK theme packages for all themes (installed so theme-switch can apply them)
     nordic
     papirus-icon-theme
@@ -426,7 +675,7 @@ in
   ] ++ [
     (pkgs.writeShellApplication {
       name = "theme-switch";
-      runtimeInputs = with pkgs; [ swww tmux glib dconf libnotify procps coreutils ];
+      runtimeInputs = with pkgs; [ swww tmux glib dconf libnotify procps coreutils gnused ];
       # kitty, nvim, rofi come from home-manager; bare names work fine
       text = ''
         # ── icon path lookup by theme name ────────────────────────────────

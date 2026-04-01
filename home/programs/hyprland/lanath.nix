@@ -9,6 +9,7 @@
       monitor=DP-2,1920x1080@144,3840x0,1
       monitor=eDP-1,1920x1200@59.95Hz,0x0,1
       env = XCURSOR_SIZE,24
+      env = QT_QPA_PLATFORMTHEME,qt5ct
       exec-once = swww-daemon
       exec-once = sleep 1 && swww img ${config.theme.wallpaper}
       exec-once = wl-paste --type text --watch cliphist store
