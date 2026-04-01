@@ -105,4 +105,10 @@ in
   '';
 
   tmuxColors = { bg = c.base; fg = c.text; accent = c.mauve; bg2 = c.surface0; fgOnAccent = c.base; };
+
+  swaylockColors = {
+    bg = c.base; bg2 = c.surface0; fg = c.text;
+    accent = c.blue; clear = c.sky; wrong = c.red;
+    green = c.green; purple = c.mauve; yellow = c.yellow; orange = c.peach;
+  };
 }

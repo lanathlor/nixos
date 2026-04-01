@@ -63,6 +63,12 @@ in
 
   tmuxColors = { bg = "#1a1b26"; fg = "#c0caf5"; accent = "#bb9af7"; bg2 = "#292e42"; fgOnAccent = "#1a1b26"; };
 
+  swaylockColors = {
+    bg = c.bg; bg2 = c.bgHighlight; fg = c.fg;
+    accent = c.blue; clear = c.cyan; wrong = c.red;
+    green = c.green; purple = c.magenta; yellow = c.yellow; orange = c.orange;
+  };
+
   starshipToml = pkgs.writeText "tokyonight-starship.toml" ''
     add_newline = false
     format = "$shell$username$hostname$nix_shell$git_branch$git_commit$git_state$git_status$directory$jobs$cmd_duration$character"

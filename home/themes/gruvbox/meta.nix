@@ -63,6 +63,12 @@ in
 
   tmuxColors = { bg = "#282828"; fg = "#ebdbb2"; accent = "#458588"; bg2 = "#3c3836"; fgOnAccent = "#ebdbb2"; };
 
+  swaylockColors = {
+    bg = c.bg0; bg2 = c.bg1; fg = c.fg1;
+    accent = c.blueB; clear = c.aquaB; wrong = c.redB;
+    green = c.greenB; purple = c.purpleB; yellow = c.yellowB; orange = c.orangeB;
+  };
+
   starshipToml = pkgs.writeText "gruvbox-starship.toml" ''
     add_newline = false
     format = "$shell$username$hostname$nix_shell$git_branch$git_commit$git_state$git_status$directory$jobs$cmd_duration$character"

@@ -105,4 +105,10 @@ in
   '';
 
   tmuxColors = { bg = c.nord0; fg = c.nord4; accent = c.nord10; bg2 = c.nord1; fgOnAccent = c.nord6; };
+
+  swaylockColors = {
+    bg = c.nord0; bg2 = c.nord1; fg = c.nord6;
+    accent = c.nord9; clear = c.nord8; wrong = c.nord11;
+    green = c.nord14; purple = c.nord15; yellow = c.nord13; orange = c.nord12;
+  };
 }

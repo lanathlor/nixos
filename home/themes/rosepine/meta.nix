@@ -63,6 +63,12 @@ in
 
   tmuxColors = { bg = "#191724"; fg = "#e0def4"; accent = "#c4a7e7"; bg2 = "#26233a"; fgOnAccent = "#191724"; };
 
+  swaylockColors = {
+    bg = c.base; bg2 = c.overlay; fg = c.text;
+    accent = c.iris; clear = c.foam; wrong = c.love;
+    green = c.pine; purple = c.rose; yellow = c.gold; orange = c.gold;
+  };
+
   starshipToml = pkgs.writeText "rosepine-starship.toml" ''
     add_newline = false
     format = "$shell$username$hostname$nix_shell$git_branch$git_commit$git_state$git_status$directory$jobs$cmd_duration$character"

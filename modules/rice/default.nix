@@ -6,6 +6,7 @@ in
   imports = [
     ./fileExplorer/thunar.nix
     ./fonts
+    ./greeter
     # ./homeManager
     ./xserver
 

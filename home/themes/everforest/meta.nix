@@ -68,6 +68,12 @@ in
 
   tmuxColors = { bg = "#2d353b"; fg = "#d3c6aa"; accent = "#7fbbb3"; bg2 = "#3d484d"; fgOnAccent = "#2d353b"; };
 
+  swaylockColors = {
+    bg = c.bg0; bg2 = c.bg2; fg = c.fg;
+    accent = c.blue; clear = c.aqua; wrong = c.red;
+    green = c.green; purple = c.purple; yellow = c.yellow; orange = c.orange;
+  };
+
   starshipToml = pkgs.writeText "everforest-starship.toml" ''
     add_newline = false
     format = "$shell$username$hostname$nix_shell$git_branch$git_commit$git_state$git_status$directory$jobs$cmd_duration$character"

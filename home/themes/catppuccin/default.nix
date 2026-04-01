@@ -52,36 +52,6 @@ in
     themeFile = lib.mkDefault "Catppuccin-Mocha";
   };
 
-  programs.swaylock = {
-    settings = lib.mkDefault {
-      ignore-empty-password = true;
-      show-failed-attempt = true;
-      show-keyboard-layout = true;
-      line-uses-ring = true;
-      color = "1e1e2e";
-      bs-hl-color = "cba6f7ff";
-      caps-lock-bs-hl-color = "fab387ff";
-      caps-lock-key-hl-color = "f9e2afff";
-      indicator-radius = "100";
-      indicator-thickness = "10";
-      inside-color = "1e1e2eff";
-      inside-clear-color = "74c7ecff";
-      inside-ver-color = "89b4faff";
-      inside-wrong-color = "f38ba8ff";
-      key-hl-color = "a6e3a1ff";
-      layout-bg-color = "1e1e2eff";
-      ring-color = "313244ff";
-      ring-clear-color = "89dcebff";
-      ring-ver-color = "89b4faff";
-      ring-wrong-color = "f38ba8ff";
-      separator-color = "313244ff";
-      text-color = "cdd6f4ff";
-      text-clear-color = "313244ff";
-      text-ver-color = "313244ff";
-      text-wrong-color = "313244ff";
-    };
-  };
-
   home.file.".wallpapers/wallpaper.png" = {
     source = ./cat-sound.png;
   };
