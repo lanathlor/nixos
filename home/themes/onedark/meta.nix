@@ -7,7 +7,7 @@ let
   };
   previewPng = pkgs.runCommand "onedark-preview.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
     tmp=$(mktemp -d)
-    convert "${wallpaper}" -resize 400x195^ -gravity Center -extent 400x195 "$tmp/bg.png"
+    convert "${wallpaper}" -resize 400x370^ -gravity Center -extent 400x370 "$tmp/bg.png"
     convert \
       \( -size 50x30 xc:"${c.bg}"     \) \( -size 50x30 xc:"${c.fg}"     \) \
       \( -size 50x30 xc:"${c.blue}"   \) \( -size 50x30 xc:"${c.purple}"  \) \

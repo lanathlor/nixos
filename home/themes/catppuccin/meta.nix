@@ -3,7 +3,7 @@ let
   c = import ./colors.nix;
   previewPng = pkgs.runCommand "catppuccin-preview.png" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
     tmp=$(mktemp -d)
-    convert "${./cat-sound.png}" -resize 400x195^ -gravity Center -extent 400x195 "$tmp/bg.png"
+    convert "${./cat-sound.png}" -resize 400x370^ -gravity Center -extent 400x370 "$tmp/bg.png"
     convert \
       \( -size 50x30 xc:"${c.base}"   \) \( -size 50x30 xc:"${c.text}"   \) \
       \( -size 50x30 xc:"${c.mauve}"  \) \( -size 50x30 xc:"${c.blue}"   \) \

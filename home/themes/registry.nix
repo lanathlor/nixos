@@ -12,19 +12,24 @@ let
 
   allThemes = map withAssets [ nord catppuccin dracula gruvbox tokyonight everforest rosepine onedark kanagawa ];
 
-  rofiTheme = pkgs.writeText "theme-switcher.rasi" ''
-    * { bg: #2e3440; bg2: #3b4252; accent: #5e81ac; fg: #eceff4; }
-    window      { background-color: @bg; border-radius: 12px; width: 1400px; height: 940px; }
-    mainbox     { background-color: transparent; padding: 16px; }
+  mkSwitcherTheme = { bg, bg2, fg, selected, urgent }: pkgs.writeText "theme-switcher.rasi" ''
+    * { bg: ${bg}; bg2: ${bg2}; accent: ${selected}; fg: ${fg}; }
+    window      { background-color: @bg; border-radius: 12px; width: 1300px; }
+    mainbox     { background-color: transparent; padding: 16px;
+                  children: [ "inputbar", "listview", "message" ]; }
     inputbar    { background-color: @bg2; text-color: @fg; border-radius: 8px;
-                  padding: 8px 12px; margin: 0 0 16px; }
-    listview    { background-color: transparent; columns: 3; lines: 3; spacing: 12px; }
-    element     { background-color: @bg2; border-radius: 8px; padding: 8px;
+                  padding: 8px 12px; margin: 0 0 12px; }
+    listview    { background-color: transparent; columns: 3; lines: 2; spacing: 8px;
+                  fixed-height: false; }
+    element     { background-color: @bg2; border-radius: 8px; padding: 4px;
                   orientation: vertical; }
     element selected { background-color: @accent; }
-    element-icon { size: 390px; border-radius: 6px; }
+    element-icon { size: 400px; border-radius: 6px; background-color: @bg2; }
     element-text { background-color: transparent; text-color: @fg;
-                   horizontal-align: 0.5; padding: 8px 0 0; }
+                   horizontal-align: 0.5; padding: 6px 0 0; }
+    message     { padding: 10px 0 0; background-color: transparent; }
+    textbox     { background-color: transparent; text-color: @fg;
+                  horizontal-align: 0.5; padding: 4px; }
   '';
 
   mkRofiTheme = { bg, bg2, fg, selected, urgent }: pkgs.writeText "rofi-theme.rasi" ''
@@ -273,10 +278,11 @@ let
   '';
 
   withAssets = t: t // {
-    rofiTheme   = mkRofiTheme t.rofiColors;
-    dunstConf   = mkDunstConf t.dunstColors;
-    tmuxConf    = mkTmuxConf  t.tmuxColors;
-    gtkSettings = mkGtkSettings { theme = t.gtkTheme; icons = t.gtkIcons; };
+    rofiTheme     = mkRofiTheme     t.rofiColors;
+    switcherTheme = mkSwitcherTheme t.rofiColors;
+    dunstConf     = mkDunstConf t.dunstColors;
+    tmuxConf      = mkTmuxConf  t.tmuxColors;
+    gtkSettings   = mkGtkSettings { theme = t.gtkTheme; icons = t.gtkIcons; };
     firefoxCss      = mkUserChromeCss t.tmuxColors;
     vscodeSettings  = mkVscodeSettings t.vscodeThemeName;
   };
@@ -291,7 +297,8 @@ let
       ln -sf "${t.wallpaper}"    "$HOME/.wallpapers/wallpaper.png"
       ln -sf "${t.waybarCss}"     "$HOME/.config/waybar/style.css"
       ln -sf "${t.starshipToml}"  "$HOME/.config/starship.toml"
-      ln -sf "${t.rofiTheme}"     "$HOME/.config/rofi/theme.rasi"
+      ln -sf "${t.rofiTheme}"       "$HOME/.config/rofi/theme.rasi"
+      ln -sf "${t.switcherTheme}"   "$HOME/.config/rofi/switcher.rasi"
       mkdir -p "$HOME/.config/kitty" "$HOME/.config/dunst" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
       ln -sf "${t.kittyColors}"   "$HOME/.config/kitty/current-theme.conf"
       ln -sf "${t.dunstConf}"     "$HOME/.config/dunst/dunstrc"
@@ -320,15 +327,36 @@ let
         mkdir -p "$_zp/chrome"
         ln -sf "${t.firefoxCss}" "$_zp/chrome/userChrome.css"
       done
-      printf '%s' "${t.name}"              > "$HOME/.cache/current-theme"
-      printf '%s' "${t.neovimColorscheme}" > "$HOME/.cache/nvim-colorscheme"
-      notify-send "󰏘 Theme" "Switched to ${t.name}" --icon=preferences-desktop-theme
+      if [ "''${THEME_PICKER_PREVIEW:-0}" = "0" ]; then
+        printf '%s' "${t.name}"              > "$HOME/.cache/current-theme"
+        printf '%s' "${t.neovimColorscheme}" > "$HOME/.cache/nvim-colorscheme"
+        notify-send "󰏘 Theme" "Switched to ${t.name}" --icon=preferences-desktop-theme
+      fi
     ;;
   '';
 
-  themeBlock  = lib.concatStrings (map applyCase allThemes);
+  themeBlock    = lib.concatStrings (map applyCase allThemes);
+  themeIconCase = lib.concatMapStrings (t: ''
+      "${t.name}") echo "${t.previewPng}" ;;
+  '') allThemes;
 
   nordFull = withAssets nord;
+
+  # Shell case entries used by initTheme to set asset variables for any theme
+  themeInitCase = lib.concatMapStrings (t: ''
+      "${t.name}")
+        _waybarCss="${t.waybarCss}"
+        _starshipToml="${t.starshipToml}"
+        _rofiTheme="${t.rofiTheme}"
+        _switcherTheme="${t.switcherTheme}"
+        _dunstConf="${t.dunstConf}"
+        _kittyColors="${t.kittyColors}"
+        _gtkSettings="${t.gtkSettings}"
+        _wallpaper="${t.wallpaper}"
+        _vscodeSettings="${t.vscodeSettings}"
+        _firefoxCss="${t.firefoxCss}"
+        ;;
+  '') allThemes;
 in
 {
   # Install all theme neovim plugins so :colorscheme works after live switch
@@ -348,24 +376,42 @@ in
   '';
 
   # On first activation (or after a theme-switch reset), create initial symlinks
-  # pointing to Nord. If the file is already a symlink (set by theme-switch), leave it alone.
+  # pointing to the last-used theme (from ~/.cache/current-theme), falling back to Nord.
+  # If a file is already a symlink (set by theme-switch), leave it alone.
   home.activation.initTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/waybar" "$HOME/.config/rofi" "$HOME/.config/dunst" \
              "$HOME/.config/kitty" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0" "$HOME/.wallpapers"
-    [ -L "$HOME/.config/waybar/style.css"            ] || ln -sf "${nordFull.waybarCss}"    "$HOME/.config/waybar/style.css"
-    [ -L "$HOME/.config/starship.toml"               ] || ln -sf "${nordFull.starshipToml}" "$HOME/.config/starship.toml"
-    [ -L "$HOME/.config/rofi/theme.rasi"             ] || ln -sf "${nordFull.rofiTheme}"    "$HOME/.config/rofi/theme.rasi"
-    [ -L "$HOME/.config/dunst/dunstrc"               ] || ln -sf "${nordFull.dunstConf}"    "$HOME/.config/dunst/dunstrc"
-    [ -L "$HOME/.config/kitty/current-theme.conf"    ] || ln -sf "${nordFull.kittyColors}"  "$HOME/.config/kitty/current-theme.conf"
-    [ -L "$HOME/.config/gtk-3.0/settings.ini"        ] || ln -sf "${nordFull.gtkSettings}"  "$HOME/.config/gtk-3.0/settings.ini"
-    [ -L "$HOME/.config/gtk-4.0/settings.ini"        ] || ln -sf "${nordFull.gtkSettings}"  "$HOME/.config/gtk-4.0/settings.ini"
-    [ -L "$HOME/.wallpapers/wallpaper.png"           ] || ln -sf "${nordFull.wallpaper}"    "$HOME/.wallpapers/wallpaper.png"
+    _INIT_THEME=$(cat "$HOME/.cache/current-theme" 2>/dev/null || echo "Nord")
+    case "$_INIT_THEME" in
+      ${themeInitCase}
+      *)
+        _waybarCss="${nordFull.waybarCss}"
+        _starshipToml="${nordFull.starshipToml}"
+        _rofiTheme="${nordFull.rofiTheme}"
+        _switcherTheme="${nordFull.switcherTheme}"
+        _dunstConf="${nordFull.dunstConf}"
+        _kittyColors="${nordFull.kittyColors}"
+        _gtkSettings="${nordFull.gtkSettings}"
+        _wallpaper="${nordFull.wallpaper}"
+        _vscodeSettings="${nordFull.vscodeSettings}"
+        _firefoxCss="${nordFull.firefoxCss}"
+        ;;
+    esac
+    [ -L "$HOME/.config/waybar/style.css"         ] || ln -sf "$_waybarCss"      "$HOME/.config/waybar/style.css"
+    [ -L "$HOME/.config/starship.toml"            ] || ln -sf "$_starshipToml"   "$HOME/.config/starship.toml"
+    [ -L "$HOME/.config/rofi/theme.rasi"           ] || ln -sf "$_rofiTheme"      "$HOME/.config/rofi/theme.rasi"
+    [ -L "$HOME/.config/rofi/switcher.rasi"        ] || ln -sf "$_switcherTheme"  "$HOME/.config/rofi/switcher.rasi"
+    [ -L "$HOME/.config/dunst/dunstrc"            ] || ln -sf "$_dunstConf"      "$HOME/.config/dunst/dunstrc"
+    [ -L "$HOME/.config/kitty/current-theme.conf" ] || ln -sf "$_kittyColors"    "$HOME/.config/kitty/current-theme.conf"
+    [ -L "$HOME/.config/gtk-3.0/settings.ini"     ] || ln -sf "$_gtkSettings"    "$HOME/.config/gtk-3.0/settings.ini"
+    [ -L "$HOME/.config/gtk-4.0/settings.ini"     ] || ln -sf "$_gtkSettings"    "$HOME/.config/gtk-4.0/settings.ini"
+    [ -L "$HOME/.wallpapers/wallpaper.png"        ] || ln -sf "$_wallpaper"      "$HOME/.wallpapers/wallpaper.png"
     mkdir -p "$HOME/.config/Code/User"
-    [ -L "$HOME/.config/Code/User/settings.json" ] || ln -sf "${nordFull.vscodeSettings}" "$HOME/.config/Code/User/settings.json"
+    [ -L "$HOME/.config/Code/User/settings.json"  ] || ln -sf "$_vscodeSettings" "$HOME/.config/Code/User/settings.json"
     for _zp in "$HOME/.zen"/*/ "$HOME/.mozilla/firefox"/*/; do
       [ -f "$_zp/cert9.db" ] || continue
       mkdir -p "$_zp/chrome"
-      [ -L "$_zp/chrome/userChrome.css" ] || ln -sf "${nordFull.firefoxCss}" "$_zp/chrome/userChrome.css"
+      [ -L "$_zp/chrome/userChrome.css" ] || ln -sf "$_firefoxCss" "$_zp/chrome/userChrome.css"
     done
   '';
 
@@ -383,15 +429,80 @@ in
       runtimeInputs = with pkgs; [ swww tmux glib dconf libnotify procps coreutils ];
       # kitty, nvim, rofi come from home-manager; bare names work fine
       text = ''
-        SELECTED=$(
-          {
+        # ── icon path lookup by theme name ────────────────────────────────
+        _icon_for() {
+          case "$1" in
+            ${themeIconCase}
+            *) echo "" ;;
+          esac
+        }
+
+        # ── apply theme (set THEME_PICKER_PREVIEW=1 to skip cache/notify) ─
+        _apply() {
+          case "$1" in
+            ${themeBlock}
+            *) return 1 ;;
+          esac
+        }
+
+        # ── rofi script-mode handler: theme-switch --pick [SELECTED] ──────
+        if [ "''${1:-}" = "--pick" ]; then
+          SEL="''${2:-}"
+          _SAVED=$(cat "$HOME/.cache/theme-switch-saved" 2>/dev/null || echo "Nord")
+
+          if [ -z "$SEL" ]; then
+            # Initial listing
+            printf '\0prompt\x1f󰏘  Theme\n'
+            printf '\0message\x1fEnter=preview  ·  Esc=revert to %s\n' "$_SAVED"
+            printf '\0no-custom\x1ftrue\n'
             ${themeEntries}
-          } | rofi -dmenu -i -show-icons -p "󰏘  Theme" -theme "${rofiTheme}"
-        ) || exit 0
-        case "$SELECTED" in
-          ${themeBlock}
-          *) exit 1 ;;
-        esac
+            exit 0
+          fi
+
+          if [[ "$SEL" == "✓  Keep: "* ]]; then
+            # User confirmed the current preview
+            THEME="''${SEL#"✓  Keep: "}"
+            printf '%s' "$THEME" > "$HOME/.cache/theme-switch-confirm"
+            exit 0
+          fi
+
+          # Preview: apply visuals without updating cache or sending notification
+          export THEME_PICKER_PREVIEW=1
+          _apply "$SEL" 2>/dev/null || true
+          export THEME_PICKER_PREVIEW=0
+
+          _icon=$(_icon_for "$SEL")
+          printf '\0prompt\x1f󰏘  Previewing: %s\n' "$SEL"
+          printf '\0message\x1fEnter=keep  ·  pick another to preview  ·  Esc=revert\n'
+          printf '\0keep-selection\x1ftrue\n'
+          if [ -n "$_icon" ]; then
+            printf '✓  Keep: %s\x00icon\x1f%s\n' "$SEL" "$_icon"
+          else
+            printf '✓  Keep: %s\n' "$SEL"
+          fi
+          ${themeEntries}
+          exit 0
+        fi
+
+        # ── main entry point ───────────────────────────────────────────────
+        _SAVED=$(cat "$HOME/.cache/current-theme" 2>/dev/null || echo "Nord")
+        printf '%s' "$_SAVED" > "$HOME/.cache/theme-switch-saved"
+        rm -f "$HOME/.cache/theme-switch-confirm"
+
+        rofi -modi "pick:theme-switch --pick" -show pick \
+            -show-icons \
+            -theme "$HOME/.config/rofi/switcher.rasi"
+
+        # Confirm or revert
+        if [ -f "$HOME/.cache/theme-switch-confirm" ]; then
+          THEME=$(cat "$HOME/.cache/theme-switch-confirm")
+          rm -f "$HOME/.cache/theme-switch-confirm"
+          _apply "$THEME"
+        else
+          # Escape pressed (or crash): revert to original
+          _apply "$_SAVED" 2>/dev/null || true
+        fi
+        rm -f "$HOME/.cache/theme-switch-saved"
       '';
     })
   ];

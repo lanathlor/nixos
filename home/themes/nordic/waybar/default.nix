@@ -54,7 +54,7 @@
         margin-top = 6;
         margin-left = 8;
         margin-right = 8;
-        modules-left = [ "clock" "idle_inhibitor" "custom/media" ];
+        modules-left = [ "clock" "idle_inhibitor" "custom/theme-switch" "custom/media" ];
         modules-center = [ "mpris" ];
         modules-right = [ "cpu" "memory" "temperature" "disk" "disk#data" ];
         mpris = {
@@ -76,6 +76,13 @@
             deactivated = "";
           };
           tooltip = "true";
+        };
+        "custom/theme-switch" = {
+          exec = "cat $HOME/.cache/current-theme 2>/dev/null || echo Nord";
+          interval = "once";
+          format = "󰏘  {}";
+          on-click = "theme-switch";
+          tooltip = false;
         };
         clock = {
           format = " {:%H:%M   %e %b}";
