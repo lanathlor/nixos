@@ -114,6 +114,18 @@
       vscode-extensions.github.copilot-chat
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
+        publisher = "ms-vscode";
+        name = "remote-server";
+        version = "1.6.2026022609";
+        sha256 = "sha256-fQF5Pt7bSk71QLLyQiCQeVq7S93ZAEMf9ewDOvARfwg=";
+      }
+      {
+        publisher = "ms-vscode";
+        name = "remote-explorer";
+        version = "0.6.2026031809";
+        sha256 = "sha256-WRg8ObPVQMluuCW/dBM2ibBDW/zc8cQQS5QQMfcpw2c=";
+      }
+      {
         publisher = "Orta";
         name = "vscode-twoslash-queries";
         version = "1.2.2";
