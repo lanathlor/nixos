@@ -58,6 +58,10 @@ in
 
     nil
 
+    # secrets
+    sops
+    age
+
     # maintenance
     zip
     unzip
@@ -129,6 +133,7 @@ in
 
     claude-code
     codex
+    opencode
 
     pkgs-unstable.code-server
 

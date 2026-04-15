@@ -40,6 +40,9 @@
       "[typescriptreact]" = {
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
       };
+      "[markdown]" = {
+        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      };
       "[dockerfile]" = {
         "editor.defaultFormatter" = "ms-azuretools.vscode-docker";
       };

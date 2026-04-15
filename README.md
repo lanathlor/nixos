@@ -2,16 +2,85 @@
 
 Personal NixOS flake for two users across multiple machines, built with Home Manager.
 
-## Features
+## Secrets Management
 
-- **Theme system** — 9 themes (Nord, Catppuccin, Dracula, Gruvbox, Tokyo Night, Everforest, Rose Pine, One Dark, Kanagawa) with live switching via `Super+Shift+Space`. Themes cover Waybar, Dunst, Kitty, Neovim, Starship, Rofi, GTK.
-- **Hyprland** Wayland compositor
-- **Programs** — Fish, Neovim, VSCode, Zen Browser, Rofi, Starship, tmux
-- **Services** — SSH, Docker, Kubernetes (k3s), Traefik, Ollama (local LLM)
-- **Gaming** — WoW addon managers (wago-addons, warcraftlogs, CurseForge)
-- **Multi-user** — per-user Home Manager configs with separate identities
+This repository uses [sops-nix](https://github.com/Mic92/sops-nix) to manage sensitive information like API keys and tokens.
 
-## Structure
+### Initial Setup
+
+1. **Generate an age key** (one-time per machine):
+   ```bash
+   sudo mkdir -p /var/lib/sops-nix
+   sudo age-keygen -o /var/lib/sops-nix/key.txt
+   sudo chmod 600 /var/lib/sops-nix/key.txt
+   ```
+
+2. **Get your public key**:
+   ```bash
+   sudo age-keygen -y /var/lib/sops-nix/key.txt
+   # Output: age1xxxxxx...
+   ```
+
+3. **Update `.sops.yaml`** with your public key:
+   ```yaml
+   creation_rules:
+     - path_regex: secrets/.*\.yaml$
+       age: >-
+         age1your-public-key-here
+   ```
+
+### Creating Secrets
+
+1. **Create the secrets file** from the example:
+   ```bash
+   cp secrets/secrets.yaml.example secrets/secrets.yaml
+   ```
+
+2. **Encrypt with sops**:
+   ```bash
+   sops -e -i secrets/secrets.yaml
+   ```
+
+3. **Edit encrypted secrets** (sops decrypts in-place):
+   ```bash
+   sops secrets/secrets.yaml
+   ```
+
+### Secrets File Format
+
+```yaml
+github_token: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+gitlab_token: glpat-xxxxxxxxxxxxxxxxxxxx
+```
+
+### How It Works
+
+- Secrets are encrypted in `secrets/secrets.yaml` and committed to git
+- On NixOS rebuild, sops-nix decrypts them to `/run/secrets/<secret_name>`
+- The age private key at `/var/lib/sops-nix/key.txt` is used for decryption
+- Secrets are only readable by root and the `users` group
+
+### Adding New Secrets
+
+1. Add the key to `secrets/secrets.yaml`:
+   ```bash
+   sops secrets/secrets.yaml
+   # Add: my_new_secret: "value"
+   ```
+
+2. Define the secret in `modules/system/security/sops/default.nix`:
+   ```nix
+   sops.secrets.my_new_secret = {
+     owner = "root";
+     group = "users";
+     mode = "0440";
+   };
+   ```
+
+3. Rebuild: `sudo nixos-rebuild switch --flake .#<host>`
+
+The secret will be available at `/run/secrets/my_new_secret`.
+
 
 ```
 flake.nix                     Entry point — nixosConfigurations

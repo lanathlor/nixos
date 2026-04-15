@@ -10,7 +10,7 @@
     ./network
     ./packages
     ./security
+    ./security/sops
     ./sound
-
   ];
 }
