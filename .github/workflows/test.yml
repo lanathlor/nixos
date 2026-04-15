@@ -1,0 +1,78 @@
+name: NixOS Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  eval:
+    name: Evaluate Configs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Evaluate all NixOS configurations
+        run: |
+          # Note: mushu-laptop is skipped because it imports ./hardware-configuration.nix
+          # which is gitignored. It should use mushu-laptop-hardware-configuration.nix instead.
+
+          echo "Evaluating lanath-desktop..."
+          nix eval .#nixosConfigurations.lanath-desktop.config.system.build.toplevel --raw > /dev/null
+          echo "lanath-desktop: OK"
+
+          echo "Evaluating lanath-laptop..."
+          nix eval .#nixosConfigurations.lanath-laptop.config.system.build.toplevel --raw > /dev/null
+          echo "lanath-laptop: OK"
+
+          echo "Evaluating mushu-desktop..."
+          nix eval .#nixosConfigurations.mushu-desktop.config.system.build.toplevel --raw > /dev/null
+          echo "mushu-desktop: OK"
+
+          echo "Skipping mushu-laptop (missing hardware-configuration.nix in git)"
+
+  vm-test:
+    name: VM Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Check KVM availability
+        id: kvm
+        run: |
+          if [ -e /dev/kvm ] && [ -r /dev/kvm ] && [ -w /dev/kvm ]; then
+            echo "available=true" >> $GITHUB_OUTPUT
+            echo "KVM is available"
+          else
+            echo "available=false" >> $GITHUB_OUTPUT
+            echo "KVM is NOT available - VM tests will be skipped"
+          fi
+
+      - name: Run VM test
+        if: steps.kvm.outputs.available == 'true'
+        run: |
+          nix build .#checks.x86_64-linux.vm-test --print-build-logs
+
+      - name: Run Hyprland test
+        if: steps.kvm.outputs.available == 'true'
+        run: |
+          nix build .#checks.x86_64-linux.hyprland-test --print-build-logs
+
+      - name: Skip notice
+        if: steps.kvm.outputs.available != 'true'
+        run: |
+          echo "::warning::VM tests skipped - KVM not available on this runner"
+          echo "Run locally with: just test"
