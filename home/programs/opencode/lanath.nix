@@ -14,6 +14,7 @@
         name = "Ollama (local)";
         options = {
           baseURL = "http://localhost:11434/v1";
+          timeout = 120000;
           toolParser = [
             { type = "raw-function-call"; }
             { type = "json"; }
@@ -33,8 +34,11 @@
             name = "Gemma 4 26B MoE";
             tool_call = true;
             thinking = true;
+            options = {
+              num_ctx = 131072;
+            };
             limit = {
-              context = 98304;
+              context = 131072;
               output = 8192;
             };
           };
