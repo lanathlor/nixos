@@ -239,6 +239,7 @@ in
     gnupg
     dunst
     nodePackages.prettier
+    nwg-displays
   ];
   home.sessionVariables.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
     pkgs.gcc.cc.lib

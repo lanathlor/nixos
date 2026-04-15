@@ -7,10 +7,8 @@ in
     enable = true;
     xwayland.enable = true;
     extraConfig = ''
-      monitor=HDMI-A-1,1920x1080@60,0x0,1
-      monitor=DP-1,1920x1080@144,1920x0,1
-      monitor=DP-2,1920x1080@144,3840x0,1
-      monitor=eDP-1,1920x1200@59.95Hz,0x0,1
+      # Monitor config managed by nwg-displays
+      source = ~/.config/hypr/monitors.conf
       env = XCURSOR_SIZE,24
       env = QT_QPA_PLATFORMTHEME,qt5ct
       exec-once = ${swww}/bin/swww-daemon
