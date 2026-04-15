@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 {
   services.ollama = {
     enable = true;
     acceleration = "rocm";
-    package = pkgs.ollama-rocm;
+    package = pkgs-unstable.ollama-rocm;
     environmentVariables = {
       HIP_VISIBLE_DEVICES = "0";
       ROCR_VISIBLE_DEVICES = "0";

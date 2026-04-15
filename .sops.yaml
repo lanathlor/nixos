@@ -1,0 +1,6 @@
+# sops configuration
+# Add your age public key here after generating it
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    age: >-
+      age10cctlpt4x3rn5r0hdqzmg0wwnmepgu2j65cxl07mudmhtmt8k4ns50usjt
