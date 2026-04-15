@@ -136,11 +136,17 @@
         mushu-laptop = mkHost ./hosts/mushu-laptop.nix;
       };
 
-      tests = {
-        nixos-test = nixpkgs.lib.nixosSystem {
-          system = system;
-          modules = [ ./tests/nixos-test.nix ];
-        };
+      # Checks that run on `nix flake check`
+      checks.${system} = {
+        # Verify all nixosConfigurations evaluate
+        eval-lanath-desktop = self.nixosConfigurations.lanath-desktop.config.system.build.toplevel;
+        eval-lanath-laptop = self.nixosConfigurations.lanath-laptop.config.system.build.toplevel;
+        eval-mushu-desktop = self.nixosConfigurations.mushu-desktop.config.system.build.toplevel;
+        eval-mushu-laptop = self.nixosConfigurations.mushu-laptop.config.system.build.toplevel;
+
+        # VM integration tests
+        vm-test = import ./tests/nixos-test.nix { inherit pkgs; };
+        hyprland-test = import ./tests/hyprland-test.nix { inherit pkgs; };
       };
     };
 }

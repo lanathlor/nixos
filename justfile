@@ -1,4 +1,4 @@
-NIX_CONFIG_USER := `env NIX_CONFIG_USER || echo "lanath-desktop"`
+NIX_CONFIG_USER := `echo ${NIX_CONFIG_USER:-lanath-desktop}`
 
 # #####
 # ##### desk|lap top
@@ -39,6 +39,36 @@ wipe:
 
 clean: wipe garbage
 
+# #####
+# ##### testing
+# #####
+
+# Run all checks (eval + VM test)
+check:
+    nix flake check
+
+# Run only VM integration test
 test:
-    nix build .#tests.nixos-test.testResult
+    nix build .#checks.x86_64-linux.vm-test --print-build-logs
+
+# Run VM test interactively (for debugging)
+test-interactive:
+    nix build .#checks.x86_64-linux.vm-test.driverInteractive
+    ./result/bin/nixos-test-driver
+
+# Run Hyprland graphical test
+test-hyprland:
+    nix build .#checks.x86_64-linux.hyprland-test --print-build-logs
+
+# Run Hyprland test interactively
+test-hyprland-interactive:
+    nix build .#checks.x86_64-linux.hyprland-test.driverInteractive
+    ./result/bin/nixos-test-driver
+
+# Verify all configs evaluate without building
+eval:
+    nix eval .#nixosConfigurations.lanath-desktop.config.system.build.toplevel --raw > /dev/null && echo "lanath-desktop: OK"
+    nix eval .#nixosConfigurations.lanath-laptop.config.system.build.toplevel --raw > /dev/null && echo "lanath-laptop: OK"
+    nix eval .#nixosConfigurations.mushu-desktop.config.system.build.toplevel --raw > /dev/null && echo "mushu-desktop: OK"
+    nix eval .#nixosConfigurations.mushu-laptop.config.system.build.toplevel --raw > /dev/null && echo "mushu-laptop: OK"
 

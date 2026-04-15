@@ -8,6 +8,7 @@
       HIP_VISIBLE_DEVICES = "0";
       ROCR_VISIBLE_DEVICES = "0";
       LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
+      OLLAMA_NUM_CTX = "131072";
     };
     user = "ollama";
     group = "ollama";
