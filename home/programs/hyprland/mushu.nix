@@ -1,4 +1,7 @@
-{ config, ... }:
+{ config, pkgs-unstable, ... }:
+let
+  swww = pkgs-unstable.swww;
+in
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -9,8 +12,8 @@
       monitor=DP-2,1920x1080@144,3840x0,1
       monitor=eDP-1,1920x1200@59.95Hz,0x0,1
       env = XCURSOR_SIZE,24
-      exec-once = swww-daemon
-      exec-once = sleep 1 && swww img ${config.theme.wallpaper}
+      exec-once = ${swww}/bin/swww-daemon
+      exec-once = sleep 1 && ${swww}/bin/swww img ~/.wallpapers/wallpaper.png
       exec-once = wl-paste --type text --watch cliphist store
       exec-once = wl-paste --type image --watch cliphist store
       exec-once = wl-paste -t text -w xclip -selection clipboard
