@@ -555,6 +555,7 @@ let
       mkdir -p "$HOME/.config/qt5ct/colors" "$HOME/.config/qt5ct/qss"
       ln -sf "${t.qt5ctColors}" "$HOME/.config/qt5ct/colors/theme-switch.conf"
       ln -sf "${t.qt5ctQss}"    "$HOME/.config/qt5ct/qss/theme-switch.qss"
+      ln -sf "${t.tmuxConf}"   "$HOME/.config/tmux/theme.conf"
       ln -sf "${t.regreetCss}" /var/lib/regreet-theme/regreet.css 2>/dev/null || true
       ln -sf "${t.wallpaper}"  /var/lib/regreet-theme/wallpaper   2>/dev/null || true
       if [ "''${THEME_PICKER_PREVIEW:-0}" = "0" ]; then
@@ -585,6 +586,11 @@ let
         _wallpaper="${t.wallpaper}"
         _vscodeSettings="${t.vscodeSettings}"
         _firefoxCss="${t.firefoxCss}"
+        _swaylockConf="${t.swaylockConf}"
+        _qt5ctColors="${t.qt5ctColors}"
+        _qt5ctQss="${t.qt5ctQss}"
+        _regreetCss="${t.regreetCss}"
+        _tmuxConf="${t.tmuxConf}"
         ;;
   '') allThemes;
 in
@@ -634,6 +640,11 @@ in
         _wallpaper="${nordFull.wallpaper}"
         _vscodeSettings="${nordFull.vscodeSettings}"
         _firefoxCss="${nordFull.firefoxCss}"
+        _swaylockConf="${nordFull.swaylockConf}"
+        _qt5ctColors="${nordFull.qt5ctColors}"
+        _qt5ctQss="${nordFull.qt5ctQss}"
+        _regreetCss="${nordFull.regreetCss}"
+        _tmuxConf="${nordFull.tmuxConf}"
         ;;
     esac
     [ -L "$HOME/.config/waybar/style.css"         ] || ln -sf "$_waybarCss"      "$HOME/.config/waybar/style.css"
@@ -641,7 +652,7 @@ in
     [ -L "$HOME/.config/rofi/theme.rasi"           ] || ln -sf "$_rofiTheme"      "$HOME/.config/rofi/theme.rasi"
     [ -L "$HOME/.config/rofi/switcher.rasi"        ] || ln -sf "$_switcherTheme"  "$HOME/.config/rofi/switcher.rasi"
     [ -L "$HOME/.config/dunst/dunstrc"            ] || ln -sf "$_dunstConf"      "$HOME/.config/dunst/dunstrc"
-    [ -L "$HOME/.config/swaylock/config"          ] || ln -sf "${nordFull.swaylockConf}" "$HOME/.config/swaylock/config"
+    [ -L "$HOME/.config/swaylock/config"          ] || ln -sf "$_swaylockConf" "$HOME/.config/swaylock/config"
     [ -L "$HOME/.config/kitty/current-theme.conf" ] || ln -sf "$_kittyColors"    "$HOME/.config/kitty/current-theme.conf"
     [ -L "$HOME/.config/gtk-3.0/settings.ini"     ] || ln -sf "$_gtkSettings"    "$HOME/.config/gtk-3.0/settings.ini"
     [ -L "$HOME/.config/gtk-4.0/settings.ini"     ] || ln -sf "$_gtkSettings"    "$HOME/.config/gtk-4.0/settings.ini"
@@ -654,11 +665,12 @@ in
       [ -L "$_zp/chrome/userChrome.css" ] || ln -sf "$_firefoxCss" "$_zp/chrome/userChrome.css"
     done
     mkdir -p "$HOME/.config/qt5ct/colors" "$HOME/.config/qt5ct/qss"
-    [ -L "$HOME/.config/qt5ct/colors/theme-switch.conf" ] || ln -sf "${nordFull.qt5ctColors}" "$HOME/.config/qt5ct/colors/theme-switch.conf"
-    [ -L "$HOME/.config/qt5ct/qss/theme-switch.qss" ]    || ln -sf "${nordFull.qt5ctQss}"    "$HOME/.config/qt5ct/qss/theme-switch.qss"
+    [ -L "$HOME/.config/qt5ct/colors/theme-switch.conf" ] || ln -sf "$_qt5ctColors" "$HOME/.config/qt5ct/colors/theme-switch.conf"
+    [ -L "$HOME/.config/qt5ct/qss/theme-switch.qss" ]    || ln -sf "$_qt5ctQss"    "$HOME/.config/qt5ct/qss/theme-switch.qss"
     sed "s|__HOME__|$HOME|g" "${qt5ctConfTemplate}" > "$HOME/.config/qt5ct/qt5ct.conf"
-    [ -f /var/lib/regreet-theme/regreet.css ] || ln -sf "${nordFull.regreetCss}" /var/lib/regreet-theme/regreet.css 2>/dev/null || true
-    [ -f /var/lib/regreet-theme/wallpaper ]   || ln -sf "${nordFull.wallpaper}"  /var/lib/regreet-theme/wallpaper   2>/dev/null || true
+    [ -L "$HOME/.config/tmux/theme.conf" ] || ln -sf "$_tmuxConf" "$HOME/.config/tmux/theme.conf"
+    [ -L /var/lib/regreet-theme/regreet.css ] || ln -sf "$_regreetCss" /var/lib/regreet-theme/regreet.css 2>/dev/null || true
+    [ -L /var/lib/regreet-theme/wallpaper ]   || ln -sf "$_wallpaper"  /var/lib/regreet-theme/wallpaper   2>/dev/null || true
   '';
 
   home.packages = with pkgs; [

@@ -91,6 +91,9 @@ in
       set -g default-terminal "tmux-256color"
       set -ag terminal-overrides ",xterm-kitty:Tc,xterm-256color:Tc"
 
+      # Source dynamic theme (managed by theme-switch)
+      source-file -q ~/.config/tmux/theme.conf
+
       # Vi-style key bindings in copy mode
       set -g mode-keys vi
 
