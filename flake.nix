@@ -134,6 +134,17 @@
         lanath-laptop = mkHost ./hosts/lanath-laptop.nix;
         mushu-desktop = mkHost ./hosts/mushu-desktop.nix;
         mushu-laptop = mkHost ./hosts/mushu-laptop.nix;
+
+        # Installer ISO
+        installer = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [ ./installer/iso.nix ];
+        };
+      };
+
+      # ISO image for easy building
+      images.${system} = {
+        installer = self.nixosConfigurations.installer.config.system.build.isoImage;
       };
 
       # Checks that run on `nix flake check`
