@@ -147,6 +147,12 @@
         version = "2.34.2";
         sha256 = "sha256-lU1SrAPDCCSanJaB0xRVFWmi9a1J4Btj9oORatToM6w=";
       }
+      {
+        publisher = "astro-build";
+        name = "astro-vscode";
+        version = "2.16.14";
+        sha256 = "sha256-PNtsvhX4ZWx7zZpaBtAEPCD2e9qYUPFPXCZeJ8vAa6g=";
+      }
     ];
   };
 }
