@@ -10,6 +10,7 @@
     ./programs/swaylock/lanath.nix
     ./programs/neovim/lanath.nix
     ./programs/opencode/lanath.nix
+    ./programs/nyxt/lanath.nix
     ./programs/vscode/lanath.nix
     ./programs/xdg/lanath.nix
     ./services/dunst
