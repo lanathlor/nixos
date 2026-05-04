@@ -10,6 +10,7 @@
         "editor.defaultFormatter" = "golang.go";
         "editor.formatOnType" = true;
       };
+      "go.goroot" = "${pkgs.go}/share/go";
       "[helm]" = {
         "editor.formatOnSave" = false;
       };

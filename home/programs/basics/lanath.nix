@@ -236,6 +236,7 @@ in
 
   home.packages = with pkgs; [
     gcc
+    go
     gnupg
     dunst
     nodePackages.prettier
