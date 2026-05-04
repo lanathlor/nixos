@@ -9,6 +9,7 @@ in
     extraConfig = ''
       # Monitor config managed by nwg-displays
       source = ~/.config/hypr/monitors.conf
+      source = ~/.config/hypr/workspaces.conf
       env = XCURSOR_SIZE,24
       exec-once = ${swww}/bin/swww-daemon
       exec-once = sleep 1 && ${swww}/bin/swww img ~/.wallpapers/wallpaper.png
@@ -117,9 +118,9 @@ in
 
 
 
-      workspace=1, monitor:HDMI-A-1
-      workspace=2, monitor:DP-2
-      workspace=3, monitor:DP-1
+      # workspace=1, monitor:HDMI-A-1
+      # workspace=2, monitor:DP-2
+      # workspace=3, monitor:DP-1
 
 
 

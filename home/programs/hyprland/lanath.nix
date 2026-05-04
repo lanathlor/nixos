@@ -118,9 +118,9 @@ in
 
 
 
-      workspace=1, monitor:HDMI-A-1
-      workspace=2, monitor:DP-2
-      workspace=3, monitor:DP-1
+      # workspace=1, monitor:HDMI-A-1
+      # workspace=2, monitor:DP-2
+      # workspace=3, monitor:DP-1
 
 
 
