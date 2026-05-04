@@ -263,6 +263,23 @@ let
   mkVscodeSettings = themeName: pkgs.writeText "vscode-settings.json"
     (builtins.toJSON (baseVscodeSettings // { "workbench.colorTheme" = themeName; }));
 
+  mkNyxtTheme = { bg, fg, accent, bg2, fgOnAccent }: pkgs.writeText "nyxt-theme.lisp" ''
+    (in-package #:nyxt-user)
+
+    ;;; Theme managed by theme-switch — do not edit manually
+    (define-configuration browser
+      ((theme (make-instance 'theme:theme
+               :dark-p t
+               :background-color "${bg}"
+               :on-background-color "${fg}"
+               :primary-color "${accent}"
+               :on-primary-color "${fgOnAccent}"
+               :secondary-color "${bg2}"
+               :on-secondary-color "${fg}"
+               :accent-color "${accent}"
+               :on-accent-color "${fgOnAccent}"))))
+  '';
+
   mkSwaylockConf = { bg, bg2, fg, accent, clear, wrong, green, purple, yellow, orange }:
     let s = c: builtins.substring 1 6 c;  # strip "#" – swaylock wants raw hex
     in pkgs.writeText "swaylock-config" ''
@@ -509,6 +526,7 @@ let
     qt5ctQss        = mkQt5ctQss t.tmuxColors;
     swaylockConf    = mkSwaylockConf t.swaylockColors;
     regreetCss      = mkRegreetCss t.tmuxColors;
+    nyxtTheme       = mkNyxtTheme t.tmuxColors;
   };
 
   themeEntry   = t: ''printf '%s\x00icon\x1f%s\n' "${t.name}" "${t.previewPng}"'';
@@ -556,6 +574,9 @@ let
       ln -sf "${t.qt5ctColors}" "$HOME/.config/qt5ct/colors/theme-switch.conf"
       ln -sf "${t.qt5ctQss}"    "$HOME/.config/qt5ct/qss/theme-switch.qss"
       ln -sf "${t.tmuxConf}"   "$HOME/.config/tmux/theme.conf"
+      mkdir -p "$HOME/.config/nyxt"
+      ln -sf "${t.nyxtTheme}"  "$HOME/.config/nyxt/theme.lisp"
+      nyxt --remote --eval '(load (merge-pathnames "theme.lisp" (files:config-directory)))' 2>/dev/null || true
       ln -sf "${t.regreetCss}" /var/lib/regreet-theme/regreet.css 2>/dev/null || true
       ln -sf "${t.wallpaper}"  /var/lib/regreet-theme/wallpaper   2>/dev/null || true
       if [ "''${THEME_PICKER_PREVIEW:-0}" = "0" ]; then
@@ -591,6 +612,7 @@ let
         _qt5ctQss="${t.qt5ctQss}"
         _regreetCss="${t.regreetCss}"
         _tmuxConf="${t.tmuxConf}"
+        _nyxtTheme="${t.nyxtTheme}"
         ;;
   '') allThemes;
 in
@@ -625,7 +647,7 @@ in
   home.activation.initTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/waybar" "$HOME/.config/rofi" "$HOME/.config/dunst" \
              "$HOME/.config/kitty" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0" \
-             "$HOME/.config/swaylock" "$HOME/.wallpapers"
+             "$HOME/.config/swaylock" "$HOME/.config/nyxt" "$HOME/.wallpapers"
     _INIT_THEME=$(cat "$HOME/.cache/current-theme" 2>/dev/null || echo "Nord")
     case "$_INIT_THEME" in
       ${themeInitCase}
@@ -645,6 +667,7 @@ in
         _qt5ctQss="${nordFull.qt5ctQss}"
         _regreetCss="${nordFull.regreetCss}"
         _tmuxConf="${nordFull.tmuxConf}"
+        _nyxtTheme="${nordFull.nyxtTheme}"
         ;;
     esac
     [ -L "$HOME/.config/waybar/style.css"         ] || ln -sf "$_waybarCss"      "$HOME/.config/waybar/style.css"
@@ -669,6 +692,8 @@ in
     [ -L "$HOME/.config/qt5ct/qss/theme-switch.qss" ]    || ln -sf "$_qt5ctQss"    "$HOME/.config/qt5ct/qss/theme-switch.qss"
     sed "s|__HOME__|$HOME|g" "${qt5ctConfTemplate}" > "$HOME/.config/qt5ct/qt5ct.conf"
     [ -L "$HOME/.config/tmux/theme.conf" ] || ln -sf "$_tmuxConf" "$HOME/.config/tmux/theme.conf"
+    mkdir -p "$HOME/.config/nyxt"
+    [ -L "$HOME/.config/nyxt/theme.lisp" ] || ln -sf "$_nyxtTheme" "$HOME/.config/nyxt/theme.lisp"
     [ -L /var/lib/regreet-theme/regreet.css ] || ln -sf "$_regreetCss" /var/lib/regreet-theme/regreet.css 2>/dev/null || true
     [ -L /var/lib/regreet-theme/wallpaper ]   || ln -sf "$_wallpaper"  /var/lib/regreet-theme/wallpaper   2>/dev/null || true
   '';
