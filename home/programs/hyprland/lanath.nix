@@ -11,8 +11,8 @@ in
       source = ~/.config/hypr/monitors.conf
       env = XCURSOR_SIZE,24
       env = QT_QPA_PLATFORMTHEME,qt5ct
-      exec-once = ${swww}/bin/swww-daemon
-      exec-once = sleep 1 && ${swww}/bin/swww img ~/.wallpapers/wallpaper.png
+      exec-once = ${swww}/bin/awww-daemon
+      exec-once = sleep 1 && ${swww}/bin/awww img ~/.wallpapers/wallpaper.png
       exec-once = wl-paste --type text --watch cliphist store
       exec-once = wl-paste --type image --watch cliphist store
       exec-once = wl-paste -t text -w xclip -selection clipboard
