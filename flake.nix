@@ -23,6 +23,8 @@
     stamusctl.url = "github:StamusNetworks/stamusctl";
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
+
+    claude-desktop.url = "github:aaddrick/claude-desktop-debian";
   };
 
   outputs =
@@ -35,6 +37,7 @@
       zen-browser,
       nur,
       vscode-server,
+      claude-desktop,
       sops-nix,
       ...
     }:
@@ -50,6 +53,7 @@
         (import ./overlays/claude-code.nix)
         (import ./overlays/codex.nix)
         (import ./overlays/opencode.nix)
+        claude-desktop.overlays.default
       ];
 
       pkgs = import nixpkgs {

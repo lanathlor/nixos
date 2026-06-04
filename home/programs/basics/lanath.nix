@@ -241,6 +241,7 @@ in
     dunst
     nodePackages.prettier
     nwg-displays
+    claude-desktop-fhs
   ];
   home.sessionVariables.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
     pkgs.gcc.cc.lib
