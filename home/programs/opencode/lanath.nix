@@ -3,17 +3,17 @@
   xdg.configFile."opencode/opencode.json".text = builtins.toJSON {
     "$schema" = "https://opencode.ai/config.json";
 
-    model = "ollama/gemma4:26b";
+    model = "llama-cpp/default";
     autoupdate = "notify";
 
     disabled_providers = [ "opencode" ];
 
     provider = {
-      ollama = {
+      llama-cpp = {
         npm = "@ai-sdk/openai-compatible";
-        name = "Ollama (local)";
+        name = "llama.cpp (local)";
         options = {
-          baseURL = "http://localhost:11434/v1";
+          baseURL = "http://localhost:8080/v1";
           timeout = 120000;
           toolParser = [
             { type = "raw-function-call"; }
@@ -21,24 +21,12 @@
           ];
         };
         models = {
-          "gemma4:e4b" = {
-            name = "Gemma 4 E4B";
+          "default" = {
+            name = "Default model";
             tool_call = true;
             thinking = true;
             limit = {
-              context = 98304;
-              output = 8192;
-            };
-          };
-          "gemma4:26b" = {
-            name = "Gemma 4 26B MoE";
-            tool_call = true;
-            thinking = true;
-            options = {
-              num_ctx = 131072;
-            };
-            limit = {
-              context = 131072;
+              context = 32768;
               output = 8192;
             };
           };

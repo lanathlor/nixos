@@ -60,7 +60,6 @@
       services.xserver.enable = lib.mkForce false;
       services.displayManager.gdm.enable = lib.mkForce false;
       programs.hyprland.enable = lib.mkForce false;
-      services.ollama.enable = lib.mkForce false;
     };
   };
 }
