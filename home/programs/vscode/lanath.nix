@@ -61,6 +61,9 @@
         "typescript"
       ];
       "explorer.confirmDragAndDrop" = false;
+      "files.associations" = {
+        "*.gd" = "gdscript";
+      };
       "files.trimFinalNewlines" = true;
       "files.trimTrailingWhitespace" = true;
       "git.autofetch" = true;
@@ -116,6 +119,7 @@
       gitlab.gitlab-workflow
       github.copilot
       vscode-extensions.github.copilot-chat
+      geequlim.godot-tools
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
         publisher = "ms-vscode";
