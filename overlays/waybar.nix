@@ -1,8 +1,19 @@
+{ weatherConfig }:
 final: prev: {
   weatherScript = final.stdenv.mkDerivation rec {
     pname = "weather";
     version = "0.1";
-    src = ./weather.sh;
+    src = final.writeText "weather.sh" ''
+      #!/usr/bin/env bash
+      url='http://api.openweathermap.org/data/2.5/weather?lat=${weatherConfig.lat}&lon=${weatherConfig.lon}&APPID=${weatherConfig.appId}&cnt=5&units=metric&lang=en'
+      curl ''${url} -s -o ~/.cache/weather.json
+      data=$(cat ~/.cache/weather.json)
+      description=$(echo "$data" | jq -r '.weather[0].description')
+      temp=$(echo "$data" | jq -r '.main.temp | round')
+      capitalized_description=$(echo "''${description^}")
+      iconifiedtemp=$(echo "$temp°C")
+      echo "$capitalized_description | $iconifiedtemp"
+    '';
 
     nativeBuildInputs = [ final.makeWrapper ];
     buildInputs = with final; [ coreutils jq curl ];

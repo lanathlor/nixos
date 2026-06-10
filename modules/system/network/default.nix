@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, localConfig, ... }:
 {
   services.resolved.enable = false;
 
@@ -17,8 +17,7 @@
     useDHCP = lib.mkDefault true;
     # nameservers = [ "10.1.0.1" "1.1.1.1" "8.8.8.8" ];
     hosts = {
-      "2.13.105.165" = [ "master.monkey" "*.master.monkey" ];
       "127.0.0.1" = [ "dex" "keycloak" ];
-    };
+    } // localConfig.extraHosts;
   };
 }

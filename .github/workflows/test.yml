@@ -19,24 +19,11 @@ jobs:
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Evaluate all NixOS configurations
+      - name: Evaluate NixOS configuration
         run: |
-          # Note: mushu-laptop is skipped because it imports ./hardware-configuration.nix
-          # which is gitignored. It should use mushu-laptop-hardware-configuration.nix instead.
-
-          echo "Evaluating lanath-desktop..."
-          nix eval .#nixosConfigurations.lanath-desktop.config.system.build.toplevel --raw > /dev/null
-          echo "lanath-desktop: OK"
-
-          echo "Evaluating lanath-laptop..."
-          nix eval .#nixosConfigurations.lanath-laptop.config.system.build.toplevel --raw > /dev/null
-          echo "lanath-laptop: OK"
-
-          echo "Evaluating mushu-desktop..."
-          nix eval .#nixosConfigurations.mushu-desktop.config.system.build.toplevel --raw > /dev/null
-          echo "mushu-desktop: OK"
-
-          echo "Skipping mushu-laptop (missing hardware-configuration.nix in git)"
+          echo "Evaluating default..."
+          nix eval .#nixosConfigurations.default.config.system.build.toplevel --raw > /dev/null
+          echo "default: OK"
 
   vm-test:
     name: VM Integration Tests
@@ -75,4 +62,3 @@ jobs:
         if: steps.kvm.outputs.available != 'true'
         run: |
           echo "::warning::VM tests skipped - KVM not available on this runner"
-          echo "Run locally with: just test"

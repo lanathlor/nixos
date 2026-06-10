@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
 
   # nixpkgs.overlays = [
@@ -105,15 +105,15 @@
           interval = 30;
           format = " {used}<span color=\"darkgray\">/{total}Go</span>";
           path = "/";
-          on-click = "${pkgs.xfce.thunar}/bin/thunar /home/lanath";
+          on-click = "${pkgs.xfce.thunar}/bin/thunar ${config.home.homeDirectory}";
           on-right-click = "${pkgs.baobab}/bin/baobab /";
         };
         "disk#data" = {
           interval = 30;
           format = " {used}<span color=\"darkgray\">/{total}Go</span>";
-          path = "/home/lanath/data";
-          on-click = "${pkgs.xfce.thunar}/bin/thunar /home/lanath/data";
-          on-right-click = "${pkgs.baobab}/bin/baobab /home/lanath/data";
+          path = "${config.home.homeDirectory}/data";
+          on-click = "${pkgs.xfce.thunar}/bin/thunar ${config.home.homeDirectory}/data";
+          on-right-click = "${pkgs.baobab}/bin/baobab ${config.home.homeDirectory}/data";
         };
         temperature = {
           interval = "4";

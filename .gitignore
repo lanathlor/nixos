@@ -1,3 +1,7 @@
 .direnv
 result
-hosts/hardware-configuration.nix
+keys/
+# hosts/hardware-configuration.nix is tracked with a generic template.
+# After generating yours, run: git update-index --skip-worktree hosts/hardware-configuration.nix
+.sops.yaml
+secrets/

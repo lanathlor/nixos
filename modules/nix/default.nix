@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, localConfig, ... }:
 {
   system.stateVersion = "25.05";
 
@@ -8,7 +8,7 @@
       experimental-features = nix-command flakes
     '';
     settings = {
-      trusted-users = [ "lanath" "root" ];
+      trusted-users = [ "root" ] ++ builtins.attrNames localConfig.users;
       substituters = [
         "https://ai.cachix.org"
         "https://cache.nixos.org/"

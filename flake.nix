@@ -45,8 +45,10 @@
     let
       system = "x86_64-linux";
 
+      localConfig = nixpkgs.lib.recursiveUpdate (import ./config-defaults.nix) (import ./local.nix);
+
       myOverlays = [
-        (import ./overlays/waybar.nix)
+        (import ./overlays/waybar.nix { weatherConfig = localConfig.weather; })
         (import ./overlays/curseforge.nix)
         (import ./overlays/wago-addons.nix)
         (import ./overlays/warcraftlogs.nix)
@@ -58,6 +60,7 @@
 
       pkgs = import nixpkgs {
         inherit system;
+        config.allowUnfree = true;
         overlays = myOverlays;
       };
 
@@ -80,6 +83,7 @@
           pkgs-unstable
           zen-browser
           nur
+          localConfig
           ;
         stamusctl = stamusctl-fixed;
       };
@@ -90,58 +94,43 @@
         home-manager.useGlobalPkgs = true;
         home-manager.backupFileExtension = "bak";
         home-manager.extraSpecialArgs = sharedSpecialArgs;
-        home-manager.users.lanath = import ./home/lanath.nix;
-        home-manager.users.mushu = import ./home/mushu.nix;
+        home-manager.users = builtins.mapAttrs (name: _: import ./home) localConfig.users;
       };
 
-      mkHost =
-        hostFile:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = sharedSpecialArgs;
-          modules = [
-            hostFile
-            home-manager.nixosModules.home-manager
-            homeManagerModule
-            nur.modules.nixos.default
-          ];
-        };
-
-      mkHostWithVscodeServer =
-        hostFile:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = sharedSpecialArgs;
-          modules = [
-            hostFile
-            home-manager.nixosModules.home-manager
-            homeManagerModule
-            nur.modules.nixos.default
-            vscode-server.nixosModules.default
-            { services.vscode-server.enable = true; }
-          ];
-        };
+      vscodeServerModule = nixpkgs.lib.optionalAttrs localConfig.vscodeServer.enable {
+        imports = [
+          vscode-server.nixosModules.default
+          { services.vscode-server.enable = true; }
+        ];
+      };
 
     in
     {
       overlays = { };
 
       packages.${system} = {
-        stamusctl = pkgs.stamusctl;
         curseforge = pkgs.curseforge;
         wago-addons = pkgs.wago-addons;
         warcraftlogs = pkgs.warcraftlogs;
       };
 
       nixosConfigurations = {
-        lanath-desktop = mkHostWithVscodeServer ./hosts/lanath-desktop.nix;
-        lanath-laptop = mkHost ./hosts/lanath-laptop.nix;
-        mushu-desktop = mkHost ./hosts/mushu-desktop.nix;
-        mushu-laptop = mkHost ./hosts/mushu-laptop.nix;
+        default = nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = sharedSpecialArgs;
+          modules = [
+            ./hosts/default.nix
+            home-manager.nixosModules.home-manager
+            homeManagerModule
+            nur.modules.nixos.default
+            vscodeServerModule
+          ];
+        };
 
         # Installer ISO
         installer = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit localConfig; };
           modules = [ ./installer/iso.nix ];
         };
       };
@@ -153,11 +142,7 @@
 
       # Checks that run on `nix flake check`
       checks.${system} = {
-        # Verify all nixosConfigurations evaluate
-        eval-lanath-desktop = self.nixosConfigurations.lanath-desktop.config.system.build.toplevel;
-        eval-lanath-laptop = self.nixosConfigurations.lanath-laptop.config.system.build.toplevel;
-        eval-mushu-desktop = self.nixosConfigurations.mushu-desktop.config.system.build.toplevel;
-        eval-mushu-laptop = self.nixosConfigurations.mushu-laptop.config.system.build.toplevel;
+        eval-default = self.nixosConfigurations.default.config.system.build.toplevel;
 
         # VM integration tests
         vm-test = import ./tests/nixos-test.nix { inherit pkgs; };

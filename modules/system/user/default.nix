@@ -1,11 +1,26 @@
-{ username, initialHashedPassword, sshKeyFiles }:
-{ ... }:
+{ localConfig, lib, ... }:
+let
+  keysDir = ../../../keys;
+  mkKeyFiles = userCfg:
+    builtins.filter builtins.pathExists
+      (map (f: keysDir + "/${f}") userCfg.sshKeyFiles);
+  allKeyFiles =
+    builtins.filter builtins.pathExists
+      (builtins.concatMap
+        (u: map (f: keysDir + "/${f}") u.sshKeyFiles)
+        (builtins.attrValues localConfig.users));
+in
 {
-  users.users.${username} = {
+  users.users = (builtins.mapAttrs (name: userCfg: {
     isNormalUser = true;
-    description = username;
+    description = name;
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" "video" "render" ];
-    inherit initialHashedPassword;
-    openssh.authorizedKeys.keyFiles = sshKeyFiles;
+    initialHashedPassword = userCfg.hashedPassword;
+    openssh.authorizedKeys.keyFiles = mkKeyFiles userCfg;
+  }) localConfig.users) // {
+    root = {
+      isNormalUser = lib.mkForce false;
+      openssh.authorizedKeys.keyFiles = allKeyFiles;
+    };
   };
 }

@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, stamusctl, ... }:
+{ pkgs, pkgs-unstable, stamusctl, localConfig, ... }:
 let
   dev-up = pkgs.writeShellScriptBin "dev-up" ''
     set -euo pipefail
@@ -6,7 +6,7 @@ let
     TOPLEVEL=$(git rev-parse --show-toplevel)
     PROJECT=$(basename "$TOPLEVEL" | tr '[:upper:]' '[:lower:]' | sed 's/[/_]/-/g')
     BRANCH=$(git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]' | sed 's/[/_]/-/g')
-    DOMAIN="''${BRANCH}.''${PROJECT}.local.dosismart.com"
+    DOMAIN="''${BRANCH}.''${PROJECT}.${localConfig.localDomain}"
 
     export PROJECT BRANCH DOMAIN
 
@@ -46,6 +46,7 @@ in
 
     # utils
     tmux
+    mosh
     htop
     nixfmt-rfc-style
     openvpn

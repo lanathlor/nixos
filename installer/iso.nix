@@ -1,15 +1,16 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, localConfig, ... }:
 
+let
+  repoUrl = "https://github.com/${localConfig.githubUser}/${localConfig.githubRepo}.git";
+in
 {
   imports = [
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
   ];
 
-  # ISO label
-  isoImage.isoName = lib.mkForce "nixos-lanath-installer.iso";
+  isoImage.isoName = lib.mkForce "nixos-installer.iso";
   isoImage.volumeID = lib.mkForce "NIXOS_INSTALL";
 
-  # Packages available in the live environment
   environment.systemPackages = with pkgs; [
     git
     vim
@@ -18,37 +19,13 @@
     dosfstools
     e2fsprogs
 
-    # Interactive install script
     (writeShellScriptBin "install-system" ''
       set -e
 
       echo ""
       echo "======================================"
-      echo "  NixOS Installer - lanathlor/nixos"
+      echo "  NixOS Installer"
       echo "======================================"
-      echo ""
-
-      # List available configs
-      echo "Available host configurations:"
-      echo "  - lanath-desktop"
-      echo "  - lanath-laptop"
-      echo "  - mushu-desktop"
-      echo "  - mushu-laptop"
-      echo ""
-
-      read -rp "Target hostname: " HOSTNAME
-
-      # Validate hostname
-      case "$HOSTNAME" in
-        lanath-desktop|lanath-laptop|mushu-desktop|mushu-laptop)
-          echo "Using configuration: $HOSTNAME"
-          ;;
-        *)
-          echo "Error: Unknown hostname '$HOSTNAME'"
-          exit 1
-          ;;
-      esac
-
       echo ""
       echo "Available disks:"
       lsblk -d -o NAME,SIZE,MODEL | grep -v loop
@@ -70,7 +47,6 @@
         exit 1
       fi
 
-      # Determine partition suffix (nvme uses p1, sata uses 1)
       if [[ "$DISK" == *"nvme"* ]] || [[ "$DISK" == *"mmcblk"* ]]; then
         PART_PREFIX="''${DISK}p"
       else
@@ -80,24 +56,16 @@
       echo ""
       echo "==> Partitioning $DISK..."
 
-      # Unmount if mounted
       umount -R /mnt 2>/dev/null || true
       swapoff -a 2>/dev/null || true
 
-      # Create GPT partition table
       parted -s "$DISK" mklabel gpt
-
-      # Create EFI partition (512MB)
       parted -s "$DISK" mkpart ESP fat32 1MiB 513MiB
       parted -s "$DISK" set 1 esp on
-
-      # Create swap partition (8GB)
       parted -s "$DISK" mkpart swap linux-swap 513MiB 8705MiB
-
-      # Create root partition (rest)
       parted -s "$DISK" mkpart root ext4 8705MiB 100%
 
-      sleep 1  # Wait for kernel to recognize partitions
+      sleep 1
 
       echo "==> Formatting partitions..."
 
@@ -114,16 +82,15 @@
 
       echo "==> Cloning configuration repository..."
 
-      git clone https://github.com/lanathlor/nixos.git /mnt/etc/nixos
+      git clone ${repoUrl} /mnt/etc/nixos
 
       echo "==> Generating hardware configuration..."
 
-      # Generate hardware config for this specific machine
-      nixos-generate-config --root /mnt --show-hardware-config > /mnt/etc/nixos/hosts/''${HOSTNAME}-hardware-configuration.nix
+      nixos-generate-config --root /mnt --show-hardware-config > /mnt/etc/nixos/hosts/hardware-configuration.nix
 
-      echo "==> Installing NixOS with configuration '$HOSTNAME'..."
+      echo "==> Installing NixOS..."
 
-      nixos-install --flake /mnt/etc/nixos#"$HOSTNAME" --no-root-passwd
+      nixos-install --flake /mnt/etc/nixos#default --no-root-passwd
 
       echo ""
       echo "======================================"
@@ -131,17 +98,18 @@
       echo "======================================"
       echo ""
       echo "Next steps:"
-      echo "  1. Set root password: nixos-enter --root /mnt -c 'passwd'"
-      echo "  2. Set user password: nixos-enter --root /mnt -c 'passwd lanath'"
-      echo "  3. Reboot: reboot"
+      echo "  1. Edit /mnt/etc/nixos/local.nix with your personal config"
+      echo "  2. Add SSH keys to /mnt/etc/nixos/keys/"
+      echo "  3. Set root password: nixos-enter --root /mnt -c 'passwd'"
+      echo "  4. Set user password: nixos-enter --root /mnt -c 'passwd <username>'"
+      echo "  5. Reboot: reboot"
       echo ""
     '')
   ];
 
-  # Start with a helpful message
   services.getty.helpLine = lib.mkForce ''
 
-    Welcome to NixOS Installer (lanathlor/nixos)
+    Welcome to NixOS Installer
 
     Run 'install-system' to begin installation.
 

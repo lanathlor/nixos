@@ -1,4 +1,4 @@
-{ pkgs, lib, zen-browser, ... }: {
+{ pkgs, lib, zen-browser, localConfig, ... }: {
   imports = [
     zen-browser.homeModules.beta
   ];
@@ -123,18 +123,7 @@
             definedAliases = [ "@gh" ];
           };
 
-          "gitlab (stamus)" = {
-            urls = [{
-              template = "https://git.stamus-networks.com/search";
-              params = [
-                { name = "search"; value = "{searchTerms}"; }
-              ];
-            }];
-            icon = "https://git.stamus-networks.com/assets/favicon.png"; # Replace with your favicon path if needed
-            definedAliases = [ "@sgl" ];
-          };
-
-        };
+        } // localConfig.extraSearchEngines;
       };
     };
   };

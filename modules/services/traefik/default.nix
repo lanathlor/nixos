@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, localConfig, ... }:
+let
+  domain = localConfig.localDomain;
+in
 {
   # Traefik reverse proxy — HTTPS with mkcert wildcard cert, Docker provider
 
@@ -17,11 +20,11 @@
         CAROOT="$CAROOT" ${pkgs.mkcert}/bin/mkcert -install 2>/dev/null || true
       fi
 
-      if [ ! -f "$CERT_DIR/local.dosismart.com.pem" ]; then
+      if [ ! -f "$CERT_DIR/${domain}.pem" ]; then
         CAROOT="$CAROOT" ${pkgs.mkcert}/bin/mkcert \
-          -cert-file "$CERT_DIR/local.dosismart.com.pem" \
-          -key-file  "$CERT_DIR/local.dosismart.com-key.pem" \
-          "*.local.dosismart.com" "local.dosismart.com"
+          -cert-file "$CERT_DIR/${domain}.pem" \
+          -key-file  "$CERT_DIR/${domain}-key.pem" \
+          "*.${domain}" "${domain}"
       fi
 
       chown -R traefik:traefik "$CERT_DIR" 2>/dev/null || true
@@ -59,13 +62,13 @@
 
     dynamicConfigOptions = {
       tls.stores.default.defaultCertificate = {
-        certFile = "/var/lib/traefik-certs/local.dosismart.com.pem";
-        keyFile  = "/var/lib/traefik-certs/local.dosismart.com-key.pem";
+        certFile = "/var/lib/traefik-certs/${domain}.pem";
+        keyFile  = "/var/lib/traefik-certs/${domain}-key.pem";
       };
 
       http = {
         routers.dashboard = {
-          rule = "Host(`traefik.local.dosismart.com`)";
+          rule = "Host(`traefik.${domain}`)";
           service = "api@internal";
           entryPoints = [ "websecure" ];
           tls = {};

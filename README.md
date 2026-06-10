@@ -1,195 +1,114 @@
 # NixOS Configuration
 
-Personal NixOS flake for two users across multiple machines, built with Home Manager.
+Generic NixOS flake with Hyprland, Home Manager, and sops-nix secrets management. Supports multiple users and optional modules via feature flags.
+
+## Quick Start
+
+```bash
+git clone <this-repo> /etc/nixos
+cd /etc/nixos
+
+# Generate hardware config
+nixos-generate-config --show-hardware-config > hosts/hardware-configuration.nix
+
+# Edit local.nix with your personal data (users, emails, SSH keys, etc.)
+$EDITOR local.nix
+
+# Add your SSH public keys
+cp ~/.ssh/id_ed25519.pub keys/mykey.pub
+
+# Prevent accidental commits of personal data
+git update-index --skip-worktree local.nix hosts/hardware-configuration.nix
+
+# Build and switch
+sudo nixos-rebuild switch --flake .#default
+```
+
+## Configuration
+
+All personal data lives in `local.nix` — override any value from `config-defaults.nix`:
+
+```nix
+{
+  hostName = "my-machine";
+  users.myuser = {
+    username = "myuser";
+    homeDir = "/home/myuser";
+    hashedPassword = "...";  # mkpasswd -m yescrypt
+    sshKeyFiles = [ "mykey.pub" ];
+    git = {
+      name = "My Name";
+      personalEmail = "me@example.com";
+    };
+  };
+  llm.enable = true;       # ROCm LLM inference
+  qemu.enable = true;      # KVM virtualisation
+  vscodeServer.enable = true;
+}
+```
+
+See `config-defaults.nix` for all available options and their defaults.
+
+## Feature Flags
+
+| Flag | Description |
+|------|-------------|
+| `llm.enable` | llama.cpp with ROCm (AMD GPU) |
+| `qemu.enable` | QEMU/KVM + libvirtd |
+| `gnome.enable` | GNOME alongside Hyprland |
+| `vscodeServer.enable` | VS Code remote server |
+| `headless.enable` | Headless specialisation with switch scripts |
+| `nvidia.enable` | Nvidia PRIME hybrid graphics |
 
 ## Secrets Management
 
-This repository uses [sops-nix](https://github.com/Mic92/sops-nix) to manage sensitive information like API keys and tokens.
+Uses [sops-nix](https://github.com/Mic92/sops-nix) for API keys and tokens.
 
-### Initial Setup
+```bash
+# Generate age key
+sudo mkdir -p /var/lib/sops-nix
+sudo age-keygen -o /var/lib/sops-nix/key.txt
 
-1. **Generate an age key** (one-time per machine):
-   ```bash
-   sudo mkdir -p /var/lib/sops-nix
-   sudo age-keygen -o /var/lib/sops-nix/key.txt
-   sudo chmod 600 /var/lib/sops-nix/key.txt
-   ```
+# Copy and configure sops
+cp .sops.example.yaml .sops.yaml
+# Set your age public key in .sops.yaml
 
-2. **Get your public key**:
-   ```bash
-   sudo age-keygen -y /var/lib/sops-nix/key.txt
-   # Output: age1xxxxxx...
-   ```
-
-3. **Update `.sops.yaml`** with your public key:
-   ```yaml
-   creation_rules:
-     - path_regex: secrets/.*\.yaml$
-       age: >-
-         age1your-public-key-here
-   ```
-
-### Creating Secrets
-
-1. **Create the secrets file** from the example:
-   ```bash
-   cp secrets/secrets.yaml.example secrets/secrets.yaml
-   ```
-
-2. **Encrypt with sops**:
-   ```bash
-   sops -e -i secrets/secrets.yaml
-   ```
-
-3. **Edit encrypted secrets** (sops decrypts in-place):
-   ```bash
-   sops secrets/secrets.yaml
-   ```
-
-### Secrets File Format
-
-```yaml
-github_token: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-gitlab_token: glpat-xxxxxxxxxxxxxxxxxxxx
+# Create and encrypt secrets
+cp secrets/secrets.yaml.example secrets/secrets.yaml
+sops -e -i secrets/secrets.yaml
 ```
 
-### How It Works
-
-- Secrets are encrypted in `secrets/secrets.yaml` and committed to git
-- On NixOS rebuild, sops-nix decrypts them to `/run/secrets/<secret_name>`
-- The age private key at `/var/lib/sops-nix/key.txt` is used for decryption
-- Secrets are only readable by root and the `users` group
-
-### Adding New Secrets
-
-1. Add the key to `secrets/secrets.yaml`:
-   ```bash
-   sops secrets/secrets.yaml
-   # Add: my_new_secret: "value"
-   ```
-
-2. Define the secret in `modules/system/security/sops/default.nix`:
-   ```nix
-   sops.secrets.my_new_secret = {
-     owner = "root";
-     group = "users";
-     mode = "0440";
-   };
-   ```
-
-3. Rebuild: `sudo nixos-rebuild switch --flake .#<host>`
-
-The secret will be available at `/run/secrets/my_new_secret`.
-
+## Structure
 
 ```
-flake.nix                     Entry point — nixosConfigurations
-hosts/                        Per-machine configs + hardware configuration files
+flake.nix                   Entry point — single nixosConfiguration
+config-defaults.nix         Schema and defaults (upstream-maintained)
+local.nix                   Your personal overrides
+hosts/
+  default.nix               Host config with feature-flag imports
+  hardware-configuration.nix  Machine-specific (generate per machine)
 modules/
-  games/                      Gaming-related modules (wago-addons, warcraftlogs)
-  nix/                        Nix daemon settings
-  rice/                       Desktop environment modules (Hyprland, GNOME, themes)
-  services/                   System services (SSH, Traefik, Ollama)
-  system/                     Core system config (users, virtualization)
+  games/                    Gaming (Steam, WoW addons)
+  nix/                      Nix daemon settings
+  rice/                     Desktop environment (Hyprland, themes)
+  services/                 System services (SSH, Traefik, LLM)
+  system/                   Core system (users, virtualisation)
 home/
-  <user>.nix                  Top-level Home Manager entry per user
-  programs/                   Per-program HM configs
-  services/                   Per-service HM configs (Dunst)
-  themes/                     Theme system (registry, per-theme assets)
-overlays/                     Custom package overlays
-users/
-  lanath/profile.nix          Personal data for user lanath (single source of truth)
-  mushu/profile.nix           Personal data for user mushu
-keys/                         SSH public keys (one file per user)
+  default.nix               Home Manager entry point (shared by all users)
+  programs/                 Per-program configs
+  services/                 Per-service configs (Dunst)
+  themes/                   Theme system
+overlays/                   Custom package overlays
+keys/                       SSH public keys (gitignored)
 ```
 
-## Forking
-
-### 1. Create a user profile
-
-Copy an existing profile and fill in your data:
-
-```bash
-cp -r users/lanath users/<yourname>
-$EDITOR users/<yourname>/profile.nix
-```
-
-Fields to update:
-- `username` — your Unix username
-- `homeDir` — your home directory (usually `/home/<username>`)
-- `hashedPassword` — generate with `mkpasswd -m yescrypt`
-- `sshKeyFiles` — list of filenames in `keys/` to authorize for SSH login
-- `git.*` — name, email(s), GPG key fingerprint
-
-Add your SSH public key(s) to `keys/`:
-
-```bash
-cp ~/.ssh/id_ed25519.pub keys/<yourname>.pub
-```
-
-### 2. Add a system user module
-
-```bash
-cp modules/system/user/lanath.nix modules/system/user/<yourname>.nix
-# Edit the import path to point to your profile
-$EDITOR modules/system/user/<yourname>.nix
-```
-
-### 3. Add a Home Manager config
-
-```bash
-cp home/lanath.nix home/<yourname>.nix
-$EDITOR home/<yourname>.nix
-```
-
-Copy and adjust the per-program configs under `home/programs/` as needed.
-
-### 4. Create a host
-
-```bash
-cp hosts/lanath-desktop.nix hosts/<hostname>.nix
-$EDITOR hosts/<hostname>.nix
-```
-
-Generate your hardware configuration:
-
-```bash
-nixos-generate-config --show-hardware-config > hosts/<hostname>-hardware-configuration.nix
-```
-
-Replace the hardware UUID and kernel module references with the generated output.
-
-### 5. Register in flake.nix
-
-In `flake.nix`, add your user to `homeManagerModule`:
-
-```nix
-home-manager.users.<yourname> = import ./home/<yourname>.nix;
-```
-
-And add your host to `nixosConfigurations`:
-
-```nix
-<hostname> = mkHost ./hosts/<hostname>.nix;
-```
-
-### 6. Build
-
-```bash
-sudo nixos-rebuild switch --flake .#<hostname>
-# or
-make <hostname>
-```
-
-## Common Commands
+## Commands
 
 | Command | Description |
 |---------|-------------|
-| `make <host>` | Rebuild and switch to a host config |
-| `make update` | Update all flake inputs |
-| `make clean` | Remove old generations and collect garbage |
-| `nix build .#nixosConfigurations.<host>.config.home-manager.users.<user>.home.activationPackage` | Test HM build without switching |
-
-## Hardware Notes
-
-The `*-hardware-configuration.nix` files contain machine-specific UUIDs and kernel modules. They are **not reusable** across machines — always generate a fresh one with `nixos-generate-config` on your target hardware.
+| `make switch` | Rebuild and switch |
+| `make update` | Update flake inputs |
+| `make clean` | Remove old generations |
+| `just check` | Run flake checks |
+| `just test` | Run VM integration tests |
+| `just eval` | Verify config evaluates |
