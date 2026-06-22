@@ -179,12 +179,18 @@
     })
   ];
 
-  environment.systemPackages = lib.mkIf localConfig.headless.enable (with pkgs; [
-    (writeShellScriptBin "switch-to-headless" ''
-      exec sudo /run/current-system/specialisation/headless/bin/switch-to-configuration switch
-    '')
-    (writeShellScriptBin "switch-to-desktop" ''
-      exec sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
-    '')
-  ]);
+  environment.systemPackages = lib.mkMerge [
+    (lib.mkIf localConfig.headless.enable (with pkgs; [
+      (writeShellScriptBin "switch-to-headless" ''
+        exec sudo /run/current-system/specialisation/headless/bin/switch-to-configuration switch
+      '')
+      (writeShellScriptBin "switch-to-desktop" ''
+        exec sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
+      '')
+    ]))
+
+    # Make `moonlight` launchable from the normal session too (not just the kiosk
+    # boot entry), so it can be started from rofi/a terminal on the daily desktop.
+    (lib.mkIf localConfig.kioskClient.enable [ pkgs.moonlight-qt ])
+  ];
 }
