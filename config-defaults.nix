@@ -62,17 +62,22 @@
     nvidiaBusId = "";
   };
 
-  # Kiosk client — adds a "kiosk" boot entry that boots straight into a fullscreen
-  # Moonlight session streaming the remote desktop's Sunshine host (video + audio).
-  # Runs inside a bare cage compositor so no local hotkeys interfere — every key
-  # passes through to the remote session. No local login prompt.
+  # Kiosk client — adds a "kiosk" boot entry for a thin-client laptop. Boots into a
+  # minimal local Hyprland session that autostarts Moonlight fullscreen on the
+  # EXTERNAL monitor (streaming the desktop's Sunshine host, video + audio), while
+  # the laptop's built-in screen stays a normal local desktop. That lets you run a
+  # video call locally (native webcam/mic/speakers) AND work on the remote desktop
+  # at the same time. Move the mouse between screens to switch focus (follow_mouse);
+  # local app binds live on CTRL+ALT so SUPER combos pass through to the remote.
   # Disabled on the desktop; enabled on thin-client devices (e.g. a laptop).
   # Pairing with Sunshine is a one-time step (enter the PIN at https://<host>:47990).
   kioskClient = {
     enable = false;
     host = "";                # hostname/IP of the desktop running Sunshine
     localUser = "";           # local account greetd runs the kiosk session as
-    resolution = "1920x1080"; # stream resolution (match the kiosk display)
+    resolution = "1920x1080"; # stream resolution (match the external monitor)
+    streamOutput = "";        # external output Moonlight lives on (e.g. "HDMI-A-1");
+                              # empty = auto-pick the first non-eDP monitor
   };
 
   # --- Users ---
