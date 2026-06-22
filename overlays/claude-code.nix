@@ -1,44 +1,33 @@
 final: prev: {
   claude-code = final.stdenv.mkDerivation rec {
     pname = "claude-code";
-    version = "2.1.91";
+    version = "2.1.175";
 
     src = final.fetchurl {
-      url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-      hash = "sha256-T7Ta53HW+tHnRwN0EUj17i0kg39KBOqycEF0b3pbPis=";
+      url = "https://registry.npmjs.org/@anthropic-ai/claude-code-linux-x64/-/claude-code-linux-x64-${version}.tgz";
+      hash = "sha256-NsMaez7G2wUWBJNxUazYlWnD0TBDm+qMKwBOcTJSjSw=";
     };
 
-    nativeBuildInputs = [ final.makeWrapper ];
-    buildInputs = [ final.nodejs_22 ];
+    nativeBuildInputs = [ final.patchelf ];
 
     dontBuild = true;
     dontConfigure = true;
+    dontFixup = true;
 
     installPhase = ''
       runHook preInstall
 
-      mkdir -p $out/lib/claude-code
-      cp -r . $out/lib/claude-code/
-
-      # Remote-control's bridge spawner uses process.execPath (the node
-      # binary) to spawn child sessions. On Node.js 22+, this causes
-      # "bad option: --sdk-url" because node intercepts unknown flags.
-      # Patch the bridge to use process.argv[1] (cli.js) instead, which
-      # goes through the shebang and respects '--'.
-      sed -i 's|execPath:process\.execPath,env:process\.env|execPath:process.argv[1],env:process.env|' \
-        $out/lib/claude-code/cli.js
-
       mkdir -p $out/bin
-      makeWrapper ${final.nodejs_22}/bin/node $out/bin/claude \
-        --add-flags "-- $out/lib/claude-code/cli.js"
+      cp claude $out/bin/claude
+      chmod +x $out/bin/claude
+
+      # Only patch the ELF interpreter — do NOT use autoPatchelfHook or add
+      # RPATH entries, as resizing ELF sections corrupts the Bun application
+      # bytecode appended after the ELF data.
+      patchelf --set-interpreter "$(cat ${final.stdenv.cc}/nix-support/dynamic-linker)" \
+        $out/bin/claude
 
       runHook postInstall
-    '';
-
-    postFixup = ''
-      # Patch shebang to include '--' so Node.js doesn't intercept
-      # flags like --sdk-url when cli.js is exec'd via shebang
-      sed -i '1s|^#!\(.*\)/bin/node.*|#!\1/bin/node --|' $out/lib/claude-code/cli.js
     '';
 
     meta = with final.lib; {
@@ -46,7 +35,7 @@ final: prev: {
       homepage = "https://github.com/anthropics/claude-code";
       license = licenses.unfree;
       maintainers = [ ];
-      platforms = platforms.all;
+      platforms = [ "x86_64-linux" ];
     };
   };
 }
