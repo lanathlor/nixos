@@ -1,4 +1,19 @@
-{ inputs, config, ... }:
+{ inputs, config, localConfig, lib, ... }:
+let
+  # Readable by the user (group "users") — consumed at runtime, e.g. the
+  # waybar weather script reads /run/secrets/weather_appid.
+  userReadable = {
+    owner = "root";
+    group = "users";
+    mode = "0440";
+  };
+  # One password hash secret per configured user. neededForUsers makes
+  # sops-nix decrypt it early (to /run/secrets-for-users) so it is
+  # available when accounts are created — required by hashedPasswordFile.
+  passwordSecrets = lib.mapAttrs'
+    (name: _: lib.nameValuePair "${name}_password" { neededForUsers = true; })
+    localConfig.users;
+in
 {
   imports = [
     inputs.sops-nix.nixosModules.sops
@@ -13,16 +28,9 @@
 
     # Secrets definitions - these get decrypted to /run/secrets/<name>
     secrets = {
-      github_token = {
-        owner = "root";
-        group = "users";
-        mode = "0440";
-      };
-      gitlab_token = {
-        owner = "root";
-        group = "users";
-        mode = "0440";
-      };
-    };
+      github_token = userReadable;
+      gitlab_token = userReadable;
+      weather_appid = userReadable;
+    } // passwordSecrets;
   };
 }

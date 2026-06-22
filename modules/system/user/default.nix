@@ -1,4 +1,4 @@
-{ localConfig, lib, ... }:
+{ localConfig, lib, config, ... }:
 let
   keysDir = ../../../keys;
   mkKeyFiles = userCfg:
@@ -15,7 +15,7 @@ in
     isNormalUser = true;
     description = name;
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" "storage" "video" "render" ];
-    initialHashedPassword = userCfg.hashedPassword;
+    hashedPasswordFile = config.sops.secrets."${name}_password".path;
     openssh.authorizedKeys.keyFiles = mkKeyFiles userCfg;
   }) localConfig.users) // {
     root = {

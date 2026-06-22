@@ -5,8 +5,10 @@ final: prev: {
     version = "0.1";
     src = final.writeText "weather.sh" ''
       #!/usr/bin/env bash
-      url='http://api.openweathermap.org/data/2.5/weather?lat=${weatherConfig.lat}&lon=${weatherConfig.lon}&APPID=${weatherConfig.appId}&cnt=5&units=metric&lang=en'
-      curl ''${url} -s -o ~/.cache/weather.json
+      # API key is provisioned at runtime by sops-nix, never baked into the store.
+      appid=$(cat /run/secrets/weather_appid 2>/dev/null)
+      url="http://api.openweathermap.org/data/2.5/weather?lat=${weatherConfig.lat}&lon=${weatherConfig.lon}&APPID=''${appid}&cnt=5&units=metric&lang=en"
+      curl "''${url}" -s -o ~/.cache/weather.json
       data=$(cat ~/.cache/weather.json)
       description=$(echo "$data" | jq -r '.weather[0].description')
       temp=$(echo "$data" | jq -r '.main.temp | round')

@@ -16,9 +16,8 @@
   extraHosts = {};
 
   # Weather widget (waybar) — get a free key at https://openweathermap.org
+  # The API key is stored in sops as `weather_appid`, not here.
   weather = {
-    apiKey = "";
-    appId = "";
     lat = "0.0";
     lon = "0.0";
   };
@@ -61,7 +60,8 @@
   #   users.myuser = {
   #     username = "myuser";
   #     homeDir = "/home/myuser";
-  #     hashedPassword = "...";          # Generate with: mkpasswd -m yescrypt
+  #     # Password hash is stored in sops as `<username>_password`
+  #     # (generate with: mkpasswd -m yescrypt), not in this file.
   #     sshKeyFiles = [ "myuser.pub" ];  # Filenames relative to keys/
   #     git = {
   #       name = "your-name";
