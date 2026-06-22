@@ -40,6 +40,9 @@
   # VS Code remote server
   vscodeServer.enable = false;
 
+  # wayvnc — VNC server for Hyprland (access via SSH tunnel)
+  wayvnc.enable = false;
+
   # Headless specialisation (switch-to-headless / switch-to-desktop scripts)
   headless.enable = false;
 

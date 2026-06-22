@@ -21,7 +21,8 @@
   ++ lib.optional localConfig.llm.enable ../modules/services/llm
   ++ lib.optional localConfig.qemu.enable ../modules/system/virt/qemu.nix
   ++ lib.optional localConfig.gnome.enable ../modules/rice/de/gnome.nix
-  ++ lib.optional localConfig.nvidia.enable ../modules/system/nvidia;
+  ++ lib.optional localConfig.nvidia.enable ../modules/system/nvidia
+  ++ lib.optional localConfig.wayvnc.enable ../modules/services/wayvnc;
 
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;

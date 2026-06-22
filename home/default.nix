@@ -14,6 +14,7 @@
     ./programs/vscode
     ./programs/xdg
     ./services/dunst
+    ./services/wayvnc
     ./themes
 
     nur.modules.homeManager.default
