@@ -36,6 +36,12 @@
   # GNOME desktop environment (in addition to Hyprland)
   gnome.enable = false;
 
+  # KDE Plasma 6 desktop (selectable at login alongside Hyprland)
+  kde.enable = false;
+
+  # xrdp — RDP server exposing an independent KDE session over the LAN (needs kde.enable)
+  xrdp.enable = false;
+
   # VS Code remote server
   vscodeServer.enable = false;
 
@@ -50,6 +56,17 @@
     enable = false;
     intelBusId = "";
     nvidiaBusId = "";
+  };
+
+  # Kiosk client — adds a "kiosk" boot entry that auto-connects via RDP to a remote
+  # KDE (xrdp) host and shows a fullscreen Plasma session. No local login prompt.
+  # Disabled on the desktop; enabled on thin-client devices (e.g. a laptop).
+  # The RDP password is read at runtime from sops secret `kiosk_rdp_password`.
+  kioskClient = {
+    enable = false;
+    host = "";        # hostname/IP of the desktop running xrdp
+    user = "";        # RDP/system user to log into on the host
+    localUser = "";   # local account greetd runs the kiosk session as
   };
 
   # --- Users ---

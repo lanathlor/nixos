@@ -31,6 +31,10 @@ in
       github_token = userReadable;
       gitlab_token = userReadable;
       weather_appid = userReadable;
-    } // passwordSecrets;
+    } // passwordSecrets
+    # RDP password for the kiosk client (read at runtime by the kiosk launcher).
+    // lib.optionalAttrs localConfig.kioskClient.enable {
+      kiosk_rdp_password = userReadable;
+    };
   };
 }

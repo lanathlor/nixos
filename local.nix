@@ -30,6 +30,11 @@
   wayvnc.enable = true;
   headless.enable = true;
 
+  # KDE Plasma 6 selectable at login alongside Hyprland, reachable over RDP.
+  # The kiosk client boot entry stays disabled here (enable it on the laptop).
+  kde.enable = true;
+  xrdp.enable = true;
+
   extraSearchEngines = {
     "gitlab (stamus)" = {
       urls = [{
