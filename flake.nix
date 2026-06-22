@@ -8,6 +8,10 @@
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    plasma-manager.url = "github:nix-community/plasma-manager";
+    plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
+    plasma-manager.inputs.home-manager.follows = "home-manager";
+
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,6 +37,7 @@
       nixpkgs,
       nixpkgs-unstable,
       home-manager,
+      plasma-manager,
       stamusctl,
       zen-browser,
       nur,
@@ -94,6 +99,7 @@
         home-manager.useGlobalPkgs = true;
         home-manager.backupFileExtension = "bak";
         home-manager.extraSpecialArgs = sharedSpecialArgs;
+        home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
         home-manager.users = builtins.mapAttrs (name: _: import ./home) localConfig.users;
       };
 

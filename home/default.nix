@@ -11,6 +11,7 @@
     ./programs/neovim
     ./programs/opencode
     ./programs/nyxt
+    ./programs/plasma
     ./programs/vscode
     ./programs/xdg
     ./services/dunst
