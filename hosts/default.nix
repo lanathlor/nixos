@@ -104,11 +104,14 @@
               --resolution ${cfg.resolution}
           '';
 
-          # Minimal local Hyprland. Deliberately almost no keybinds: with nothing
-          # bound to SUPER, those combos fall through to the focused Moonlight window
-          # and reach the REMOTE desktop. Local actions live on CTRL+ALT so they never
-          # shadow the remote's SUPER shortcuts. follow_mouse=1 means moving the pointer
-          # to the laptop screen hands focus (and the keyboard) to local apps.
+          # Minimal local Hyprland for using the laptop itself alongside the stream.
+          # SUPER binds are safe here because Moonlight is set to "Capture system
+          # keyboard shortcuts = Always": while the stream is focused it inhibits the
+          # compositor's shortcuts (SUPER reaches the REMOTE), and moving the pointer to
+          # the laptop screen releases the inhibit so these local binds fire. follow_mouse=1
+          # makes that pointer move hand over focus (and the keyboard). The CTRL+ALT binds
+          # are non-SUPER failsafes that work even if a stream ever holds the keyboard.
+          # NOTE: requires Moonlight Settings -> Capture system keyboard shortcuts = Always.
           kioskHyprConf = pkgs.writeText "kiosk-hyprland.conf" ''
             monitor = , preferred, auto, 1
 
@@ -138,13 +141,26 @@
                 enabled = no
             }
 
-            # Local-only binds on CTRL+ALT (won't collide with the remote's SUPER binds).
-            bind = CTRL ALT, T, exec, ${pkgs.kitty}/bin/kitty
-            bind = CTRL ALT, Space, exec, ${pkgs.rofi}/bin/rofi -show drun
-            bind = CTRL ALT, Q, killactive
-            # Relaunch the stream if it was closed.
+            # Local SUPER binds (mirror the daily Hyprland) — live only when Moonlight
+            # is unfocused, i.e. when you're using the laptop screen.
+            $mod = SUPER
+            bind = $mod, Return, exec, ${pkgs.kitty}/bin/kitty
+            bind = $mod, Space, exec, ${pkgs.rofi}/bin/rofi -show drun
+            bind = $mod, E, exec, ${pkgs.xfce.thunar}/bin/thunar
+            bind = $mod, A, killactive
+            bind = $mod, F, fullscreen
+            bind = $mod, V, togglefloating
+            bind = $mod, left, movefocus, l
+            bind = $mod, right, movefocus, r
+            bind = $mod, up, movefocus, u
+            bind = $mod, down, movefocus, d
+            bind = $mod SHIFT, left, movewindow, l
+            bind = $mod SHIFT, right, movewindow, r
+            bind = $mod SHIFT, up, movewindow, u
+            bind = $mod SHIFT, down, movewindow, d
+
+            # Non-SUPER failsafes: relaunch the stream, or exit to the login screen.
             bind = CTRL ALT, M, exec, ${kioskStream}
-            # Drop back to the login screen.
             bind = CTRL ALT SHIFT, E, exit
 
             exec-once = ${kioskStream}
