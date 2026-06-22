@@ -42,6 +42,10 @@
   # xrdp — RDP server exposing an independent KDE session over the LAN (needs kde.enable)
   xrdp.enable = false;
 
+  # Sunshine — desktop stream host for Moonlight (remote desktop with audio, low
+  # latency). Mirrors the live Hyprland session; needs a logged-in session to capture.
+  sunshine.enable = false;
+
   # VS Code remote server
   vscodeServer.enable = false;
 
@@ -58,15 +62,17 @@
     nvidiaBusId = "";
   };
 
-  # Kiosk client — adds a "kiosk" boot entry that auto-connects via RDP to a remote
-  # KDE (xrdp) host and shows a fullscreen Plasma session. No local login prompt.
+  # Kiosk client — adds a "kiosk" boot entry that boots straight into a fullscreen
+  # Moonlight session streaming the remote desktop's Sunshine host (video + audio).
+  # Runs inside a bare cage compositor so no local hotkeys interfere — every key
+  # passes through to the remote session. No local login prompt.
   # Disabled on the desktop; enabled on thin-client devices (e.g. a laptop).
-  # The RDP password is read at runtime from sops secret `kiosk_rdp_password`.
+  # Pairing with Sunshine is a one-time step (enter the PIN at https://<host>:47990).
   kioskClient = {
     enable = false;
-    host = "";        # hostname/IP of the desktop running xrdp
-    user = "";        # RDP/system user to log into on the host
-    localUser = "";   # local account greetd runs the kiosk session as
+    host = "";                # hostname/IP of the desktop running Sunshine
+    localUser = "";           # local account greetd runs the kiosk session as
+    resolution = "1920x1080"; # stream resolution (match the kiosk display)
   };
 
   # --- Users ---

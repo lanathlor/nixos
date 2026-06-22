@@ -35,6 +35,9 @@
   kde.enable = true;
   xrdp.enable = true;
 
+  # Sunshine stream host — the laptop's Moonlight kiosk connects to this.
+  sunshine.enable = true;
+
   extraSearchEngines = {
     "gitlab (stamus)" = {
       urls = [{

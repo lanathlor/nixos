@@ -1,4 +1,4 @@
-{ pkgs, lib, config, localConfig, ... }:
+{ pkgs, lib, localConfig, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -24,7 +24,8 @@
   ++ lib.optional localConfig.kde.enable ../modules/rice/de/kde.nix
   ++ lib.optional localConfig.nvidia.enable ../modules/system/nvidia
   ++ lib.optional localConfig.wayvnc.enable ../modules/services/wayvnc
-  ++ lib.optional localConfig.xrdp.enable ../modules/services/xrdp;
+  ++ lib.optional localConfig.xrdp.enable ../modules/services/xrdp
+  ++ lib.optional localConfig.sunshine.enable ../modules/services/sunshine;
 
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
@@ -49,18 +50,26 @@
     })
 
     # Kiosk client specialisation — a boot entry that turns this machine into a
-    # thin client: greetd auto-starts a fullscreen RDP session to the configured
-    # KDE (xrdp) host, with no local login prompt.
+    # thin client: greetd auto-starts a fullscreen Moonlight session streaming the
+    # configured Sunshine host, inside a bare cage compositor (no local hotkeys, so
+    # every key passes through to the remote session). No local login prompt.
     (lib.mkIf localConfig.kioskClient.enable {
       kiosk.configuration =
         let
-          kioskLauncher = pkgs.writeShellScript "kiosk-rdp" ''
-            exec ${lib.getExe pkgs.cage} -s -- \
-              ${pkgs.freerdp}/bin/wlfreerdp \
-                /v:${localConfig.kioskClient.host} \
-                /u:${localConfig.kioskClient.user} \
-                /p:"$(cat ${config.sops.secrets.kiosk_rdp_password.path})" \
-                /cert:ignore +clipboard /f
+          moonlight = "${pkgs.moonlight-qt}/bin/moonlight";
+          # Runs inside cage (has a Wayland display for Qt). If already paired with
+          # Sunshine, stream the Desktop app directly; otherwise open the Moonlight
+          # UI to pair (one-time PIN at https://<host>:47990).
+          kioskInner = pkgs.writeShellScript "kiosk-moonlight-inner" ''
+            host=${localConfig.kioskClient.host}
+            if ${moonlight} list "$host" >/dev/null 2>&1; then
+              exec ${moonlight} stream "$host" "Desktop" --resolution ${localConfig.kioskClient.resolution}
+            else
+              exec ${moonlight}
+            fi
+          '';
+          kioskLauncher = pkgs.writeShellScript "kiosk-moonlight" ''
+            exec ${lib.getExe pkgs.cage} -s -- ${kioskInner}
           '';
         in
         {
